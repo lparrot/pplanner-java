@@ -1,0 +1,19 @@
+{
+	"properties": [
+		{
+			"name": "app.api.prefix",
+			"type": "java.lang.String",
+			"description": "Description for app.api.prefix."
+		},
+		{
+			"name": "app.security.jwt.header-name",
+			"type": "java.lang.String",
+			"description": "Description for app.security.jwt.header-name."
+		},
+		{
+			"name": "app.security.jwt.token-prefix",
+			"type": "java.lang.String",
+			"description": "Description for app.security.jwt.token-prefix."
+		}
+	]
+}

@@ -1,0 +1,16 @@
+$colors: primary, secondary, success, info, warn, danger;
+
+html, body, #__nuxt, #__layout {
+	@apply text-gray-700 text-sm h-full;
+}
+
+@layer components {
+
+	@import "components/animation";
+	@import 'components/button';
+
+}
+
+.p-container {
+	@apply flex flex-col w-full pt-4 overflow-auto;
+}
