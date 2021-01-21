@@ -92,6 +92,7 @@ export default {
 				endpoints: {
 					login: { url: '/auth/login', method: 'post' },
 					user: { url: '/auth/user', method: 'get' },
+					logout: false,
 				},
 			},
 		},
@@ -115,4 +116,6 @@ export default {
 			},
 		},
 	},
+
+	storybook: {},
 }

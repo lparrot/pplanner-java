@@ -37,8 +37,7 @@
 				<p-project-menu-item v-for="workspace in workspaces" :key="workspace.id" :item="workspace">
 					<p-project-menu-item v-for="item in workspace.children" :key="item.id" :item="item">
 						<template v-if="item.children">
-							<p-project-menu-item v-for="itemChild in item.children" :key="itemChild.id"
-																	 :item="itemChild"></p-project-menu-item>
+							<p-project-menu-item v-for="itemChild in item.children" :key="itemChild.id" :item="itemChild"></p-project-menu-item>
 						</template>
 					</p-project-menu-item>
 				</p-project-menu-item>
@@ -57,11 +56,11 @@
 </template>
 
 <script lang="ts">
-import {Action, Component, Getter, State, Vue} from "nuxt-property-decorator";
+import { Action, Component, Getter, State, Vue } from "nuxt-property-decorator";
 import PVerticalMenu from "../components/PVerticalMenu.vue";
-import {Fragment} from 'vue-fragment'
+import { Fragment } from 'vue-fragment'
 import PProjectMenuItem from "~/components/PProjectMenuItem.vue";
-import {Context} from "@nuxt/types";
+import { Context } from "@nuxt/types";
 
 @Component({
 	components: {
@@ -86,12 +85,15 @@ export default class PageParentTask extends Vue {
 		workspaceActions: false,
 	}
 
-	handleClickFavorite(favorite) {
+	handleClickFavorite (favorite) {
 		this.selectProjectItem(favorite.id)
-		this.$router.push(`/tasks/${favorite.id}`)
+		this.$router.push(`/tasks/${ favorite.id }`)
 	}
 
-	async asyncData(ctx: Context) {
+	async asyncData (ctx: Context) {
+		const projectsPaginate = await ctx.$api.projects.findAll()
+		await ctx.store.dispatch('selectProject', projectsPaginate.content[0].id)
+
 		return {
 			workspaces: await ctx.$api.projects.findAllWorkspaceByProjectId(ctx.store.state.selectedProject),
 			favorites: ctx.$api.favorites.findAllByProjectId(ctx.store.state.selectedProject),

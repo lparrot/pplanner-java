@@ -6,7 +6,8 @@
 		"dev": "nuxt-ts",
 		"build": "nuxt-ts build",
 		"start": "nuxt-ts start",
-		"generate": "nuxt-ts generate"
+		"generate": "nuxt-ts generate",
+		"storybook": "nuxt-ts storybook"
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "^5.15.2",
@@ -24,11 +25,13 @@
 		"tinymotion": "^0.1.1",
 		"vee-validate": "^3.4.5",
 		"vue-fragment": "^1.5.1",
+		"vuedraggable": "^2.24.3",
 		"vuex": "*"
 	},
 	"devDependencies": {
 		"@nuxt/types": "^2.14.6",
 		"@nuxt/typescript-build": "^2.0.3",
+		"@nuxtjs/storybook": "^3.3.1",
 		"@nuxtjs/tailwindcss": "^3.1.0",
 		"nuxt-property-decorator": "^2.8.8",
 		"vue-property-decorator": "*"

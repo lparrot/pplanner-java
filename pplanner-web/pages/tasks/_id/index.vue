@@ -6,8 +6,7 @@
 				<div class="text-primary-700 text-lg">{{ task.name }}</div>
 
 				<p-tab-container>
-					<p-tab-item v-for="view in views"
-											:key="view.id" :active="$route.query.view === view.name" :name="view.name">
+					<p-tab-item v-for="view in views" :key="view.id" :active="$route.query.view === view.name" :name="view.name">
 						<i :class="view.icon" class="mr-1"></i>
 						<span>{{ view.label }}</span>
 					</p-tab-item>
@@ -36,10 +35,10 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 import PTabContainer from "~/components/PTabContainer.vue";
 import PTabItem from "~/components/PTabItem.vue";
-import {Context} from "@nuxt/types";
+import { Context } from "@nuxt/types";
 
 
 @Component({
@@ -53,7 +52,7 @@ export default class PageTaskIndex extends Vue {
 	public task: Models.ProjectMenuItem = null
 	public views: Models.TaskViewMenu[] = []
 
-	get iconItem() {
+	get iconItem () {
 		switch (this.task.type) {
 			case 'FOLDER':
 				return 'fas fa-folder'
@@ -64,14 +63,14 @@ export default class PageTaskIndex extends Vue {
 		}
 	}
 
-	get viewComponent() {
+	get viewComponent () {
 		const viewComponent = this.views.find(view => view.name === this.$route.query.view)
 		if (viewComponent != null) {
 			return viewComponent.component
 		}
 	}
 
-	async asyncData(ctx: Context) {
+	async asyncData (ctx: Context) {
 		if (ctx.params.id == null) {
 			// Si pas de paramètre, on récupère le premier workspace créé. S'il n'y en a pas, alors on retourne vide
 			const firstWorkspace = ctx.$api.tasks.findFirstWorkspaceByProjectId(ctx.store.state.selectedProject)
@@ -86,32 +85,33 @@ export default class PageTaskIndex extends Vue {
 					},
 				})
 			}
-			return {item: null}
+
+			return {}
 		}
 
 		await ctx.store.dispatch('selectProjectItem', parseInt(ctx.params.id))
 
 		return {
-			task: ctx.$api.tasks.findById(parseInt(ctx.params.id)),
+			task: ctx.$api.items.findById(ctx.params.id),
 			views: [
-				{id: 1, name: 'list', label: 'Liste', icon: 'fas fa-th-list', component: 'p-view-list'},
-				{id: 2, name: 'kanban', label: 'Kanban', icon: 'fab fa-gitter', component: 'p-view-kanban'},
-				{id: 3, name: 'calendar', label: 'Calendrier', icon: 'fas fa-calendar-alt', component: 'p-view-calendar'},
-				{id: 4, name: 'gantt', label: 'Gantt', icon: 'fas fa-stream', component: 'p-view-gantt'},
+				{ id: 1, name: 'list', label: 'Liste', icon: 'fas fa-th-list', component: 'p-view-list' },
+				{ id: 2, name: 'kanban', label: 'Kanban', icon: 'fab fa-gitter', component: 'p-view-kanban' },
+				{ id: 3, name: 'calendar', label: 'Calendrier', icon: 'fas fa-calendar-alt', component: 'p-view-calendar' },
+				{ id: 4, name: 'gantt', label: 'Gantt', icon: 'fas fa-stream', component: 'p-view-gantt' },
 			],
 		}
 	}
 
-	beforeRouteUpdate(to, from, next) {
+	beforeRouteUpdate (to, from, next) {
 		if (to.query.view == null) {
-			next({name: 'tasks-id', params: {id: this.$route.params.id}, query: {view: 'list'}})
+			next({ name: 'tasks-id', params: { id: this.$route.params.id }, query: { view: 'list' } })
 		}
 		next()
 	}
 
-	created() {
+	created () {
 		this.$bus.$on('on-select-view-tab', (event) => {
-			this.$router.push({name: 'tasks-id', params: {id: this.$route.params.id}, query: {view: event.name}})
+			this.$router.push({ name: 'tasks-id', params: { id: this.$route.params.id }, query: { view: event.name } })
 		})
 	}
 }

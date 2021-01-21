@@ -1,4 +1,4 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import Vue from 'vue'
 
 /**
@@ -24,10 +24,10 @@ export const getters: GetterTree<RootState, RootState> = {
  * Mutations
  */
 export const mutations: MutationTree<RootState> = {
-	SET_PROJECT(state, idProject) {
+	SET_PROJECT (state, idProject) {
 		state.selectedProject = idProject
 	},
-	SET_PROJECT_ITEM(state, idWorkspace) {
+	SET_PROJECT_ITEM (state, idWorkspace) {
 		Vue.set(state.selectedProjectItem, state.selectedProject, idWorkspace)
 	},
 }
@@ -36,11 +36,16 @@ export const mutations: MutationTree<RootState> = {
  * Actions
  */
 export const actions: ActionTree<RootState, RootState> = {
-	selectProject({commit}, id) {
+	async logout (ctx) {
+		await this.$auth.logout()
+		await this.$router.push('/login')
+	},
+
+	selectProject ({ commit }, id) {
 		commit('SET_PROJECT', id)
 	},
 
-	selectProjectItem({state, commit}, id) {
+	selectProjectItem ({ state, commit }, id) {
 		commit('SET_PROJECT_ITEM', id)
 	},
 }

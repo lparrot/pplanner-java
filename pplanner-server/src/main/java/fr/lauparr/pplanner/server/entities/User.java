@@ -41,7 +41,7 @@ public class User extends BaseEntity implements UserDetails {
 
 	public Claims getClaims() {
 		final Claims claims = Jwts.claims();
-		claims.put("email", this.email);
+		claims.put("id", this.getId());
 		return claims;
 	}
 

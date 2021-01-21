@@ -1,2 +1,10 @@
-# Project exclude paths
-/pplanner-server/target/
+# Commons
+target
+.idea
+
+# Server
+application-*.properties
+
+# Web
+.nuxt-storybook
+storybook-static

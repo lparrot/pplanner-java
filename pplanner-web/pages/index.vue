@@ -104,9 +104,10 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({
+	layout: 'landing',
 	auth: false,
 })
 export default class PageIndex extends Vue {

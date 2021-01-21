@@ -8,16 +8,13 @@
 			<div id="navbar-content" class="h-full flex flex-col items-center justify-between">
 				<div class="flex flex-col gap-6 text-xl">
 					<router-link v-for="(item, itemIndex) in items" :key="itemIndex" :title="item.name" :to="item.to">
-						<i :class="item.icon"></i>
+						<i :class="item.icon" class="with-bubble"></i>
 					</router-link>
 				</div>
 				<div class="flex flex-col gap-6 items-center text-xl">
-					<i class="fas fa-sign-in-alt"></i>
-					<i class="fas fa-sign-out-alt"></i>
+					<slot name="bottom-icons"></slot>
 					<hr class="w-full text-gray-700">
-					<div
-						class="flex justify-center items-center rounded-full w-10 h-10 bg-blue-900 text-white text-lg font-bold cursor-pointer"
-						@click="$router.push('profile')">
+					<div class="flex justify-center items-center rounded-full w-10 h-10 bg-blue-900 text-white text-lg font-bold cursor-pointer" @click="$router.push('profile')">
 						LP
 					</div>
 				</div>
@@ -27,8 +24,8 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'nuxt-property-decorator'
-import {Fragment} from 'vue-fragment'
+import { Component, Prop, Vue } from 'nuxt-property-decorator'
+import { Fragment } from 'vue-fragment'
 
 @Component({
 	components: {
@@ -41,7 +38,7 @@ export default class PVerticalNavbar extends Vue {
 </script>
 
 <style>
-#navbar-content i {
+#navbar-content i.with-bubble {
 	@apply cursor-pointer transform duration-300 ease-in-out hover:scale-150;
 }
 </style>

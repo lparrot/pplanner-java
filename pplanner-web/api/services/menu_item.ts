@@ -1,9 +1,13 @@
-import {Repository} from '~/api/Repository'
+import { Repository } from '~/api/Repository'
 
 
 export class MenuItemsApi extends Repository {
-	findAllByProjectId(projectId) {
-		return this.axios.$get(`/projects/${projectId}/workspaces`)
+	findAllByProjectId (id: string) {
+		return this.axios.$get(`/projects/${ id }/workspaces`)
+	}
+
+	findById (id: string) {
+		return this.axios.$get(`/items/${ id }`)
 	}
 }
 
