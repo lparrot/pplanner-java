@@ -1,6 +1,6 @@
 <template>
 	<fragment>
-		<p-vertical-menu :visible.sync="visible">
+		<app-vertical-menu :visible.sync="visible">
 			<div class="p-6">
 				<!-- Favorites -->
 
@@ -34,20 +34,20 @@
 						<i class="fas fa-search text-gray-400 cursor-pointer hover:text-secondary"></i>
 					</div>
 				</div>
-				<p-project-menu-item v-for="workspace in workspaces" :key="workspace.id" :item="workspace">
-					<p-project-menu-item v-for="item in workspace.children" :key="item.id" :item="item">
+				<app-project-menu-item v-for="workspace in workspaces" :key="workspace.id" :item="workspace">
+					<app-project-menu-item v-for="item in workspace.children" :key="item.id" :item="item">
 						<template v-if="item.children">
-							<p-project-menu-item v-for="itemChild in item.children" :key="itemChild.id" :item="itemChild"></p-project-menu-item>
+							<app-project-menu-item v-for="itemChild in item.children" :key="itemChild.id" :item="itemChild"></app-project-menu-item>
 						</template>
-					</p-project-menu-item>
-				</p-project-menu-item>
+					</app-project-menu-item>
+				</app-project-menu-item>
 
 				<div class="text-gray-400 hover:text-secondary cursor-pointer mt-4">
 					<i class="fas fa-plus mr-2"></i>
 					<span>Nouvel espace de travail</span>
 				</div>
 			</div>
-		</p-vertical-menu>
+		</app-vertical-menu>
 
 		<div class="p-container h-full">
 			<nuxt-child></nuxt-child>
@@ -57,16 +57,16 @@
 
 <script lang="ts">
 import { Action, Component, Getter, State, Vue } from "nuxt-property-decorator";
-import PVerticalMenu from "../components/PVerticalMenu.vue";
+import AppVerticalMenu from "../components/app/AppVerticalMenu.vue";
 import { Fragment } from 'vue-fragment'
-import PProjectMenuItem from "~/components/PProjectMenuItem.vue";
+import AppProjectMenuItem from "~/components/app/AppProjectMenuItem.vue";
 import { Context } from "@nuxt/types";
 
 @Component({
 	components: {
-		PProjectMenuItem,
+		AppProjectMenuItem,
 		Fragment,
-		PVerticalMenu,
+		AppVerticalMenu,
 	},
 })
 export default class PageParentTask extends Vue {

@@ -6,13 +6,12 @@
     </span>
 	</div>
 </template>
-<script>
-export default {
-	props: {
-		color: {
-			type: String,
-			default: 'teal',
-		},
-	},
+
+<script lang="ts">
+import { Component, Prop, Vue } from "nuxt-property-decorator";
+
+@Component({})
+export default class TwBadge extends Vue {
+	@Prop({ type: String, default: 'teal' }) color !: string
 }
 </script>

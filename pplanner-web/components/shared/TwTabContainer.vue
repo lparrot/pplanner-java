@@ -5,10 +5,10 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({})
-export default class PTabContainer extends Vue {
+export default class TwTabContainer extends Vue {
 
 }
 </script>

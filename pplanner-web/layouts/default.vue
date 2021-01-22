@@ -1,21 +1,21 @@
 <template>
 	<div class="h-full flex">
-		<p-vertical-navbar :items="items" class="flex flex-col">
+		<app-vertical-navbar :items="items" class="flex flex-col">
 			<template #bottom-icons>
 				<i class="fas fa-sign-out-alt rounded-full p-2 hover:bg-primary-400 cursor-pointer" @click="logout"></i>
 			</template>
-		</p-vertical-navbar>
+		</app-vertical-navbar>
 		<nuxt ref="nuxt_navigation"></nuxt>
 	</div>
 </template>
 
 <script lang="ts">
 import { Action, Component, Vue } from 'nuxt-property-decorator'
-import PVerticalNavbar from "~/components/PVerticalNavbar.vue";
+import AppVerticalNavbar from "~/components/app/AppVerticalNavbar.vue";
 
 @Component({
 	components: {
-		PVerticalNavbar,
+		AppVerticalNavbar,
 	},
 })
 export default class LayoutDefault extends Vue {

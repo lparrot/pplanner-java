@@ -6,7 +6,7 @@
 				<!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
 				<draggable :animation="200" :list="column.tasks" ghost-class="ghost-card" group="tasks">
 					<!-- Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
-					<task-card v-for="(task) in column.tasks" :key="task.id" :task="task" class="mt-3 cursor-move"></task-card>
+					<tw-task-card v-for="(task) in column.tasks" :key="task.id" :task="task" class="mt-3 cursor-move"></tw-task-card>
 					<!-- </transition-group> -->
 				</draggable>
 			</div>
@@ -17,15 +17,15 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import draggable from "vuedraggable";
-import TaskCard from "../TaskCard.vue";
+import TwTaskCard from "~/components/shared/TwTaskCard.vue";
 
 @Component({
 	components: {
-		TaskCard,
+		TwTaskCard,
 		draggable
 	}
 })
-export default class PViewKanban extends Vue {
+export default class AppViewKanban extends Vue {
 	columns = [
 		{
 			title: "Backlog",

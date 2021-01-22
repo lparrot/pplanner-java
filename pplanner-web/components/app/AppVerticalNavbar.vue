@@ -32,7 +32,7 @@ import { Fragment } from 'vue-fragment'
 		Fragment,
 	},
 })
-export default class PVerticalNavbar extends Vue {
+export default class AppVerticalNavbar extends Vue {
 	@Prop() items!: Models.PVerticalNavbarItem[]
 }
 </script>

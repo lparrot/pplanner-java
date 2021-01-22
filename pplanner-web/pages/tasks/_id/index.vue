@@ -5,17 +5,17 @@
 				<i :class="iconItem" class="text-primary-400 text-sm"></i>
 				<div class="text-primary-700 text-lg">{{ task.name }}</div>
 
-				<p-tab-container>
-					<p-tab-item v-for="view in views" :key="view.id" :active="$route.query.view === view.name" :name="view.name">
+				<tw-tab-container>
+					<tw-tab-item v-for="view in views" :key="view.id" :active="$route.query.view === view.name" :name="view.name">
 						<i :class="view.icon" class="mr-1"></i>
 						<span>{{ view.label }}</span>
-					</p-tab-item>
+					</tw-tab-item>
 					<div class="h-6 border ml-2"></div>
 					<div class="ml-2 cursor-pointer transform duration-200 hover:text-secondary hover:scale-110">
 						<i class="fas fa-plus mr-1"></i>
 						<span>Vue</span>
 					</div>
-				</p-tab-container>
+				</tw-tab-container>
 			</div>
 
 			<div class="flex flex-col border-t bg-primary-100 w-full h-full overflow-x-auto overflow-y-auto">
@@ -36,15 +36,15 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import PTabContainer from "~/components/PTabContainer.vue";
-import PTabItem from "~/components/PTabItem.vue";
+import TwTabContainer from "~/components/shared/TwTabContainer.vue";
+import TwTabItem from "~/components/shared/TwTabItem.vue";
 import { Context } from "@nuxt/types";
 
 
 @Component({
 	components: {
-		PTabContainer,
-		PTabItem,
+		TwTabContainer,
+		TwTabItem,
 	},
 })
 export default class PageTaskIndex extends Vue {
@@ -94,10 +94,10 @@ export default class PageTaskIndex extends Vue {
 		return {
 			task: ctx.$api.items.findById(ctx.params.id),
 			views: [
-				{ id: 1, name: 'list', label: 'Liste', icon: 'fas fa-th-list', component: 'p-view-list' },
-				{ id: 2, name: 'kanban', label: 'Kanban', icon: 'fab fa-gitter', component: 'p-view-kanban' },
-				{ id: 3, name: 'calendar', label: 'Calendrier', icon: 'fas fa-calendar-alt', component: 'p-view-calendar' },
-				{ id: 4, name: 'gantt', label: 'Gantt', icon: 'fas fa-stream', component: 'p-view-gantt' },
+				{ id: 1, name: 'list', label: 'Liste', icon: 'fas fa-th-list', component: 'app-view-list' },
+				{ id: 2, name: 'kanban', label: 'Kanban', icon: 'fab fa-gitter', component: 'app-view-kanban' },
+				{ id: 3, name: 'calendar', label: 'Calendrier', icon: 'fas fa-calendar-alt', component: 'app-view-calendar' },
+				{ id: 4, name: 'gantt', label: 'Gantt', icon: 'fas fa-stream', component: 'app-view-gantt' },
 			],
 		}
 	}

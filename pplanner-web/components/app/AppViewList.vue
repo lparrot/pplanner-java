@@ -5,18 +5,23 @@
 			<div class="flex justify-between items-center text-primary">
 				<div class="flex items-center">
 					<tw-dropdown>
-						<i class="fas fa-filter"></i>
+						<template #activator>
+							<i class="fas fa-filter"></i>
+						</template>
 					</tw-dropdown>
-					<input class="ml-2 w-48 bg-transparent focus:outline-none" placeholder="Filtrer par nom de tâche ..."
-								 type="text">
+					<input class="ml-2 w-48 bg-transparent focus:outline-none" placeholder="Filtrer par nom de tâche ..." type="text">
 				</div>
 
 				<div class="flex gap-4 items-center">
 					<tw-dropdown>
-						<span>Regrouper par</span>
+						<template #activator>
+							<span>Regrouper par</span>
+						</template>
 					</tw-dropdown>
 					<tw-dropdown>
-						<span>Sous-tâches</span>
+						<template #activator>
+							<span>Sous-tâches</span>
+						</template>
 					</tw-dropdown>
 					<div class="cursor-pointer px-2 py-1 rounded border border-primary-400 hover:bg-primary-200">
 						<i class="fas fa-share-alt mr-2"></i>
@@ -34,11 +39,11 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'nuxt-property-decorator'
-import {VModel} from "vue-property-decorator";
+import { Component, Vue } from 'nuxt-property-decorator'
+import { VModel } from "vue-property-decorator";
 
 @Component({})
-export default class PViewList extends Vue {
+export default class AppViewList extends Vue {
 	@VModel() item: any
 }
 </script>

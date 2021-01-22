@@ -37,13 +37,14 @@ export default {
 	plugins: [
 		'~/plugins/vee-validate',
 		'~/plugins/api',
+		'~/plugins/click-outside',
 	],
 
 	// Auto import components (https://go.nuxtjs.dev/config-components)
 	components: [
 		'~/components/',
-		{ path: '~/components/views', global: true },
-		{ path: '~/components/ihm', global: true },
+		{ path: '~/components/app', global: true },
+		{ path: '~/components/shared', global: true },
 	],
 
 	// Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)

@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { Component, Ref, Vue } from 'nuxt-property-decorator'
-import TwInputText from '~/components/ihm/tw-input-text.vue'
+import TwInputText from '~/components/shared/TwInputText.vue'
 
 @Component({
 	components: { TwInputText },

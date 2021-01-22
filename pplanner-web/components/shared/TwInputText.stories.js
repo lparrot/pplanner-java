@@ -1,7 +1,7 @@
 import { TwInputText } from '~/.nuxt-storybook/components'
 
 export default {
-	title: 'Tailwind/tw-input-text',
+	title: 'Tailwind/TwInputText',
 	component: TwInputText,
 }
 

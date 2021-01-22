@@ -17,7 +17,7 @@
 import { Component, PropSync, Vue } from "nuxt-property-decorator";
 
 @Component
-export default class extends Vue {
+export default class AppVerticalMenu extends Vue {
 	@PropSync('visible') visibleSync!: any
 
 	get altButtonClasses () {
