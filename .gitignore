@@ -1,6 +1,9 @@
 # Commons
 target
-.idea
+
+!.idea/
+.idea/*
+!.idea/saveactions_settings.xml
 
 # Server
 application-*.properties
