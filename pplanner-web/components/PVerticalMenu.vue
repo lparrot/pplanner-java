@@ -6,10 +6,7 @@
 			</div>
 		</transition>
 		<div class="absolute top-0 right-0">
-			<div
-				:class="altButtonClasses"
-				class="flex justify-center items-center rounded-full bg-white w-6 h-6 text-gray-600 border -mr-3 mt-4 cursor-pointer"
-				@click="handleClickAltButton">
+			<div :class="altButtonClasses" class="flex justify-center items-center rounded-full bg-white w-6 h-6 text-gray-600 border -mr-3 mt-4 cursor-pointer" @click="handleClickAltButton">
 				<i :class="altButtonIconClasses"></i>
 			</div>
 		</div>
@@ -17,21 +14,21 @@
 </template>
 
 <script lang="ts">
-import {Component, PropSync, Vue} from "nuxt-property-decorator";
+import { Component, PropSync, Vue } from "nuxt-property-decorator";
 
 @Component
 export default class extends Vue {
 	@PropSync('visible') visibleSync!: any
 
-	get altButtonClasses() {
+	get altButtonClasses () {
 		return this.visibleSync ? 'bg-white' : 'bg-secondary'
 	}
 
-	get altButtonIconClasses() {
+	get altButtonIconClasses () {
 		return this.visibleSync ? 'fas fa-caret-left mr-0.5' : 'text-white fas fa-caret-right -mr-0.5'
 	}
 
-	handleClickAltButton() {
+	handleClickAltButton () {
 		this.visibleSync = !this.visibleSync
 	}
 }
