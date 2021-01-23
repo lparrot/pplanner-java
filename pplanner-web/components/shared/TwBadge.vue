@@ -12,6 +12,6 @@ import { Component, Prop, Vue } from "nuxt-property-decorator";
 
 @Component({})
 export default class TwBadge extends Vue {
-	@Prop({ type: String, default: 'teal' }) color !: string
+	@Prop({ type: String, default: 'primary' }) color !: string
 }
 </script>

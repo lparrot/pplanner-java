@@ -20,4 +20,8 @@ declare namespace Models {
 		icon?: string
 		component: string
 	}
+
+	interface Task {
+		name: string
+	}
 }

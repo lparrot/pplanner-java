@@ -61,12 +61,14 @@ import AppVerticalMenu from "../components/app/AppVerticalMenu.vue";
 import { Fragment } from 'vue-fragment'
 import AppProjectMenuItem from "~/components/app/AppProjectMenuItem.vue";
 import { Context } from "@nuxt/types";
+import TwModal from "~/components/shared/TwModal.vue";
 
 @Component({
 	components: {
 		AppProjectMenuItem,
 		Fragment,
 		AppVerticalMenu,
+		TwModal
 	},
 })
 export default class PageParentTask extends Vue {

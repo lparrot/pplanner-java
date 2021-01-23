@@ -1,9 +1,9 @@
 <template>
 	<div class="h-full flex flex-col">
-		<template v-if="task != null">
+		<template v-if="menuItem != null">
 			<div class="flex flex-row items-baseline gap-2 font-bold px-4">
 				<i :class="iconItem" class="text-primary-400 text-sm"></i>
-				<div class="text-primary-700 text-lg">{{ task.name }}</div>
+				<div class="text-primary-700 text-lg">{{ menuItem.name }}</div>
 
 				<tw-tab-container>
 					<tw-tab-item v-for="view in views" :key="view.id" :active="$route.query.view === view.name" :name="view.name">
@@ -19,7 +19,7 @@
 			</div>
 
 			<div class="flex flex-col border-t bg-primary-100 w-full h-full overflow-x-auto overflow-y-auto">
-				<component :is="viewComponent" v-model="task"></component>
+				<component :is="viewComponent" v-model="menuItem"></component>
 			</div>
 		</template>
 
@@ -27,10 +27,20 @@
 			<div class="text-primary font-medium">Aucun workspace existant, merci de créer un workspace</div>
 		</template>
 
-		<div class="fixed bottom-10 right-10 p-2 rounded-lg bg-secondary text-white font-bold shadow-2xl cursor-pointer">
+		<div class="fixed bottom-10 right-10 p-2 rounded-lg bg-secondary text-white font-bold shadow-2xl cursor-pointer" @click="handleCreateTask">
 			<i class="fas fa-plus mr-2"></i>
 			<span>Tasks</span>
 		</div>
+
+		<template v-if="task != null">
+			<tw-modal :visible.sync="showModalEditTask" title="Création d'une tâche">
+				<tw-input-text label="Nom de la tâche" required></tw-input-text>
+				<template #actions>
+					<button class="p-btn p-btn--primary">Annuler</button>
+					<button class="p-btn p-btn--success">Créer</button>
+				</template>
+			</tw-modal>
+		</template>
 	</div>
 </template>
 
@@ -39,21 +49,27 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import TwTabContainer from "~/components/shared/TwTabContainer.vue";
 import TwTabItem from "~/components/shared/TwTabItem.vue";
 import { Context } from "@nuxt/types";
+import TwInputText from "~/components/shared/TwInputText.vue";
+import TwModal from "~/components/shared/TwModal.vue";
 
 
 @Component({
 	components: {
+		TwInputText,
 		TwTabContainer,
 		TwTabItem,
+		TwModal,
 	},
 })
 export default class PageTaskIndex extends Vue {
 
-	public task: Models.ProjectMenuItem = null
+	public menuItem: Models.ProjectMenuItem = null
+	public showModalEditTask = false
+	public task: Models.Task = null
 	public views: Models.TaskViewMenu[] = []
 
 	get iconItem () {
-		switch (this.task.type) {
+		switch (this.menuItem.type) {
 			case 'FOLDER':
 				return 'fas fa-folder'
 			case 'LIST':
@@ -92,7 +108,7 @@ export default class PageTaskIndex extends Vue {
 		await ctx.store.dispatch('selectProjectItem', parseInt(ctx.params.id))
 
 		return {
-			task: ctx.$api.items.findById(ctx.params.id),
+			menuItem: ctx.$api.items.findById(ctx.params.id),
 			views: [
 				{ id: 1, name: 'list', label: 'Liste', icon: 'fas fa-th-list', component: 'app-view-list' },
 				{ id: 2, name: 'kanban', label: 'Kanban', icon: 'fab fa-gitter', component: 'app-view-kanban' },
@@ -113,6 +129,11 @@ export default class PageTaskIndex extends Vue {
 		this.$bus.$on('on-select-view-tab', (event) => {
 			this.$router.push({ name: 'tasks-id', params: { id: this.$route.params.id }, query: { view: event.name } })
 		})
+	}
+
+	handleCreateTask () {
+		this.task = {}
+		this.showModalEditTask = true
 	}
 }
 </script>
