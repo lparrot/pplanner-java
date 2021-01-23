@@ -22,6 +22,6 @@ declare namespace Models {
 	}
 
 	interface Task {
-		name: string
+		name?: string
 	}
 }

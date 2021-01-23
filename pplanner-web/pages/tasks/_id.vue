@@ -89,7 +89,7 @@ export default class PageTaskIndex extends Vue {
 	async asyncData (ctx: Context) {
 		if (ctx.params.id == null) {
 			// Si pas de paramètre, on récupère le premier workspace créé. S'il n'y en a pas, alors on retourne vide
-			const firstWorkspace = ctx.$api.tasks.findFirstWorkspaceByProjectId(ctx.store.state.selectedProject)
+			const firstWorkspace = await ctx.$api.tasks.findFirstWorkspaceByProjectId(ctx.store.state.selectedProject)
 			if (firstWorkspace != null) {
 				return ctx.next({
 					name: 'tasks-id-view',
@@ -105,10 +105,10 @@ export default class PageTaskIndex extends Vue {
 			return {}
 		}
 
-		await ctx.store.dispatch('selectProjectItem', parseInt(ctx.params.id))
+		await ctx.store.dispatch('selectMenu', ctx.params.id)
 
 		return {
-			menuItem: ctx.$api.items.findById(ctx.params.id),
+			menuItem: await ctx.$api.items.findById(ctx.params.id),
 			views: [
 				{ id: 1, name: 'list', label: 'Liste', icon: 'fas fa-th-list', component: 'app-view-list' },
 				{ id: 2, name: 'kanban', label: 'Kanban', icon: 'fab fa-gitter', component: 'app-view-kanban' },
@@ -120,7 +120,7 @@ export default class PageTaskIndex extends Vue {
 
 	beforeRouteUpdate (to, from, next) {
 		if (to.query.view == null) {
-			next({ name: 'tasks-id', params: { id: this.$route.params.id }, query: { view: 'list' } })
+			next({ name: 'tasks-id', params: { id: to.params.id }, query: { view: 'list' } })
 		}
 		next()
 	}

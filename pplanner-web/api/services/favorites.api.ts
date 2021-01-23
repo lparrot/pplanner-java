@@ -1,8 +1,11 @@
-import mock from '~/mocks/api.json'
-import {Repository} from '~/api/Repository'
+import { Repository } from '~/api/Repository'
 
 export class FavoritesApi extends Repository {
-	findAllByProjectId(projectId) {
-		return mock.projectItems.filter(item => item.id === 3 || item.id === 6 || item.id === 8)
+	findAllByProjectId (projectId) {
+		return this.axios.$get(`/favorites/users/${ this.store.state.auth.user.id }/projects/${ this.store.state.selectedProject }`)
+	}
+
+	async create (itemId) {
+		return this.axios.$post('/favorites', { userId: this.store.state.auth.user.id, menuId: itemId })
 	}
 }

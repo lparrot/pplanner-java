@@ -1,30 +1,46 @@
 <template>
 	<fragment>
-		<div :class="{'bg-primary text-white': selected}" class="flex justify-between items-center cursor-pointer px-2 py-1 rounded">
+		<div :class="{'bg-primary': selected}" class="flex justify-between items-center cursor-pointer px-2 py-1 rounded">
 			<div class="flex items-center">
-				<i :class="itemIcon" class="mr-2" @click="openOrCloseChildren"></i>
-				<div class="text-base font-medium hover:underline" @click="selectItem(item)">{{ item.name }}</div>
+				<i :class="[itemIcon, {'text-white': selected}]" class="mr-2" @click="openOrCloseChildren"></i>
+				<div :class="{'text-white': selected}" class="text-base font-medium hover:underline" @click="selectItem(item)">{{ item.name }}</div>
 			</div>
 			<div class="flex gap-4">
-				<i :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-ellipsis-h cursor-pointer"></i>
-				<i v-if="openable" :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-plus-circle cursor-pointer"></i>
+				<slot name="icons">
+					<tw-dropdown>
+						<template #activator>
+							<i :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-ellipsis-h cursor-pointer"></i>
+						</template>
+
+						<tw-menu class="p-2">
+							<tw-menu-item icon="fas fa-star" label="Ajouter aux favoris" @click="handleClickAddFavorite"></tw-menu-item>
+						</tw-menu>
+					</tw-dropdown>
+					<i v-if="openable" :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-plus-circle cursor-pointer"></i>
+				</slot>
 			</div>
 		</div>
 		<transition name="scale-up-ver-top">
 			<div v-show="item.opened" class="flex-col ml-8">
-				<slot></slot>
+				<app-project-menu-item v-for="itemChild in item.children" :key="itemChild.id" :item="itemChild"></app-project-menu-item>
 			</div>
 		</transition>
 	</fragment>
 </template>
 
 <script lang="ts">
-import { Action, Component, Getter, Inject, Prop, Provide, Vue } from "nuxt-property-decorator";
+import { Action, Component, Inject, Prop, Provide, State, Vue } from "nuxt-property-decorator";
 import { Fragment } from 'vue-fragment'
+import TwDropdown from "~/components/shared/TwDropdown.vue";
+import TwMenu from "~/components/shared/TwMenu.vue";
+import TwMenuItem from "~/components/shared/TwMenuItem.vue";
 
 @Component({
 	components: {
 		Fragment,
+		TwDropdown,
+		TwMenu,
+		TwMenuItem
 	},
 })
 export default class AppProjectMenuItem extends Vue {
@@ -34,8 +50,8 @@ export default class AppProjectMenuItem extends Vue {
 
 	@Prop() item: Models.ProjectMenuItem
 
-	@Getter('activeListItem') activeListItem
-	@Action('selectProjectItem') selectProjectItem
+	@Action('selectMenu') selectMenu
+	@State('selectedMenu') selectedMenu
 
 	get itemIcon () {
 		switch (this.item.type) {
@@ -51,7 +67,7 @@ export default class AppProjectMenuItem extends Vue {
 	}
 
 	get selected () {
-		const selected = this.activeListItem === this.item.id
+		const selected = this.selectedMenu === this.item.id
 		if (selected && this.parent != null && !this.parent.item.opened) {
 			this.parent.open()
 		}
@@ -84,8 +100,13 @@ export default class AppProjectMenuItem extends Vue {
 	}
 
 	selectItem (item) {
-		this.selectProjectItem(item.id)
-		this.$router.push(`/tasks/${ item.id }`)
+		this.selectMenu(item.id)
+		this.$router.push({ name: 'tasks-id', params: { id: item.id } })
+	}
+
+	async handleClickAddFavorite () {
+		await this.$api.favorites.create(this.item.id)
+		this.$root.$emit('pplanner:update-favorites')
 	}
 }
 </script>

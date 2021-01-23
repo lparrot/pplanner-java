@@ -17,7 +17,7 @@
 								Vous n'avez aucun favoris pour le moment.
 							</template>
 							<template v-else>
-								<div v-for="favorite in favorites" :key="favorite.id" :class="{'text-secondary': activeListItem === favorite.id}" class="flex justify-between items-center cursor-pointer text-primary hover:text-secondary">
+								<div v-for="favorite in favorites" :key="favorite.id" :class="{'text-secondary': selectedMenu === favorite.id}" class="flex justify-between items-center cursor-pointer text-primary hover:text-secondary">
 									<div class="ml-1 mt-2 hover:underline" @click="handleClickFavorite(favorite)">{{ favorite.name }}</div>
 									<i class="fas fa-ellipsis-h"></i>
 								</div>
@@ -34,13 +34,8 @@
 						<i class="fas fa-search text-gray-400 cursor-pointer hover:text-secondary"></i>
 					</div>
 				</div>
-				<app-project-menu-item v-for="workspace in workspaces" :key="workspace.id" :item="workspace">
-					<app-project-menu-item v-for="item in workspace.children" :key="item.id" :item="item">
-						<template v-if="item.children">
-							<app-project-menu-item v-for="itemChild in item.children" :key="itemChild.id" :item="itemChild"></app-project-menu-item>
-						</template>
-					</app-project-menu-item>
-				</app-project-menu-item>
+
+				<app-project-menu-item v-for="workspace in workspaces" :key="workspace.id" :item="workspace"></app-project-menu-item>
 
 				<div class="text-gray-400 hover:text-secondary cursor-pointer mt-4">
 					<i class="fas fa-plus mr-2"></i>
@@ -56,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import { Action, Component, Getter, State, Vue } from "nuxt-property-decorator";
+import { Action, Component, State, Vue } from "nuxt-property-decorator";
 import AppVerticalMenu from "../components/app/AppVerticalMenu.vue";
 import { Fragment } from 'vue-fragment'
 import AppProjectMenuItem from "~/components/app/AppProjectMenuItem.vue";
@@ -74,8 +69,8 @@ import TwModal from "~/components/shared/TwModal.vue";
 export default class PageParentTask extends Vue {
 
 	@State('selectedProject') selectedProject
-	@Getter('activeListItem') activeListItem
-	@Action('selectProjectItem') selectProjectItem
+	@State('selectedMenu') selectedMenu
+	@Action('selectMenu') selectMenu
 
 	public visible: boolean = true
 	public favorites: any[] = []
@@ -88,18 +83,26 @@ export default class PageParentTask extends Vue {
 	}
 
 	handleClickFavorite (favorite) {
-		this.selectProjectItem(favorite.id)
-		this.$router.push(`/tasks/${ favorite.id }`)
+		this.selectMenu(favorite.menuItemId)
+		this.$router.push(`/tasks/${ favorite.menuItemId }`)
 	}
 
 	async asyncData (ctx: Context) {
 		const projectsPaginate = await ctx.$api.projects.findAll()
-		await ctx.store.dispatch('selectProject', projectsPaginate.content[0].id)
+		const firstProjectId = projectsPaginate.content[0].id
+		await ctx.store.dispatch('selectProject', firstProjectId)
+		await ctx.store.dispatch('selectMenu', localStorage.getItem('menu.' + firstProjectId))
 
 		return {
 			workspaces: await ctx.$api.projects.findAllWorkspaceByProjectId(ctx.store.state.selectedProject),
-			favorites: ctx.$api.favorites.findAllByProjectId(ctx.store.state.selectedProject),
+			favorites: await ctx.$api.favorites.findAllByProjectId(ctx.store.state.selectedProject),
 		}
+	}
+
+	created () {
+		this.$root.$on('pplanner:update-favorites', async () => {
+			this.favorites = await this.$api.favorites.findAllByProjectId(this.selectedProject)
+		})
 	}
 }
 </script>

@@ -1,12 +1,23 @@
-import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import Vue from 'vue'
+import { ActionTree, GetterTree, MutationTree, Store } from 'vuex'
+import localforage from 'localforage'
+
+const persistPlugin = async (store: Store<RootState>) => {
+	localforage.config({
+		driver: localforage.INDEXEDDB,
+		name: 'pplanner',
+		version: 1.0,
+		storeName: 'pplanner'
+	})
+}
+
+export const plugins = [ persistPlugin ]
 
 /**
  * State
  */
 export const state = () => ({
 	selectedProject: null,
-	selectedProjectItem: {},
+	selectedMenu: null,
 	tasks: [],
 })
 
@@ -15,9 +26,7 @@ export type RootState = ReturnType<typeof state>
 /**
  * Getters
  */
-export const getters: GetterTree<RootState, RootState> = {
-	activeListItem: state => state.selectedProjectItem[state.selectedProject],
-}
+export const getters: GetterTree<RootState, RootState> = {}
 
 
 /**
@@ -27,8 +36,8 @@ export const mutations: MutationTree<RootState> = {
 	SET_PROJECT (state, idProject) {
 		state.selectedProject = idProject
 	},
-	SET_PROJECT_ITEM (state, idWorkspace) {
-		Vue.set(state.selectedProjectItem, state.selectedProject, idWorkspace)
+	SET_MENU (state, idMenu) {
+		state.selectedMenu = idMenu
 	},
 }
 
@@ -45,7 +54,8 @@ export const actions: ActionTree<RootState, RootState> = {
 		commit('SET_PROJECT', id)
 	},
 
-	selectProjectItem ({ state, commit }, id) {
-		commit('SET_PROJECT_ITEM', id)
+	async selectMenu ({ state, commit }, id) {
+		commit('SET_MENU', id)
+		await localStorage.setItem(`menu.${ state.selectedProject }`, id)
 	},
 }
