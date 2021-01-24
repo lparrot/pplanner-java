@@ -26,7 +26,9 @@ export type RootState = ReturnType<typeof state>
 /**
  * Getters
  */
-export const getters: GetterTree<RootState, RootState> = {}
+export const getters: GetterTree<RootState, RootState> = {
+	activeMenu: state => state.selectedMenu || localStorage.getItem('menu.' + state.selectedProject)
+}
 
 
 /**
@@ -45,7 +47,7 @@ export const mutations: MutationTree<RootState> = {
  * Actions
  */
 export const actions: ActionTree<RootState, RootState> = {
-	async logout (ctx) {
+	async logout () {
 		await this.$auth.logout()
 		await this.$router.push('/login')
 	},

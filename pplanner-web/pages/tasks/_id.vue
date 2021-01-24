@@ -19,7 +19,9 @@
 			</div>
 
 			<div class="flex flex-col border-t bg-primary-100 w-full h-full overflow-x-auto overflow-y-auto">
-				<component :is="viewComponent" v-model="menuItem"></component>
+				<div v-if="viewComponent != null">
+					<component :is="viewComponent" v-model="menuItem"></component>
+				</div>
 			</div>
 		</template>
 
@@ -77,6 +79,7 @@ import TwInputText from "~/components/shared/TwInputText.vue";
 import TwModal from "~/components/shared/TwModal.vue";
 import TwDropdown from "~/components/shared/TwDropdown.vue";
 import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
+import { Context } from "@nuxt/types";
 
 
 @Component({
@@ -120,20 +123,23 @@ export default class PageTaskIndex extends Vue {
 		}
 	}
 
-	async fetch () {
-		if (this.$route.params.id == null) {
+	async asyncData (ctx: Context) {
+		if (ctx.store.getters.activeMenu == null) {
 			// Si pas de paramètre, on récupère le premier workspace créé. S'il n'y en a pas, alors on retourne vide
-			const firstWorkspace = await this.$api.items.findFirstWorkspaceByProjectId(this.$store.state.selectedProject)
+			const firstWorkspace = await ctx.$api.items.findFirstWorkspaceByProjectId(ctx.store.state.selectedProject)
 
 			if (firstWorkspace != null) {
-				return this.$router.push(`/tasks/${ firstWorkspace.id }`, { query: { view: 'list' } })
+				await ctx.store.dispatch('selectMenu', firstWorkspace.id)
+				return ctx.redirect(`/tasks/${ firstWorkspace.id }`, { query: { view: 'list' } })
 			}
 		}
 
-		await this.$store.dispatch('selectMenu', this.$route.params.id)
+		if (ctx.store.state.selectedMenu == null) {
+			await ctx.store.dispatch('selectMenu', ctx.store.getters.activeMenu)
+		}
 
-		if (this.$store.state.selectedMenu != null) {
-			this.menuItem = await this.$api.items.findById(this.$store.state.selectedMenu)
+		if (ctx.store.state.selectedMenu != null) {
+			return { menuItem: await ctx.$api.items.findById(ctx.store.state.selectedMenu) }
 		}
 	}
 

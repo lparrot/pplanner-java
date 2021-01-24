@@ -93,11 +93,15 @@ export default class PageParentTask extends Vue {
 	}
 
 	async fetch () {
-		if (localStorage.getItem('menu.' + this.selectedProject) != null) {
-			await this.selectMenu(localStorage.getItem('menu.' + this.selectedProject))
+		if (this.$store.getters.activeMenu != null) {
+			await this.selectMenu(this.$store.getters.activeMenu)
 		}
 
 		this.favorites = await this.$api.favorites.findAllByProjectId(this.selectedProject)
+
+		if (this.$route.params.id == null || this.$route.query.view == null) {
+			await this.$router.push(`/tasks/${ this.selectedMenu }?view=list`)
+		}
 	}
 
 	created () {
