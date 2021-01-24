@@ -51,7 +51,7 @@
 									</tw-input-text>
 								</template>
 								<template #default="{hide}">
-									<app-project-menu-item-container v-model="task.item" :editable="false" :selectable-types="['LIST']" class="p-4" @input="hide"></app-project-menu-item-container>
+									<app-project-menu-item-container v-model="task.item" :editable="false" :selectable-types="['LIST']" all-opened class="p-4 max-h-72 overflow-y-auto overflow-x-hidden" @input="hide"></app-project-menu-item-container>
 								</template>
 							</tw-dropdown>
 						</validation-provider>

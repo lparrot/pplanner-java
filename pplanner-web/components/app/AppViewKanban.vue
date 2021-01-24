@@ -1,5 +1,5 @@
 <template>
-	<div class="flex justify-center">
+	<div class="flex justify-center flex-wrap overflow-x-auto">
 		<div class="min-h-screen flex overflow-x-scroll py-12">
 			<div v-for="column in columns" :key="column.title" class="bg-gray-100 rounded-lg px-3 py-3 column-width rounded mr-4">
 				<p class="text-gray-700 font-semibold font-sans tracking-wide text-sm">{{ column.title }}</p>

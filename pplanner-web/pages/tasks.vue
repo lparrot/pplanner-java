@@ -42,7 +42,7 @@
 					</div>
 				</div>
 
-				<app-project-menu-item-container @input="handleSelectMenuItem"></app-project-menu-item-container>
+				<app-project-menu-item-container editable @input="handleSelectMenuItem"></app-project-menu-item-container>
 
 				<div class="text-gray-400 hover:text-secondary cursor-pointer mt-4">
 					<i class="fas fa-plus mr-2"></i>

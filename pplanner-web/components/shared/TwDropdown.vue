@@ -4,11 +4,13 @@
 			<slot name="activator"></slot>
 			<i v-if="showIcon" :class="{[iconOpen]: visible, [iconClose]: !visible}"></i>
 		</div>
-		<transition name="scale-in-ver-top">
-			<div v-show="visible" :class="[width]" class="origin-top-right absolute left-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
-				<slot :hide="hide" :show="show" :toggle="toggle"></slot>
-			</div>
-		</transition>
+		<div class="fixed z-50 w-full sm:w-72">
+			<transition name="scale-in-ver-top">
+				<div v-show="visible" :class="[width]" class="origin-top-right absolute left-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+					<slot :hide="hide" :show="show" :toggle="toggle"></slot>
+				</div>
+			</transition>
+		</div>
 	</div>
 </template>
 

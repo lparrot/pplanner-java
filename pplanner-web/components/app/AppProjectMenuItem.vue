@@ -92,6 +92,10 @@ export default class AppProjectMenuItem extends Vue {
 		if (this.item.opened == null) {
 			Vue.set(this.item, 'opened', false)
 		}
+
+		if (this.container.allOpened) {
+			Vue.set(this.item, 'opened', true)
+		}
 	}
 
 	open () {
@@ -110,10 +114,14 @@ export default class AppProjectMenuItem extends Vue {
 	}
 
 	selectItem (item) {
-		if (this.container != null) {
-			this.container.setModel(item)
+		if (this.selected) {
+			this.openOrCloseChildren()
 		} else {
-			this.$bus.$emit('pplanner:select-menuitem')
+			if (this.container != null) {
+				this.container.setModel(item)
+			} else {
+				this.$bus.$emit('pplanner:select-menuitem')
+			}
 		}
 	}
 

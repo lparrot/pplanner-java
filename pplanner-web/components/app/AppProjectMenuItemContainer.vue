@@ -17,8 +17,9 @@ import { VModel } from "vue-property-decorator";
 export default class AppProjectMenuItemContainer extends Vue {
 	@Provide('container') container = this
 
-	@Prop({ type: Boolean }) public editable !: boolean
-	@Prop({ type: Array, default: () => [ 'WORKSPACE', 'FOLDER', 'LIST' ] }) public selectableTypes !: string[]
+	@Prop({ type: Boolean }) readonly editable !: boolean
+	@Prop({ type: Boolean }) readonly allOpened !: boolean
+	@Prop({ type: Array, default: () => [ 'WORKSPACE', 'FOLDER', 'LIST' ] }) readonly selectableTypes !: string[]
 
 	@VModel() model: Models.ProjectMenuItem
 
