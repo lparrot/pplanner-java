@@ -6,28 +6,28 @@
 					<li class="mx-2"><img alt="logo" class="w-8 h-8" src="/logo.png"></li>
 					<router-link class="mx-2 font-medium text-lg cursor-pointer px-2 py-1 rounded-full duration-300 hover:bg-primary" tag="li" to="/">PPlanner</router-link>
 				</ul>
-				<ul class="flex items-center font-medium">
+				<div class="flex items-center font-medium">
 					<template v-if="$auth.loggedIn">
-						<router-link class="mx-2 px-2 py-2 rounded-full cursor-pointer duration-300 hover:bg-primary" tag="li" to="/tasks">
+						<router-link class="mx-2 px-2 py-2 rounded-full cursor-pointer duration-300 hover:bg-primary" to="/tasks">
 							<i class="fas fa-registered mr-1"></i>
 							<span>Tableau de bord</span>
 						</router-link>
-						<li class="mx-2 px-2 py-2 rounded-full cursor-pointer duration-300 hover:bg-primary" @click="logout">
+						<a class="mx-2 px-2 py-2 rounded-full cursor-pointer duration-300 hover:bg-primary" @click="logout">
 							<i class="fas fa-sign-in-alt mr-1"></i>
 							<span>Se déconnecter</span>
-						</li>
+						</a>
 					</template>
 					<template v-else>
-						<router-link class="mx-2 px-2 py-2 rounded-full cursor-pointer duration-300 hover:bg-primary" tag="li" to="/register">
+						<router-link class="mx-2 px-2 py-2 rounded-full cursor-pointer duration-300 hover:bg-primary" to="/register">
 							<i class="fas fa-registered mr-1"></i>
 							<span>S'enregistrer</span>
 						</router-link>
-						<router-link class="mx-2 px-2 py-2 rounded-full cursor-pointer duration-300 hover:bg-primary" tag="li" to="/login">
+						<router-link class="mx-2 px-2 py-2 rounded-full cursor-pointer duration-300 hover:bg-primary" to="/login">
 							<i class="fas fa-sign-in-alt mr-1"></i>
 							<span>Se connecter</span>
 						</router-link>
 					</template>
-				</ul>
+				</div>
 			</div>
 		</div>
 		<div class="flex flex-col h-full px-4">

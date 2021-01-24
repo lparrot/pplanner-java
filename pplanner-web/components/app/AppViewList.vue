@@ -4,6 +4,9 @@
 			<!-- Entête -->
 			<div class="flex justify-between items-center text-primary">
 				<div class="flex items-center">
+					<div class="mr-2">
+						<span>{{ tasks.length }} tâche(s) actives</span>
+					</div>
 					<tw-dropdown>
 						<template #activator>
 							<i class="fas fa-filter"></i>
@@ -39,12 +42,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component } from 'nuxt-property-decorator'
 import { VModel } from "vue-property-decorator";
+import { TasksMixin } from "~/mixins/tasks.mixin";
 
 @Component({})
-export default class AppViewList extends Vue {
+export default class AppViewList extends TasksMixin {
 	@VModel() item: any
+
+	async fetch () {
+		await this.fetchTasks()
+	}
 }
 </script>
 

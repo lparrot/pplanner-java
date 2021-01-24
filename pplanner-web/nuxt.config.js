@@ -1,3 +1,8 @@
+const keycloakRemoteHost = 'http://keycloak.nas-parrot.synology.me'
+const keycloakRealm = 'master'
+const keycloakClientId = 'pplanner'
+const keycloakRemoteApi = 'http://localhost:3000'
+
 export default {
 	// Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
 	ssr: false,

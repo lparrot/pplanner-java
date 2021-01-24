@@ -14,11 +14,19 @@ public class SrvProjectMenuItem {
 	@Autowired
 	private DaoProjectMenuItem daoProjectMenuItem;
 
-	public ProjectMenuItem findById(final String id) {
-		return this.daoProjectMenuItem.findById(id).orElseThrow(() -> new EntityNotFoundException("Le menu n'existe pas"));
+	public ProjectMenuItem findById(final String projectId) {
+		return this.daoProjectMenuItem.findById(projectId).orElseThrow(() -> new EntityNotFoundException("Le menu n'existe pas"));
 	}
 
-	public List<ProjectMenuItem> findAllWorkspaceByProjectId(final String id) {
-		return this.daoProjectMenuItem.findAllWorkspaceByProjectId(id);
+	public List<ProjectMenuItem> findAllWorkspaceByProjectId(final String projectId) {
+		return this.daoProjectMenuItem.findAllWorkspaceByProjectId(projectId);
+	}
+
+	public ProjectMenuItem findFirstWorkspaceByProjectId(final String projectId) {
+		final List<ProjectMenuItem> allWorkspaceByProjectId = this.findAllWorkspaceByProjectId(projectId);
+		if (allWorkspaceByProjectId.size() > 0) {
+			return allWorkspaceByProjectId.get(0);
+		}
+		return null;
 	}
 }

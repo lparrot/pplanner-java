@@ -9,5 +9,9 @@ export class MenuItemsApi extends Repository {
 	findById (id: string) {
 		return this.axios.$get(`/items/${ id }`)
 	}
+
+	findFirstWorkspaceByProjectId (projectId: string) {
+		return this.axios.$get(`/items/projects/${ projectId }/first`)
+	}
 }
 

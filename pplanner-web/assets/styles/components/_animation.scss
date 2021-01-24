@@ -1,3 +1,22 @@
+// FADE
+
+.fade-enter-active {
+	animation: fade .5s;
+}
+
+.fade-leave-active {
+	animation: fade .5s reverse;
+}
+
+@keyframes fade {
+	0% {
+		@apply opacity-0
+	}
+	100% {
+		@apply opacity-100
+	}
+}
+
 // FLIP
 
 .flip-in-hor-top-enter-active {

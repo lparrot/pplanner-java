@@ -21,7 +21,9 @@ declare namespace Models {
 		component: string
 	}
 
-	interface Task {
+	interface TaskEdit {
 		name?: string
+		description?: string
+		item?: ProjectMenuItem
 	}
 }

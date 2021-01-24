@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface DaoUser extends JpaRepository<User, String>, JpaSpecificationExecutor<User> {
 
-	Optional<User> findByEmailAndDateSuppressionIsNull(String username);
+	Optional<User> findByEmailAndDeletedAtIsNull(String username);
 }

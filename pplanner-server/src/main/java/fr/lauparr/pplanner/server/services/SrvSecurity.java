@@ -22,7 +22,7 @@ public class SrvSecurity {
 	private SrvToken srvToken;
 
 	public JwtToken login(final String username, final String password) {
-		final User user = this.daoUser.findByEmailAndDateSuppressionIsNull(username).orElse(null);
+		final User user = this.daoUser.findByEmailAndDeletedAtIsNull(username).orElse(null);
 
 		// Si aucun utilisateur n'a été trouvé à partir du login
 		if (user == null) {
@@ -43,6 +43,6 @@ public class SrvSecurity {
 	}
 
 	public User getUserData(final String name) {
-		return this.daoUser.findByEmailAndDateSuppressionIsNull(name).orElseThrow(() -> new EntityNotFoundException("L'utilisateur n'existe pas "));
+		return this.daoUser.findByEmailAndDeletedAtIsNull(name).orElseThrow(() -> new EntityNotFoundException("L'utilisateur n'existe pas "));
 	}
 }

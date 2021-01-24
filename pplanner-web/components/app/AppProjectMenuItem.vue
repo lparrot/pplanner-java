@@ -1,13 +1,13 @@
 <template>
 	<fragment>
-		<div :class="{'bg-primary': selected}" class="flex justify-between items-center cursor-pointer px-2 py-1 rounded">
+		<div :class="{'bg-secondary': selected}" class="flex justify-between items-center cursor-pointer px-2 py-1 rounded">
 			<div class="flex items-center">
 				<i :class="[itemIcon, {'text-white': selected}]" class="mr-2" @click="openOrCloseChildren"></i>
 				<div :class="{'text-white': selected}" class="text-base font-medium hover:underline" @click="selectItem(item)">{{ item.name }}</div>
 			</div>
 			<div class="flex gap-4">
 				<slot name="icons">
-					<tw-dropdown>
+					<tw-dropdown width="w-56">
 						<template #activator>
 							<i :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-ellipsis-h cursor-pointer"></i>
 						</template>
@@ -34,6 +34,7 @@ import { Fragment } from 'vue-fragment'
 import TwDropdown from "~/components/shared/TwDropdown.vue";
 import TwMenu from "~/components/shared/TwMenu.vue";
 import TwMenuItem from "~/components/shared/TwMenuItem.vue";
+import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
 
 @Component({
 	components: {
@@ -46,6 +47,7 @@ import TwMenuItem from "~/components/shared/TwMenuItem.vue";
 export default class AppProjectMenuItem extends Vue {
 	// Injection du parent dans chaque enfant
 	@Provide("parent") parentInstance = this
+	@Inject({ default: null, from: "container" }) container!: AppProjectMenuItemContainer
 	@Inject({ default: null, from: "parent" }) parent!: AppProjectMenuItem
 
 	@Prop() item: Models.ProjectMenuItem
@@ -100,13 +102,16 @@ export default class AppProjectMenuItem extends Vue {
 	}
 
 	selectItem (item) {
-		this.selectMenu(item.id)
-		this.$router.push({ name: 'tasks-id', params: { id: item.id } })
+		if (this.container != null) {
+			this.container.setModel(item)
+		} else {
+			this.$bus.$emit('pplanner:select-menuitem')
+		}
 	}
 
 	async handleClickAddFavorite () {
 		await this.$api.favorites.create(this.item.id)
-		this.$root.$emit('pplanner:update-favorites')
+		this.$bus.$emit('pplanner:update-favorites')
 	}
 }
 </script>

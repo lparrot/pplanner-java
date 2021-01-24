@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		urlRegistry
 			.antMatchers(HttpMethod.POST, "/api/auth/login**").permitAll()
 			.antMatchers(HttpMethod.GET, "/api/auth/user**").permitAll()
+			.antMatchers(HttpMethod.GET, "/api/auth/keycloak**").permitAll()
 			.anyRequest().not().hasAuthority("ROLE_ANONYMOUS");
 	}
 

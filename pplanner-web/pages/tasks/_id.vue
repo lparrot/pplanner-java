@@ -27,45 +27,75 @@
 			<div class="text-primary font-medium">Aucun workspace existant, merci de créer un workspace</div>
 		</template>
 
-		<div class="fixed bottom-10 right-10 p-2 rounded-lg bg-secondary text-white font-bold shadow-2xl cursor-pointer" @click="handleCreateTask">
+		<div class="fixed bottom-10 right-10 p-2 rounded-lg bg-secondary text-white font-bold shadow-2xl cursor-pointer" @click="handleShowModalCreateTask">
 			<i class="fas fa-plus mr-2"></i>
 			<span>Tasks</span>
 		</div>
 
 		<template v-if="task != null">
-			<tw-modal :visible.sync="showModalEditTask" title="Création d'une tâche">
-				<tw-input-text label="Nom de la tâche" required></tw-input-text>
-				<template #actions>
-					<button class="p-btn p-btn--primary">Annuler</button>
-					<button class="p-btn p-btn--success">Créer</button>
-				</template>
-			</tw-modal>
+			<validation-observer ref="validator" tag="form" @submit.prevent="handleSubmitCreateTask">
+				<tw-modal :visible.sync="showModalEditTask" title="Création d'une tâche">
+					<div class="grid grid-cols-2 gap-2">
+						<validation-provider #default="{invalid, errors}" name="nom de la tâche" rules="required" slim>
+							<tw-input-text :error="invalid" :error-message="errors[0]" label="Créer la tâche" required>
+								<input id="input_name" v-model="task.name" class="form-control" type="text">
+							</tw-input-text>
+						</validation-provider>
+						<validation-provider #default="{invalid, errors}" name="emplacement de la tâche" rules="required" slim>
+							<tw-dropdown class="w-full" label="Dans le menu">
+								<template #activator>
+									<tw-input-text :error="invalid" :error-message="errors[0]" label="Dans le menu" required>
+										<input id="input_menu" :value="taskEditName" class="form-control" readonly type="text">
+									</tw-input-text>
+								</template>
+								<template #default="{hide}">
+									<app-project-menu-item-container v-model="task.item" class="p-10" @input="hide"></app-project-menu-item-container>
+								</template>
+							</tw-dropdown>
+						</validation-provider>
+						<validation-provider #default="{invalid, errors}" name="description de la tâche" rules="required" slim>
+							<tw-input-text :error="invalid" :error-message="errors[0]" class="col-span-2" label="Description de la tâche" required>
+								<textarea id="input_description" v-model="task.description" class="form-control"></textarea>
+							</tw-input-text>
+						</validation-provider>
+					</div>
+					<template #actions>
+						<button class="p-btn p-btn--primary" @click="showModalEditTask = false">Annuler</button>
+						<button class="p-btn p-btn--success" type="submit">Créer</button>
+					</template>
+				</tw-modal>
+			</validation-observer>
 		</template>
 	</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Ref, Vue } from 'nuxt-property-decorator'
 import TwTabContainer from "~/components/shared/TwTabContainer.vue";
 import TwTabItem from "~/components/shared/TwTabItem.vue";
-import { Context } from "@nuxt/types";
 import TwInputText from "~/components/shared/TwInputText.vue";
 import TwModal from "~/components/shared/TwModal.vue";
+import TwDropdown from "~/components/shared/TwDropdown.vue";
+import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
 
 
 @Component({
 	components: {
+		AppProjectMenuItemContainer,
+		TwDropdown,
 		TwInputText,
+		TwModal,
 		TwTabContainer,
 		TwTabItem,
-		TwModal,
 	},
 })
 export default class PageTaskIndex extends Vue {
 
+	@Ref('validator') validator: any
+
 	public menuItem: Models.ProjectMenuItem = null
 	public showModalEditTask = false
-	public task: Models.Task = null
+	public task: Models.TaskEdit = null
 	public views: Models.TaskViewMenu[] = []
 
 	get iconItem () {
@@ -79,6 +109,10 @@ export default class PageTaskIndex extends Vue {
 		}
 	}
 
+	get taskEditName () {
+		return this.task?.item?.name
+	}
+
 	get viewComponent () {
 		const viewComponent = this.views.find(view => view.name === this.$route.query.view)
 		if (viewComponent != null) {
@@ -86,54 +120,47 @@ export default class PageTaskIndex extends Vue {
 		}
 	}
 
-	async asyncData (ctx: Context) {
-		if (ctx.params.id == null) {
+	async fetch () {
+		if (this.$route.params.id == null) {
 			// Si pas de paramètre, on récupère le premier workspace créé. S'il n'y en a pas, alors on retourne vide
-			const firstWorkspace = await ctx.$api.tasks.findFirstWorkspaceByProjectId(ctx.store.state.selectedProject)
+			const firstWorkspace = await this.$api.items.findFirstWorkspaceByProjectId(this.$store.state.selectedProject)
+
 			if (firstWorkspace != null) {
-				return ctx.next({
-					name: 'tasks-id-view',
-					params: {
-						id: firstWorkspace.id,
-					},
-					query: {
-						view: 'list',
-					},
-				})
+				return this.$router.push(`/tasks/${ firstWorkspace.id }`, { query: { view: 'list' } })
 			}
-
-			return {}
 		}
 
-		await ctx.store.dispatch('selectMenu', ctx.params.id)
+		await this.$store.dispatch('selectMenu', this.$route.params.id)
 
-		return {
-			menuItem: await ctx.$api.items.findById(ctx.params.id),
-			views: [
-				{ id: 1, name: 'list', label: 'Liste', icon: 'fas fa-th-list', component: 'app-view-list' },
-				{ id: 2, name: 'kanban', label: 'Kanban', icon: 'fab fa-gitter', component: 'app-view-kanban' },
-				{ id: 3, name: 'calendar', label: 'Calendrier', icon: 'fas fa-calendar-alt', component: 'app-view-calendar' },
-				{ id: 4, name: 'gantt', label: 'Gantt', icon: 'fas fa-stream', component: 'app-view-gantt' },
-			],
+		if (this.$store.state.selectedMenu != null) {
+			this.menuItem = await this.$api.items.findById(this.$store.state.selectedMenu)
 		}
 	}
 
-	beforeRouteUpdate (to, from, next) {
-		if (to.query.view == null) {
-			next({ name: 'tasks-id', params: { id: to.params.id }, query: { view: 'list' } })
-		}
-		next()
-	}
-
-	created () {
+	async created () {
 		this.$bus.$on('on-select-view-tab', (event) => {
 			this.$router.push({ name: 'tasks-id', params: { id: this.$route.params.id }, query: { view: event.name } })
 		})
+
+		this.views = [
+			{ id: 1, name: 'list', label: 'Liste', icon: 'fas fa-th-list', component: 'app-view-list' },
+			{ id: 2, name: 'kanban', label: 'Kanban', icon: 'fab fa-gitter', component: 'app-view-kanban' },
+			{ id: 3, name: 'calendar', label: 'Calendrier', icon: 'fas fa-calendar-alt', component: 'app-view-calendar' },
+			{ id: 4, name: 'gantt', label: 'Gantt', icon: 'fas fa-stream', component: 'app-view-gantt' },
+		]
 	}
 
-	handleCreateTask () {
+	handleShowModalCreateTask () {
 		this.task = {}
 		this.showModalEditTask = true
+	}
+
+	async handleSubmitCreateTask () {
+		const valid = await this.validator.validate()
+		if (valid) {
+			await this.$api.tasks.createTask(this.task)
+			this.showModalEditTask = false
+		}
 	}
 }
 </script>

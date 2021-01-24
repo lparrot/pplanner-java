@@ -15,7 +15,7 @@ public class SrvAppUserDetails implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(final String username) {
-		return this.daoUser.findByEmailAndDateSuppressionIsNull(username).orElseThrow(() -> new UsernameNotFoundException("Mauvais login ou mot de passe"));
+		return this.daoUser.findByEmailAndDeletedAtIsNull(username).orElseThrow(() -> new UsernameNotFoundException("Mauvais login ou mot de passe"));
 	}
 
 }

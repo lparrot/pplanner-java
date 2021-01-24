@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface DaoProjectMenuItem extends JpaRepository<ProjectMenuItem, String>, JpaSpecificationExecutor<ProjectMenuItem> {
 
-	@Query("select m from ProjectMenuItem  m where m.project.id = :id and m.type = 'WORKSPACE' and m.dateSuppression is null")
-	List<ProjectMenuItem> findAllWorkspaceByProjectId(@Param("id") String id);
+	@Query("select i from ProjectMenuItem i where i.project.id = :projectId and i.type = 'WORKSPACE' and i.deletedAt is null")
+	List<ProjectMenuItem> findAllWorkspaceByProjectId(@Param("projectId") String projectId);
 }

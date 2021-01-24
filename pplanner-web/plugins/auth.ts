@@ -1,4 +1,4 @@
-import {Context} from '@nuxt/types'
+import { Context } from '@nuxt/types'
 
 export default async (ctx: Context, inject) => {
 	// TODO : A supprimer à terme

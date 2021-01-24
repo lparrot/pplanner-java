@@ -35,7 +35,7 @@
 					</div>
 				</div>
 
-				<app-project-menu-item v-for="workspace in workspaces" :key="workspace.id" :item="workspace"></app-project-menu-item>
+				<app-project-menu-item-container @input="handleSelectMenuItem"></app-project-menu-item-container>
 
 				<div class="text-gray-400 hover:text-secondary cursor-pointer mt-4">
 					<i class="fas fa-plus mr-2"></i>
@@ -45,7 +45,7 @@
 		</app-vertical-menu>
 
 		<div class="p-container h-full">
-			<nuxt-child></nuxt-child>
+			<nuxt-child :key="$route.fullPath"></nuxt-child>
 		</div>
 	</fragment>
 </template>
@@ -55,11 +55,12 @@ import { Action, Component, State, Vue } from "nuxt-property-decorator";
 import AppVerticalMenu from "../components/app/AppVerticalMenu.vue";
 import { Fragment } from 'vue-fragment'
 import AppProjectMenuItem from "~/components/app/AppProjectMenuItem.vue";
-import { Context } from "@nuxt/types";
 import TwModal from "~/components/shared/TwModal.vue";
+import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
 
 @Component({
 	components: {
+		AppProjectMenuItemContainer,
 		AppProjectMenuItem,
 		Fragment,
 		AppVerticalMenu,
@@ -74,7 +75,6 @@ export default class PageParentTask extends Vue {
 
 	public visible: boolean = true
 	public favorites: any[] = []
-	public workspaces: Models.ProjectMenuItem[] = []
 
 	public show = {
 		favoriteActions: false,
@@ -87,20 +87,21 @@ export default class PageParentTask extends Vue {
 		this.$router.push(`/tasks/${ favorite.menuItemId }`)
 	}
 
-	async asyncData (ctx: Context) {
-		const projectsPaginate = await ctx.$api.projects.findAll()
-		const firstProjectId = projectsPaginate.content[0].id
-		await ctx.store.dispatch('selectProject', firstProjectId)
-		await ctx.store.dispatch('selectMenu', localStorage.getItem('menu.' + firstProjectId))
+	async handleSelectMenuItem (item) {
+		await this.selectMenu(item.id)
+		await this.$router.push({ name: 'tasks-id', params: { id: item.id }, query: { view: 'list' } })
+	}
 
-		return {
-			workspaces: await ctx.$api.projects.findAllWorkspaceByProjectId(ctx.store.state.selectedProject),
-			favorites: await ctx.$api.favorites.findAllByProjectId(ctx.store.state.selectedProject),
+	async fetch () {
+		if (localStorage.getItem('menu.' + this.selectedProject) != null) {
+			await this.selectMenu(localStorage.getItem('menu.' + this.selectedProject))
 		}
+
+		this.favorites = await this.$api.favorites.findAllByProjectId(this.selectedProject)
 	}
 
 	created () {
-		this.$root.$on('pplanner:update-favorites', async () => {
+		this.$bus.$on('pplanner:update-favorites', async () => {
 			this.favorites = await this.$api.favorites.findAllByProjectId(this.selectedProject)
 		})
 	}
