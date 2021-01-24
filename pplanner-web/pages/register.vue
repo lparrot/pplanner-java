@@ -6,10 +6,14 @@
 				<tw-input-text v-model="form.email" :error="invalid" :error-message="errors[0]" class="my-2" label="Adresse e-mail" required></tw-input-text>
 			</validation-provider>
 			<validation-provider #default="{invalid, errors}" name="mot de passe" rules="required" slim>
-				<tw-input-text v-model="form.password" :error="invalid" :error-message="errors[0]" class="my-2" label="Mot de passe" required type="password"></tw-input-text>
+				<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Mot de passe" label-for="input_password" required>
+					<input id="input_password" v-model="form.password" class="form-control" type="password">
+				</tw-input-text>
 			</validation-provider>
 			<validation-provider #default="{invalid, errors}" name="confirmation mot de passe" rules="required" slim>
-				<tw-input-text v-model="form.password" :error="invalid" :error-message="errors[0]" class="my-2" label="Confirmation du mot de passe" required type="password"></tw-input-text>
+				<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Confirmation du mot de passe" label-for="input_confirm_password" required>
+					<input id="input_confirm_password" v-model="form.confirm_password" class="form-control" type="password">
+				</tw-input-text>
 			</validation-provider>
 			<div class="flex justify-end">
 				<button class="p-btn p-btn--secondary" type="submit">Se connecter</button>

@@ -37,7 +37,6 @@
 						<configuration>
 							<nodeVersion>${node.version}</nodeVersion>
 							<yarnVersion>${yarn.version}</yarnVersion>
-							<installDirectory>target</installDirectory>
 						</configuration>
 					</execution>
 					<execution>

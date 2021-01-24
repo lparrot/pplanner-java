@@ -3,10 +3,14 @@
 		<validation-observer ref="validator" class="md:w-1/2 md:mx-0 w-full border border-primary p-6 mx-4 rounded-xl" tag="form" @submit.prevent="handleSubmitLoginForm">
 			<div class="text-3xl">Connexion</div>
 			<validation-provider #default="{invalid, errors}" name="adresse e-mail" rules="required|email" slim>
-				<tw-input-text v-model="form.username" :error="invalid" :error-message="errors[0]" class="my-2" label="Adresse e-mail" required></tw-input-text>
+				<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Adresse e-mail" label-for="input_email" required>
+					<input id="input_email" v-model="form.username" class="form-control" type="email">
+				</tw-input-text>
 			</validation-provider>
 			<validation-provider #default="{invalid, errors}" name="mot de passe" rules="required" slim>
-				<tw-input-text v-model="form.password" :error="invalid" :error-message="errors[0]" class="my-2" label="Mot de passe" required type="password"></tw-input-text>
+				<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Mot de passe" label-for="input_password" required>
+					<input id="input_password" v-model="form.password" class="form-control" type="password">
+				</tw-input-text>
 			</validation-provider>
 			<div class="flex justify-end">
 				<button class="p-btn p-btn--secondary" type="submit">Se connecter</button>
@@ -16,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref, Vue } from 'nuxt-property-decorator'
+import { Component, Getter, Ref, Vue } from 'nuxt-property-decorator'
 import TwInputText from '~/components/shared/TwInputText.vue'
 
 @Component({
@@ -27,6 +31,8 @@ import TwInputText from '~/components/shared/TwInputText.vue'
 export default class PageLogin extends Vue {
 	@Ref('validator') readonly validator: any
 
+	@Getter('activeProject') activeProject
+
 	public form = { username: 'kestounet@gmail.com', password: '123' }
 
 	async handleSubmitLoginForm () {
@@ -34,6 +40,13 @@ export default class PageLogin extends Vue {
 		if (valid) {
 			try {
 				await this.$auth.loginWith('local', { data: this.form })
+
+				// TODO : A supprimer à terme
+				if (this.activeProject == null) {
+					const res = await this.$api.projects.findAll()
+					await this.$store.dispatch('selectProject', res.content[0].id)
+				}
+
 				await this.$router.push({ name: 'tasks' })
 			} catch (err) {
 				console.log(err);

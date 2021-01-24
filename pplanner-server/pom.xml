@@ -99,7 +99,7 @@
 				<directory>src/main/resources</directory>
 			</resource>
 			<resource>
-				<directory>../web/target/dist</directory>
+				<directory>../pplanner-web/target/dist</directory>
 				<targetPath>static</targetPath>
 			</resource>
 		</resources>

@@ -21,4 +21,7 @@ export const WithRequiredLabel = Default.bind({})
 WithRequiredLabel.args = { label: `Label requis`, required: true }
 
 export const Password = Default.bind({})
-Password.template = `<tw-input-text v-bind="$props" type="password">Label</tw-input-text>\`,`
+Password.template = `
+<tw-input-text label-for="input_password" v-bind="$props">
+	<input id="input_password" type="password">
+</tw-input-text>\`,`

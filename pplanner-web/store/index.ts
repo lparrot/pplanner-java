@@ -27,7 +27,8 @@ export type RootState = ReturnType<typeof state>
  * Getters
  */
 export const getters: GetterTree<RootState, RootState> = {
-	activeMenu: state => state.selectedMenu || localStorage.getItem('menu.' + state.selectedProject)
+	activeProject: state => state.selectedProject || localStorage.getItem('pplanner.project'),
+	activeMenu: state => state.selectedMenu || localStorage.getItem('pplanner.menu-' + state.selectedProject)
 }
 
 
@@ -47,17 +48,29 @@ export const mutations: MutationTree<RootState> = {
  * Actions
  */
 export const actions: ActionTree<RootState, RootState> = {
+	async initialize ({ commit }) {
+		const projectId = localStorage.getItem('pplanner.project')
+		if (projectId != null) {
+			commit('SET_PROJECT', projectId)
+			const menuId = localStorage.getItem(`pplanner.menu-${ projectId }`)
+			if (menuId != null) {
+				commit('SET_MENU', menuId)
+			}
+		}
+	},
+
 	async logout () {
 		await this.$auth.logout()
 		await this.$router.push('/login')
 	},
 
-	selectProject ({ commit }, id) {
-		commit('SET_PROJECT', id)
+	async selectMenu ({ getters, commit }, id) {
+		commit('SET_MENU', id)
+		localStorage.setItem(`pplanner.menu-${ getters.activeProject }`, id)
 	},
 
-	async selectMenu ({ state, commit }, id) {
-		commit('SET_MENU', id)
-		await localStorage.setItem(`menu.${ state.selectedProject }`, id)
+	async selectProject ({ commit }, id) {
+		commit('SET_PROJECT', id)
+		localStorage.setItem(`pplanner.project`, id)
 	},
 }

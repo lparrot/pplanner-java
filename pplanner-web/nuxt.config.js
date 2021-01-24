@@ -10,6 +10,10 @@ export default {
 	// Target (https://go.nuxtjs.dev/config-target)
 	target: 'static',
 
+	generate: {
+		dir: 'target/dist',
+	},
+
 	static: {
 		// Aucun préfixe ne sera rajouté au niveau du baseUrl pour les images par exemple
 		prefix: false,

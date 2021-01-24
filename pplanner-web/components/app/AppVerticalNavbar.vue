@@ -14,7 +14,7 @@
 				<div class="flex flex-col gap-6 items-center text-xl">
 					<slot name="bottom-icons"></slot>
 					<hr class="w-full text-gray-700">
-					<div class="flex justify-center items-center rounded-full w-10 h-10 bg-blue-900 text-white text-lg font-bold cursor-pointer" @click="$router.push('profile')">
+					<div class="flex justify-center items-center rounded-full w-10 h-10 bg-blue-900 text-white text-lg font-bold cursor-pointer" @click="$router.push('/profile')">
 						LP
 					</div>
 				</div>

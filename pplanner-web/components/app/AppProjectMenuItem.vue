@@ -1,11 +1,11 @@
 <template>
 	<fragment>
-		<div :class="{'bg-secondary': selected}" class="flex justify-between items-center cursor-pointer px-2 py-1 rounded">
+		<div :class="{'bg-secondary': selected, 'cursor-pointer': selectable}" class="flex justify-between items-center px-2 py-1 rounded">
 			<div class="flex items-center">
 				<i :class="[itemIcon, {'text-white': selected}]" class="mr-2" @click="openOrCloseChildren"></i>
-				<div :class="{'text-white': selected}" class="text-base font-medium hover:underline" @click="selectItem(item)">{{ item.name }}</div>
+				<div :class="{'text-white': selected}" class="text-base font-medium hover:underline" @click="selectable && selectItem(item)">{{ item.name }}</div>
 			</div>
-			<div class="flex gap-4">
+			<div v-if="editable" class="flex gap-4">
 				<slot name="icons">
 					<tw-dropdown width="w-56">
 						<template #activator>
@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { Action, Component, Inject, Prop, Provide, State, Vue } from "nuxt-property-decorator";
+import { Action, Component, Getter, Inject, Prop, Provide, Vue } from "nuxt-property-decorator";
 import { Fragment } from 'vue-fragment'
 import TwDropdown from "~/components/shared/TwDropdown.vue";
 import TwMenu from "~/components/shared/TwMenu.vue";
@@ -53,7 +53,7 @@ export default class AppProjectMenuItem extends Vue {
 	@Prop() item: Models.ProjectMenuItem
 
 	@Action('selectMenu') selectMenu
-	@State('selectedMenu') selectedMenu
+	@Getter('activeMenu') activeMenu
 
 	get itemIcon () {
 		switch (this.item.type) {
@@ -69,15 +69,23 @@ export default class AppProjectMenuItem extends Vue {
 	}
 
 	get selected () {
-		const selected = this.selectedMenu === this.item.id
+		const selected = this.activeMenu === this.item.id
 		if (selected && this.parent != null && !this.parent.item.opened) {
 			this.parent.open()
 		}
 		return selected
 	}
 
+	get selectable () {
+		return this.container?.selectableTypes.indexOf(this.item.type) > -1
+	}
+
 	get openable () {
 		return this.item.type !== 'LIST'
+	}
+
+	get editable () {
+		return this.container?.editable ?? false
 	}
 
 	created () {

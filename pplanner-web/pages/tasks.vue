@@ -17,7 +17,7 @@
 								Vous n'avez aucun favoris pour le moment.
 							</template>
 							<template v-else>
-								<div v-for="favorite in favorites" :key="favorite.id" :class="{'text-secondary': selectedMenu === favorite.id}" class="flex justify-between items-center cursor-pointer text-primary hover:text-secondary">
+								<div v-for="favorite in favorites" :key="favorite.id" :class="{'text-secondary': activeMenu === favorite.id}" class="flex justify-between items-center cursor-pointer text-primary hover:text-secondary">
 									<div class="ml-1 mt-2 hover:underline" @click="handleClickFavorite(favorite)">{{ favorite.name }}</div>
 									<tw-dropdown>
 										<template #activator>
@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { Action, Component, State, Vue } from "nuxt-property-decorator";
+import { Action, Component, Getter, Vue } from "nuxt-property-decorator";
 import AppVerticalMenu from "../components/app/AppVerticalMenu.vue";
 import { Fragment } from 'vue-fragment'
 import AppProjectMenuItem from "~/components/app/AppProjectMenuItem.vue";
@@ -78,8 +78,8 @@ import TwDropdown from "~/components/shared/TwDropdown.vue";
 })
 export default class PageParentTask extends Vue {
 
-	@State('selectedProject') selectedProject
-	@State('selectedMenu') selectedMenu
+	@Getter('activeProject') activeProject
+	@Getter('activeMenu') activeMenu
 	@Action('selectMenu') selectMenu
 
 	public visible: boolean = true
@@ -111,16 +111,16 @@ export default class PageParentTask extends Vue {
 			await this.selectMenu(this.$store.getters.activeMenu)
 		}
 
-		this.favorites = await this.$api.favorites.findAllByProjectId(this.selectedProject)
+		this.favorites = await this.$api.favorites.findAllByProjectId(this.activeProject)
 
-		if (this.$store.state.selectedProject != null && (this.$route.params.id == null || this.$route.query.view == null)) {
-			await this.$router.push(`/tasks/${ this.selectedMenu }?view=list`)
+		if (this.activeProject != null && (this.$route.params.id == null || this.$route.query.view == null)) {
+			await this.$router.push(`/tasks/${ this.activeMenu }?view=list`)
 		}
 	}
 
 	created () {
 		this.$bus.$on('pplanner:update-favorites', async () => {
-			this.favorites = await this.$api.favorites.findAllByProjectId(this.selectedProject)
+			this.favorites = await this.$api.favorites.findAllByProjectId(this.activeProject)
 		})
 	}
 }

@@ -39,24 +39,24 @@
 				<tw-modal :visible.sync="showModalEditTask" title="Création d'une tâche">
 					<div class="grid grid-cols-2 gap-2">
 						<validation-provider #default="{invalid, errors}" name="nom de la tâche" rules="required" slim>
-							<tw-input-text :error="invalid" :error-message="errors[0]" label="Créer la tâche" required>
+							<tw-input-text :error="invalid" :error-message="errors[0]" label="Créer la tâche" label-for="input_name" required>
 								<input id="input_name" v-model="task.name" class="form-control" type="text">
 							</tw-input-text>
 						</validation-provider>
 						<validation-provider #default="{invalid, errors}" name="emplacement de la tâche" rules="required" slim>
 							<tw-dropdown class="w-full" label="Dans le menu">
 								<template #activator>
-									<tw-input-text :error="invalid" :error-message="errors[0]" label="Dans le menu" required>
+									<tw-input-text :error="invalid" :error-message="errors[0]" label="Dans le menu" label-for="input_menu" required>
 										<input id="input_menu" :value="taskEditName" class="form-control" readonly type="text">
 									</tw-input-text>
 								</template>
 								<template #default="{hide}">
-									<app-project-menu-item-container v-model="task.item" class="p-10" @input="hide"></app-project-menu-item-container>
+									<app-project-menu-item-container v-model="task.item" :editable="false" :selectable-types="['LIST']" class="p-4" @input="hide"></app-project-menu-item-container>
 								</template>
 							</tw-dropdown>
 						</validation-provider>
 						<validation-provider #default="{invalid, errors}" name="description de la tâche" rules="required" slim>
-							<tw-input-text :error="invalid" :error-message="errors[0]" class="col-span-2" label="Description de la tâche" required>
+							<tw-input-text :error="invalid" :error-message="errors[0]" class="col-span-2" label="Description de la tâche" label-for="input_description" required>
 								<textarea id="input_description" v-model="task.description" class="form-control"></textarea>
 							</tw-input-text>
 						</validation-provider>
@@ -72,14 +72,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref, Vue } from 'nuxt-property-decorator'
+import { Action, Component, Getter, Ref, Vue } from 'nuxt-property-decorator'
 import TwTabContainer from "~/components/shared/TwTabContainer.vue";
 import TwTabItem from "~/components/shared/TwTabItem.vue";
 import TwInputText from "~/components/shared/TwInputText.vue";
 import TwModal from "~/components/shared/TwModal.vue";
 import TwDropdown from "~/components/shared/TwDropdown.vue";
 import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
-import { Context } from "@nuxt/types";
 
 
 @Component({
@@ -95,6 +94,10 @@ import { Context } from "@nuxt/types";
 export default class PageTaskIndex extends Vue {
 
 	@Ref('validator') validator: any
+
+	@Action('selectMenu') selectMenu
+	@Getter('activeProject') activeProject
+	@Getter('activeMenu') activeMenu
 
 	public menuItem: Models.ProjectMenuItem = null
 	public showModalEditTask = false
@@ -123,30 +126,31 @@ export default class PageTaskIndex extends Vue {
 		}
 	}
 
-	async asyncData (ctx: Context) {
-		if (ctx.store.state.selectedProject == null) {
+	async fetch () {
+		if (this.activeProject == null) {
 			return;
 		}
 
-		if (ctx.store.getters.activeMenu == null) {
+		if (this.activeMenu == null) {
 			// Si pas de paramètre, on récupère le premier workspace créé. S'il n'y en a pas, alors on retourne vide
-			const firstWorkspace = await ctx.$api.items.findFirstWorkspaceByProjectId(ctx.store.state.selectedProject)
+			const firstWorkspace = await this.$api.items.findFirstWorkspaceByProjectId(this.activeProject)
 
 			if (firstWorkspace != null) {
-				await ctx.store.dispatch('selectMenu', firstWorkspace.id)
-				return ctx.redirect(`/tasks/${ firstWorkspace.id }`, { query: { view: 'list' } })
+				await this.selectMenu(firstWorkspace.id)
+				return this.$router.push(`/tasks/${ firstWorkspace.id }?view=list`)
 			}
 		}
 
-		if (ctx.store.state.selectedMenu == null) {
-			await ctx.store.dispatch('selectMenu', ctx.store.getters.activeMenu)
+		if (this.activeMenu == null) {
+			await this.selectMenu(this.activeMenu)
 		}
 
-		return { menuItem: await ctx.$api.items.findById(ctx.store.state.selectedMenu) }
+		this.menuItem = await this.$api.items.findById(this.activeMenu)
 	}
 
 	async created () {
 		this.$bus.$on('on-select-view-tab', (event) => {
+			console.log('redirect 2');
 			this.$router.push({ name: 'tasks-id', params: { id: this.$route.params.id }, query: { view: event.name } })
 		})
 
