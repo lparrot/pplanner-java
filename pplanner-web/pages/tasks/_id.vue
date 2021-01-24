@@ -26,7 +26,7 @@
 		</template>
 
 		<template v-else>
-			<div class="text-primary font-medium">Aucun workspace existant, merci de créer un workspace</div>
+			<div class="text-primary font-medium px-4">Aucun workspace existant, merci de créer un workspace</div>
 		</template>
 
 		<div class="fixed bottom-10 right-10 p-2 rounded-lg bg-secondary text-white font-bold shadow-2xl cursor-pointer" @click="handleShowModalCreateTask">
@@ -124,6 +124,10 @@ export default class PageTaskIndex extends Vue {
 	}
 
 	async asyncData (ctx: Context) {
+		if (ctx.store.state.selectedProject == null) {
+			return;
+		}
+
 		if (ctx.store.getters.activeMenu == null) {
 			// Si pas de paramètre, on récupère le premier workspace créé. S'il n'y en a pas, alors on retourne vide
 			const firstWorkspace = await ctx.$api.items.findFirstWorkspaceByProjectId(ctx.store.state.selectedProject)
@@ -138,9 +142,7 @@ export default class PageTaskIndex extends Vue {
 			await ctx.store.dispatch('selectMenu', ctx.store.getters.activeMenu)
 		}
 
-		if (ctx.store.state.selectedMenu != null) {
-			return { menuItem: await ctx.$api.items.findById(ctx.store.state.selectedMenu) }
-		}
+		return { menuItem: await ctx.$api.items.findById(ctx.store.state.selectedMenu) }
 	}
 
 	async created () {

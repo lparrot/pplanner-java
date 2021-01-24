@@ -53,7 +53,7 @@ public class BaseEntity implements Serializable {
 		this.setId(UUID.randomUUID().toString());
 	}
 
-	public void remove() {
+	public void delete() {
 		this.deletedAt = LocalDateTime.now();
 	}
 

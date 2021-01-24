@@ -19,7 +19,14 @@
 							<template v-else>
 								<div v-for="favorite in favorites" :key="favorite.id" :class="{'text-secondary': selectedMenu === favorite.id}" class="flex justify-between items-center cursor-pointer text-primary hover:text-secondary">
 									<div class="ml-1 mt-2 hover:underline" @click="handleClickFavorite(favorite)">{{ favorite.name }}</div>
-									<i class="fas fa-ellipsis-h"></i>
+									<tw-dropdown>
+										<template #activator>
+											<i class="fas fa-ellipsis-h"></i>
+										</template>
+										<tw-menu class="p-2">
+											<tw-menu-item icon="fas fa-trash" label="Supprimer" @click="handleClickDeleteFavorite(favorite)"></tw-menu-item>
+										</tw-menu>
+									</tw-dropdown>
 								</div>
 							</template>
 						</div>
@@ -57,13 +64,15 @@ import { Fragment } from 'vue-fragment'
 import AppProjectMenuItem from "~/components/app/AppProjectMenuItem.vue";
 import TwModal from "~/components/shared/TwModal.vue";
 import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
+import TwDropdown from "~/components/shared/TwDropdown.vue";
 
 @Component({
 	components: {
 		AppProjectMenuItemContainer,
 		AppProjectMenuItem,
-		Fragment,
 		AppVerticalMenu,
+		Fragment,
+		TwDropdown,
 		TwModal
 	},
 })
@@ -87,6 +96,11 @@ export default class PageParentTask extends Vue {
 		this.$router.push(`/tasks/${ favorite.menuItemId }`)
 	}
 
+	async handleClickDeleteFavorite (favorite) {
+		await this.$api.favorites.delete(favorite.id)
+		this.$bus.$emit('pplanner:update-favorites')
+	}
+
 	async handleSelectMenuItem (item) {
 		await this.selectMenu(item.id)
 		await this.$router.push({ name: 'tasks-id', params: { id: item.id }, query: { view: 'list' } })
@@ -99,7 +113,7 @@ export default class PageParentTask extends Vue {
 
 		this.favorites = await this.$api.favorites.findAllByProjectId(this.selectedProject)
 
-		if (this.$route.params.id == null || this.$route.query.view == null) {
+		if (this.$store.state.selectedProject != null && (this.$route.params.id == null || this.$route.query.view == null)) {
 			await this.$router.push(`/tasks/${ this.selectedMenu }?view=list`)
 		}
 	}

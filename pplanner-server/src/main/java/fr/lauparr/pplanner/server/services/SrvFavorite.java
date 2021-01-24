@@ -38,4 +38,11 @@ public class SrvFavorite {
 		final Favorite favorite = Favorite.builder().user(user).menuItem(projectMenuItem).build();
 		this.daoFavorite.save(favorite);
 	}
+
+	public void deleteFavorite(final String favoriteId) {
+		final Favorite favorite = this.daoFavorite.findById(favoriteId).orElseThrow(() -> new EntityNotFoundException("Le favoris n'existe pas"));
+
+		favorite.delete();
+		this.daoFavorite.save(favorite);
+	}
 }

@@ -30,6 +30,11 @@ public class CtrlFavorite {
 		this.srvFavorite.createFavorite(favorite);
 	}
 
+	@DeleteMapping("/{favoriteId}")
+	public void deleteFavorite(@PathVariable final String favoriteId) {
+		this.srvFavorite.deleteFavorite(favoriteId);
+	}
+
 	@Data
 	public static class ParamsCreateFavorite {
 		private String userId;

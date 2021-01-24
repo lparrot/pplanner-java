@@ -8,4 +8,8 @@ export class FavoritesApi extends Repository {
 	async create (itemId) {
 		return this.axios.$post('/favorites', { userId: this.store.state.auth.user.id, menuId: itemId })
 	}
+
+	async delete (favoriteId) {
+		return this.axios.$delete(`/favorites/${ favoriteId }`)
+	}
 }
