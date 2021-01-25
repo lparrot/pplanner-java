@@ -4,9 +4,9 @@
 			<slot name="activator"></slot>
 			<i v-if="showIcon" :class="{[iconOpen]: visible, [iconClose]: !visible}"></i>
 		</div>
-		<div class="fixed z-50 w-full sm:w-72">
+		<div :class="{'fixed sm:w-72': fixed}" class="z-50">
 			<transition name="scale-in-ver-top">
-				<div v-show="visible" :class="[width]" class="origin-top-right absolute left-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+				<div v-show="visible" :class="[width]" class="fixed mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10 sm:absolute left-0 sm:origin-top-right">
 					<slot :hide="hide" :show="show" :toggle="toggle"></slot>
 				</div>
 			</transition>
@@ -20,6 +20,7 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator'
 
 @Component({})
 export default class TwDropdown extends Vue {
+	@Prop({ type: Boolean, default: false }) readonly fixed !: boolean
 	@Prop({ type: String, default: 'fas fa-caret-up' }) readonly iconOpen!: string
 	@Prop({ type: String, default: 'fas fa-caret-down' }) readonly iconClose!: string
 	@Prop({ type: Boolean, default: false }) readonly showIcon!: boolean

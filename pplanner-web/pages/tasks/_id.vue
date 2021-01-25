@@ -37,30 +37,9 @@
 		<template v-if="task != null">
 			<validation-observer ref="validator" tag="form" @submit.prevent="handleSubmitCreateTask">
 				<tw-modal :visible.sync="showModalEditTask" title="Création d'une tâche">
-					<div class="grid grid-cols-2 gap-2">
-						<validation-provider #default="{invalid, errors}" name="nom de la tâche" rules="required" slim>
-							<tw-input-text :error="invalid" :error-message="errors[0]" label="Créer la tâche" label-for="input_name" required>
-								<input id="input_name" v-model="task.name" class="form-control" type="text">
-							</tw-input-text>
-						</validation-provider>
-						<validation-provider #default="{invalid, errors}" name="emplacement de la tâche" rules="required" slim>
-							<tw-dropdown class="w-full" label="Dans le menu">
-								<template #activator>
-									<tw-input-text :error="invalid" :error-message="errors[0]" label="Dans le menu" label-for="input_menu" required>
-										<input id="input_menu" :value="taskEditName" class="form-control" readonly type="text">
-									</tw-input-text>
-								</template>
-								<template #default="{hide}">
-									<app-project-menu-item-container v-model="task.item" :editable="false" :selectable-types="['LIST']" all-opened class="p-4 max-h-72 overflow-y-auto overflow-x-hidden" @input="hide"></app-project-menu-item-container>
-								</template>
-							</tw-dropdown>
-						</validation-provider>
-						<validation-provider #default="{invalid, errors}" name="description de la tâche" rules="required" slim>
-							<tw-input-text :error="invalid" :error-message="errors[0]" class="col-span-2" label="Description de la tâche" label-for="input_description" required>
-								<textarea id="input_description" v-model="task.description" class="form-control"></textarea>
-							</tw-input-text>
-						</validation-provider>
-					</div>
+
+					<app-task-create v-model="task"></app-task-create>
+
 					<template #actions>
 						<button class="p-btn p-btn--primary" @click="showModalEditTask = false">Annuler</button>
 						<button class="p-btn p-btn--success" type="submit">Créer</button>
@@ -79,10 +58,12 @@ import TwInputText from "~/components/shared/TwInputText.vue";
 import TwModal from "~/components/shared/TwModal.vue";
 import TwDropdown from "~/components/shared/TwDropdown.vue";
 import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
+import AppTaskCreate from "~/components/app/AppTaskCreate.vue";
 
 
 @Component({
 	components: {
+		AppTaskCreate,
 		AppProjectMenuItemContainer,
 		TwDropdown,
 		TwInputText,
@@ -113,10 +94,6 @@ export default class PageTaskIndex extends Vue {
 			case 'WORKSPACE':
 				return 'fas fa-globe'
 		}
-	}
-
-	get taskEditName () {
-		return this.task?.item?.name
 	}
 
 	get viewComponent () {
@@ -162,8 +139,10 @@ export default class PageTaskIndex extends Vue {
 		]
 	}
 
-	handleShowModalCreateTask () {
-		this.task = {}
+	async handleShowModalCreateTask () {
+		this.task = {
+			item: await this.$api.items.findById(this.activeMenu)
+		}
 		this.showModalEditTask = true
 	}
 
@@ -172,6 +151,7 @@ export default class PageTaskIndex extends Vue {
 		if (valid) {
 			await this.$api.tasks.createTask(this.task)
 			this.showModalEditTask = false
+			this.$root.$emit('pplanner:update-task-list')
 		}
 	}
 }

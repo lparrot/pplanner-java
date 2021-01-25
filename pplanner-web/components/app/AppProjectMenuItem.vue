@@ -7,7 +7,7 @@
 			</div>
 			<div v-if="editable" class="flex gap-4">
 				<slot name="icons">
-					<tw-dropdown width="w-56">
+					<tw-dropdown fixed width="w-56">
 						<template #activator>
 							<i :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-ellipsis-h cursor-pointer"></i>
 						</template>
@@ -114,7 +114,7 @@ export default class AppProjectMenuItem extends Vue {
 	}
 
 	selectItem (item) {
-		if (this.selected) {
+		if (this.selected && this.$children != null && this.$children.length > 0) {
 			this.openOrCloseChildren()
 		} else {
 			if (this.container != null) {
