@@ -6,7 +6,7 @@
 					<input id="input_name" v-model="task.name" class="form-control" placeholder="Nom de la tache ..." type="text">
 				</tw-input-text>
 			</validation-provider>
-			<validation-provider #default="{invalid, errors, validate}" name="emplacement de la tâche" rules="required" slim>
+			<validation-provider ref="task_item_validator" #default="{invalid, errors, validate}" name="emplacement de la tâche" rules="required" slim>
 				<tw-dropdown class="w-full" label="Dans le menu">
 					<template #activator>
 						<tw-input-text :error="invalid" :error-message="errors[0]" label="Dans le menu" label-for="input_menu" required>
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Ref, Vue, Watch } from 'nuxt-property-decorator'
 import { VModel } from "vue-property-decorator";
 import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
 import TwInputText from "~/components/shared/TwInputText.vue";
@@ -38,6 +38,8 @@ import TwDropdown from "~/components/shared/TwDropdown.vue";
 	components: { AppProjectMenuItemContainer, TwDropdown, TwInputText }
 })
 export default class AppTaskCreate extends Vue {
+	@Ref('task_item_validator') taskItemValidator
+
 	@VModel() task: any
 
 	get taskEditName () {
@@ -48,6 +50,13 @@ export default class AppTaskCreate extends Vue {
 		await validate(event);
 		hide()
 	}
+
+	@Watch("task", { immediate: true, deep: true })
+	onTaskChanged (val: any, oldVal: any) {
+		await this.taskItemValidator.validate(val)
+
+	}
+
 }
 </script>
 

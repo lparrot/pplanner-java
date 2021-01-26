@@ -1,7 +1,7 @@
 <template>
 	<div class="h-full flex flex-col">
 		<template v-if="menuItem != null">
-			<div class="flex flex-row items-baseline gap-2 font-bold px-4">
+			<div class="flex flex-row items-baseline gap-2 font-bold px-4 overflow-y-hidden overflow-x-auto">
 				<i :class="iconItem" class="text-primary-400 text-sm"></i>
 				<div class="text-primary-700 text-lg">{{ menuItem.name }}</div>
 
@@ -127,7 +127,6 @@ export default class PageTaskIndex extends Vue {
 
 	async created () {
 		this.$bus.$on('on-select-view-tab', (event) => {
-			console.log('redirect 2');
 			this.$router.push({ name: 'tasks-id', params: { id: this.$route.params.id }, query: { view: event.name } })
 		})
 
@@ -140,9 +139,8 @@ export default class PageTaskIndex extends Vue {
 	}
 
 	async handleShowModalCreateTask () {
-		this.task = {
-			item: await this.$api.items.findById(this.activeMenu)
-		}
+		this.task = {}
+		this.$set(this.task, 'item', await this.$api.items.findById(this.activeMenu))
 		this.showModalEditTask = true
 	}
 

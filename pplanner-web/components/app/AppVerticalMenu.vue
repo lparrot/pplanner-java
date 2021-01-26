@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col flex-grow-0 flex-shrink-0 border-r relative h-full">
 		<transition name="scale-in-hor-left">
-			<div v-show="visibleSync" class="transition-all duration-300 w-80 flex-grow overflow-y-auto overflow-x-hidden">
+			<div v-show="visibleSync" class="transition-all duration-300 w-80 flex-grow overflow-auto">
 				<slot></slot>
 			</div>
 		</transition>
