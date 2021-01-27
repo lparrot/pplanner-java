@@ -19,8 +19,8 @@ import java.util.Collection;
 
 @Data
 @Entity
-@Table(name = "users")
 @NoArgsConstructor
+@Table(name = "users")
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity implements UserDetails {
 

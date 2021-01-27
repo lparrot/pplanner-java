@@ -1,5 +1,5 @@
 package fr.lauparr.pplanner.server.enums;
 
-public enum StatusType {
+public enum TaskStatusType {
 	ACTIVE, DONE, CLOSED
 }

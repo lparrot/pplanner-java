@@ -16,8 +16,8 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "projects")
 @NoArgsConstructor
+@Table(name = "projects")
 @EqualsAndHashCode(callSuper = true)
 public class Project extends BaseEntity {
 

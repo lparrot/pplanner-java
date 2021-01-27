@@ -8,8 +8,8 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "groups")
 @NoArgsConstructor
+@Table(name = "groups")
 @EqualsAndHashCode(callSuper = true)
 public class Group extends BaseEntity {
 

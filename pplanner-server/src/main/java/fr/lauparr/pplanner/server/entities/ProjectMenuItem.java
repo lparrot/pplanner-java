@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import fr.lauparr.pplanner.server.entities.abstracts.BaseEntity;
 import fr.lauparr.pplanner.server.enums.ProjectMenuItemType;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,8 +12,9 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "project_menu_items")
 @NoArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@Table(name = "projects_menu_items")
 @EqualsAndHashCode(callSuper = true)
 public class ProjectMenuItem extends BaseEntity {
 
@@ -37,6 +35,10 @@ public class ProjectMenuItem extends BaseEntity {
 	@JsonBackReference("menu_item_children")
 	private List<ProjectMenuItem> children = new ArrayList<>();
 
+	@OneToMany(mappedBy = "item", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true)
+	@JsonBackReference("menu_item_status")
+	private List<TaskStatus> status = new ArrayList<>();
+
 	@Builder
 	public ProjectMenuItem(final String name, final ProjectMenuItemType type, final Project project) {
 		this.name = name;
@@ -53,6 +55,12 @@ public class ProjectMenuItem extends BaseEntity {
 	public ProjectMenuItem addParent(final ProjectMenuItem item) {
 		item.getChildren().add(this);
 		this.parent = item;
+		return this;
+	}
+
+	public ProjectMenuItem addTaskStatus(final TaskStatus status) {
+		this.getStatus().add(status);
+		status.setItem(this);
 		return this;
 	}
 

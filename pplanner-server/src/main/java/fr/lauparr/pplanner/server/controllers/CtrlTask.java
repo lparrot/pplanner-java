@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -19,8 +20,8 @@ public class CtrlTask {
 	private SrvTask srvTask;
 
 	@GetMapping("/items/{itemId}")
-	public List<ProjTask> findAllTasksByMenuItemId(@PathVariable final String itemId) {
-		return this.srvJpaUtils.convertListDto(this.srvTask.findAllTasksByMenuItemId(itemId), ProjTask.class);
+	public Map<String, List<ProjTask>> findAllTasksByMenuItemId(@PathVariable final String itemId) {
+		return this.srvTask.findAllTasksByMenuItemIdGroupedByStatus(itemId);
 	}
 
 	@PostMapping("/items/{itemId}")

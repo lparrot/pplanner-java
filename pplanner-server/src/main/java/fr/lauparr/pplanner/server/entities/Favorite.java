@@ -13,8 +13,8 @@ import javax.persistence.Table;
 
 @Data
 @Entity
-@Table(name = "favorites")
 @NoArgsConstructor
+@Table(name = "favorites")
 @EqualsAndHashCode(callSuper = true)
 public class Favorite extends BaseEntity {
 

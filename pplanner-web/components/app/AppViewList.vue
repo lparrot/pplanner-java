@@ -5,7 +5,7 @@
 			<div class="flex justify-between items-center text-primary">
 				<div class="flex items-center">
 					<div class="mr-2">
-						<span>{{ tasks.length }} tâche(s) actives</span>
+						<span>{{ taskCount }} tâche(s) actives</span>
 					</div>
 					<tw-dropdown>
 						<template #activator>
@@ -36,7 +36,7 @@
 		</div>
 		<div class="flex flex-col overflow-auto">
 			<!-- Contenu -->
-
+			<app-view-list-item :status="taskStatus" :tasks="tasks"></app-view-list-item>
 		</div>
 	</div>
 </template>
@@ -45,13 +45,31 @@
 import { Component } from 'nuxt-property-decorator'
 import { VModel } from "vue-property-decorator";
 import { TasksMixin } from "~/mixins/tasks.mixin";
+import AppViewListItem from "~/components/app/AppViewList/AppViewListItem.vue";
 
-@Component({})
+@Component({
+	components: {
+		AppViewListItem
+	}
+})
 export default class AppViewList extends TasksMixin {
 	@VModel() item: any
 
+	public taskStatus: any [] = []
+
+	get taskCount () {
+		if (this.tasks == null) {
+			return 0
+		}
+
+		let count = 0
+		Object.keys(this.tasks).forEach(key => count += this.tasks[key].length)
+		return count
+	}
+
 	async fetch () {
 		await this.fetchTasks()
+		this.taskStatus = await this.$axios.$get(`/task_status/items/${ this.item.id }`)
 	}
 }
 </script>

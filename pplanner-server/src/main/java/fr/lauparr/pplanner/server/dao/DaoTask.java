@@ -12,4 +12,5 @@ public interface DaoTask extends JpaRepository<Task, String>, JpaSpecificationEx
 
 	@Query("select t from Task t where t.item.id = :itemId and t.deletedAt is null")
 	List<Task> findAllTasksByMenuItemId(@Param("itemId") String itemId);
+
 }

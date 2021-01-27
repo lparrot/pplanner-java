@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import fr.lauparr.pplanner.server.entities.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Data
 @MappedSuperclass
 @EqualsAndHashCode
+@ToString(of = "id")
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity implements Serializable {
 

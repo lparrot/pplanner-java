@@ -8,4 +8,6 @@ public interface ProjTask {
 
 	String getDescription();
 
+	ProjTaskStatus getStatus();
+
 }
