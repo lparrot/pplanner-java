@@ -34,8 +34,8 @@
 			<span>Tasks</span>
 		</div>
 
-		<template v-if="task != null">
-			<validation-observer ref="validator" tag="form" @submit.prevent="handleSubmitCreateTask">
+		<validation-observer ref="validator" tag="form" @submit.prevent="handleSubmitCreateTask">
+			<template v-if="task != null">
 				<tw-modal :visible.sync="showModalEditTask" title="Création d'une tâche">
 
 					<app-task-create v-model="task"></app-task-create>
@@ -45,8 +45,8 @@
 						<button class="p-btn p-btn--success" type="submit">Créer</button>
 					</template>
 				</tw-modal>
-			</validation-observer>
-		</template>
+			</template>
+		</validation-observer>
 	</div>
 </template>
 
@@ -142,6 +142,7 @@ export default class PageTaskIndex extends Vue {
 		this.task = {}
 		this.$set(this.task, 'item', await this.$api.items.findById(this.activeMenu))
 		this.showModalEditTask = true
+		this.validator.reset()
 	}
 
 	async handleSubmitCreateTask () {

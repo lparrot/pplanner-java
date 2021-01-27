@@ -54,8 +54,10 @@ export default class AppTaskCreate extends Vue {
 
 	@Watch("task", {immediate: true, deep: true})
 	async onTaskChanged(val: any, oldVal: any) {
-		await this.taskItemValidator.validate(val)
-		await this.taskItemDropdown.hide()
+		this.$nextTick(async () => {
+			await this.taskItemValidator.validate(val)
+			await this.taskItemDropdown.hide()
+		})
 	}
 
 }
