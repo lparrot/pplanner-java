@@ -103,7 +103,7 @@
 				<div class="p-4">
 					<div class="text-center mb-4 opacity-90">
 						<a class="block relative" href="#">
-							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=3"/>
+							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=3" />
 						</a>
 					</div>
 					<div class="text-center">
@@ -118,7 +118,7 @@
 				<div class="p-4">
 					<div class="text-center mb-4 opacity-90">
 						<a class="block relative" href="#">
-							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=6"/>
+							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=6" />
 						</a>
 					</div>
 					<div class="text-center">
@@ -133,7 +133,7 @@
 				<div class="p-4">
 					<div class="text-center mb-4 opacity-90">
 						<a class="block relative" href="#">
-							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=7"/>
+							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=7" />
 						</a>
 					</div>
 					<div class="text-center">
@@ -153,7 +153,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import {Component, Vue} from 'nuxt-property-decorator'
 
 @Component({
 	layout: 'landing',

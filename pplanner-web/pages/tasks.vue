@@ -51,16 +51,16 @@
 			</div>
 		</app-vertical-menu>
 
-		<div class="p-container h-full">
+		<div class="p-container h-full overflow-auto">
 			<nuxt-child :key="$route.fullPath"></nuxt-child>
 		</div>
 	</fragment>
 </template>
 
 <script lang="ts">
-import { Action, Component, Getter, Vue } from "nuxt-property-decorator";
+import {Action, Component, Getter, Vue} from "nuxt-property-decorator";
 import AppVerticalMenu from "../components/app/AppVerticalMenu.vue";
-import { Fragment } from 'vue-fragment'
+import {Fragment} from 'vue-fragment'
 import AppProjectMenuItem from "~/components/app/AppProjectMenuItem.vue";
 import TwModal from "~/components/shared/TwModal.vue";
 import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
@@ -73,7 +73,7 @@ import TwDropdown from "~/components/shared/TwDropdown.vue";
 		AppVerticalMenu,
 		Fragment,
 		TwDropdown,
-		TwModal
+		TwModal,
 	},
 })
 export default class PageParentTask extends Vue {
@@ -91,22 +91,22 @@ export default class PageParentTask extends Vue {
 		workspaceActions: false,
 	}
 
-	handleClickFavorite (favorite) {
+	handleClickFavorite(favorite) {
 		this.selectMenu(favorite.menuItemId)
-		this.$router.push(`/tasks/${ favorite.menuItemId }`)
+		this.$router.push(`/tasks/${favorite.menuItemId}`)
 	}
 
-	async handleClickDeleteFavorite (favorite) {
+	async handleClickDeleteFavorite(favorite) {
 		await this.$api.favorites.delete(favorite.id)
 		this.$bus.$emit('pplanner:update-favorites')
 	}
 
-	async handleSelectMenuItem (item) {
+	async handleSelectMenuItem(item) {
 		await this.selectMenu(item.id)
-		await this.$router.push({ name: 'tasks-id', params: { id: item.id }, query: { view: 'list' } })
+		await this.$router.push({name: 'tasks-id', params: {id: item.id}, query: {view: 'list'}})
 	}
 
-	async fetch () {
+	async fetch() {
 		if (this.$store.getters.activeMenu != null) {
 			await this.selectMenu(this.$store.getters.activeMenu)
 		}
@@ -114,11 +114,11 @@ export default class PageParentTask extends Vue {
 		this.favorites = await this.$api.favorites.findAllByProjectId(this.activeProject)
 
 		if (this.activeProject != null && (this.$route.params.id == null || this.$route.query.view == null)) {
-			await this.$router.push(`/tasks/${ this.activeMenu }?view=list`)
+			await this.$router.push(`/tasks/${this.activeMenu}?view=list`)
 		}
 	}
 
-	created () {
+	created() {
 		this.$bus.$on('pplanner:update-favorites', async () => {
 			this.favorites = await this.$api.favorites.findAllByProjectId(this.activeProject)
 		})
