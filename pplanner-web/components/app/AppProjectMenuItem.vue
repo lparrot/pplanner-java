@@ -7,7 +7,7 @@
 			</div>
 			<div v-if="editable" class="flex gap-4">
 				<slot name="icons">
-					<tw-dropdown fixed width="w-56">
+					<tw-dropdown container-class="w-56" fixed>
 						<template #activator>
 							<i :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-ellipsis-h cursor-pointer"></i>
 						</template>

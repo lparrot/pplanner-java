@@ -7,7 +7,7 @@
 				</tw-input-text>
 			</validation-provider>
 			<validation-provider ref="task_item_validator" #default="{invalid, errors, validate}" name="emplacement de la tâche" rules="required" slim>
-				<tw-dropdown ref="task_item_dropdown" class="w-full" label="Dans le menu">
+				<tw-dropdown ref="task_item_dropdown" container-class="w-full" label="Dans le menu">
 					<template #activator>
 						<tw-input-text :error="invalid" :error-message="errors[0]" label="Dans le menu" label-for="input_menu" required>
 							<input id="input_menu" :value="taskEditName" class="form-control" readonly type="text">
@@ -28,14 +28,14 @@
 </template>
 
 <script lang="ts">
-import {Component, Ref, Vue, Watch} from 'nuxt-property-decorator'
-import {VModel} from "vue-property-decorator";
+import { Component, Ref, Vue, Watch } from 'nuxt-property-decorator'
+import { VModel } from "vue-property-decorator";
 import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
 import TwInputText from "~/components/shared/TwInputText.vue";
 import TwDropdown from "~/components/shared/TwDropdown.vue";
 
 @Component({
-	components: {AppProjectMenuItemContainer, TwDropdown, TwInputText},
+	components: { AppProjectMenuItemContainer, TwDropdown, TwInputText },
 })
 export default class AppTaskCreate extends Vue {
 	@Ref('task_item_validator') taskItemValidator
@@ -43,17 +43,17 @@ export default class AppTaskCreate extends Vue {
 
 	@VModel() task: any
 
-	get taskEditName() {
+	get taskEditName () {
 		return this.task?.item?.name
 	}
 
-	async handleSelectMenuItemTaskCreate(event, validate, hide) {
+	async handleSelectMenuItemTaskCreate (event, validate, hide) {
 		await validate(event);
 		hide()
 	}
 
-	@Watch("task", {immediate: true, deep: true})
-	async onTaskChanged(val: any, oldVal: any) {
+	@Watch("task", { immediate: true, deep: true })
+	async onTaskChanged (val: any, oldVal: any) {
 		this.$nextTick(async () => {
 			await this.taskItemValidator.validate(val)
 			await this.taskItemDropdown.hide()

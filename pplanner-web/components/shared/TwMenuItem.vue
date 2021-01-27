@@ -6,7 +6,7 @@
 				{{ label }}
 			</slot>
 		</div>
-		<div v-else-if="type === 'text'" class="flex items-center justify-between rounded p-2 my-1 cursor-pointer hover:bg-primary-100">
+		<div v-else-if="type === 'text'" class="flex items-center justify-between rounded p-2 my-1 cursor-pointer hover:bg-primary-100 whitespace-nowrap">
 			<div>
 				<slot name="icon">
 					<i :class="icon" class="text-primary-400 mr-2"></i>

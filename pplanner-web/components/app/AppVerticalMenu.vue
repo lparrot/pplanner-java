@@ -1,11 +1,11 @@
 <template>
 	<div class="flex flex-col flex-grow-0 flex-shrink-0 border-r relative h-full">
 		<transition name="scale-in-hor-left">
-			<div v-show="visibleSync" class="transition-all duration-300 w-80 flex-grow overflow-auto">
+			<div v-show="visibleSync" class="transition-all duration-300 w-80 flex-grow overflow-hidden">
 				<slot></slot>
 			</div>
 		</transition>
-		<div :class="altButtonClasses" class="absolute top-0 right-0 flex justify-center items-center rounded-full bg-white w-6 h-6 text-gray-600 border -mr-3 mt-4 cursor-pointer z-10" @click="handleClickAltButton">
+		<div :class="altButtonClasses" class="absolute top-0 right-0 flex justify-center items-center rounded-full bg-white w-6 h-6 text-gray-600 border -mr-3 mt-4 cursor-pointer" @click="handleClickAltButton">
 			<i :class="altButtonIconClasses"></i>
 		</div>
 	</div>
