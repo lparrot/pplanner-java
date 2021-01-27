@@ -7,10 +7,10 @@ import fr.lauparr.pplanner.server.dao.DaoUser;
 import fr.lauparr.pplanner.server.entities.Favorite;
 import fr.lauparr.pplanner.server.entities.ProjectMenuItem;
 import fr.lauparr.pplanner.server.entities.User;
+import fr.lauparr.pplanner.server.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -32,15 +32,15 @@ public class SrvFavorite {
 			return;
 		}
 
-		final User user = this.daoUser.findById(params.getUserId()).orElseThrow(() -> new EntityNotFoundException("L'utilisateur n'existe pas"));
-		final ProjectMenuItem projectMenuItem = this.daoProjectMenuItem.findById(params.getMenuId()).orElseThrow(() -> new EntityNotFoundException("Le menu n'existe pas"));
+		final User user = this.daoUser.findById(params.getUserId()).orElseThrow(() -> new NotFoundException("L'utilisateur n'existe pas"));
+		final ProjectMenuItem projectMenuItem = this.daoProjectMenuItem.findById(params.getMenuId()).orElseThrow(() -> new NotFoundException("Le menu n'existe pas"));
 
 		final Favorite favorite = Favorite.builder().user(user).menuItem(projectMenuItem).build();
 		this.daoFavorite.save(favorite);
 	}
 
 	public void deleteFavorite(final String favoriteId) {
-		final Favorite favorite = this.daoFavorite.findById(favoriteId).orElseThrow(() -> new EntityNotFoundException("Le favoris n'existe pas"));
+		final Favorite favorite = this.daoFavorite.findById(favoriteId).orElseThrow(() -> new NotFoundException("Le favoris n'existe pas"));
 
 		favorite.delete();
 		this.daoFavorite.save(favorite);

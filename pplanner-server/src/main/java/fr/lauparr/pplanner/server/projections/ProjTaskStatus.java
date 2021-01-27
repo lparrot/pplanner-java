@@ -8,6 +8,8 @@ public interface ProjTaskStatus {
 
 	String getName();
 
+	String getColor();
+
 	TaskStatusType getType();
 
 }

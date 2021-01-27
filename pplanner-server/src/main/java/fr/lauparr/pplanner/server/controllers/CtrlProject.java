@@ -31,6 +31,11 @@ public class CtrlProject {
 		return this.srvJpaUtils.convertPageDto(this.srvProject.findAllProject(page), ProjProject.class);
 	}
 
+	@GetMapping("/{projectId}")
+	public ProjProject findAll(@PathVariable final String projectId) {
+		return this.srvJpaUtils.convertToDto(this.srvProject.findById(projectId), ProjProject.class);
+	}
+
 	@GetMapping("/{id}/workspaces")
 	public List<ProjMenuItem> findAllWorkspaceByProjectId(@PathVariable final String id) {
 		return this.srvJpaUtils.convertListDto(this.srvProjectMenuItem.findAllWorkspaceByProjectId(id), ProjMenuItem.class);

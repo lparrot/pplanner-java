@@ -1,13 +1,17 @@
-import {Repository} from '~/api/Repository'
+import { Repository } from '~/api/Repository'
 
 
 export class ProjectsApi extends Repository {
-	findAll() {
+	findAll () {
 		return this.axios.$get('/projects')
 	}
 
-	findAllWorkspaceByProjectId(projectId) {
-		return this.axios.$get(`/projects/${projectId}/workspaces`)
+	findById (projectId) {
+		return this.axios.$get(`/projects/${ projectId }`)
+	}
+
+	findAllWorkspaceByProjectId (projectId) {
+		return this.axios.$get(`/projects/${ projectId }/workspaces`)
 	}
 }
 

@@ -28,6 +28,12 @@ declare module 'vue/types/options' {
 	}
 }
 
+declare module 'vuex' {
+	interface Store {
+		$api: import('~/api').Repositories
+	}
+}
+
 declare module '@nuxt/types' {
 	// ctx.app
 	interface NuxtAppOptions {

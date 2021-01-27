@@ -51,10 +51,19 @@ export const actions: ActionTree<RootState, RootState> = {
 	async initialize ({ commit }) {
 		const projectId = localStorage.getItem('pplanner.project')
 		if (projectId != null) {
-			commit('SET_PROJECT', projectId)
-			const menuId = localStorage.getItem(`pplanner.menu-${ projectId }`)
-			if (menuId != null) {
-				commit('SET_MENU', menuId)
+			try {
+				await this.$api.projects.findById(projectId)
+				commit('SET_PROJECT', projectId)
+				const menuId = localStorage.getItem(`pplanner.menu-${ projectId }`)
+				if (menuId != null) {
+					await this.$api.items.findById(menuId)
+					commit('SET_MENU', menuId)
+				}
+			} catch (err) {
+				if (err.response.status === 404) {
+					localStorage.removeItem('pplanner.project')
+					localStorage.removeItem(`pplanner.menu-${ projectId }`)
+				}
 			}
 		}
 	},

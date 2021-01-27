@@ -36,7 +36,7 @@
 		</div>
 		<div class="flex flex-col overflow-auto">
 			<!-- Contenu -->
-			<app-view-list-item :status="taskStatus" :tasks="tasks"></app-view-list-item>
+			<app-view-list-container :menu-item="item" :tasks-by-status="tasks"></app-view-list-container>
 		</div>
 	</div>
 </template>
@@ -45,17 +45,15 @@
 import { Component } from 'nuxt-property-decorator'
 import { VModel } from "vue-property-decorator";
 import { TasksMixin } from "~/mixins/tasks.mixin";
-import AppViewListItem from "~/components/app/AppViewList/AppViewListItem.vue";
+import AppViewListContainer from "~/components/app/AppViewList/AppViewListContainer.vue";
 
 @Component({
 	components: {
-		AppViewListItem
+		AppViewListContainer
 	}
 })
 export default class AppViewList extends TasksMixin {
 	@VModel() item: any
-
-	public taskStatus: any [] = []
 
 	get taskCount () {
 		if (this.tasks == null) {
@@ -69,7 +67,6 @@ export default class AppViewList extends TasksMixin {
 
 	async fetch () {
 		await this.fetchTasks()
-		this.taskStatus = await this.$axios.$get(`/task_status/items/${ this.item.id }`)
 	}
 }
 </script>

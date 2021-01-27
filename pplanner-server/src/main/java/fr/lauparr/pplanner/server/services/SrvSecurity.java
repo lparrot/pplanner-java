@@ -4,12 +4,11 @@ import fr.lauparr.pplanner.server.dao.DaoUser;
 import fr.lauparr.pplanner.server.dto.JwtToken;
 import fr.lauparr.pplanner.server.entities.User;
 import fr.lauparr.pplanner.server.exceptions.MessageException;
+import fr.lauparr.pplanner.server.exceptions.NotFoundException;
 import fr.lauparr.pplanner.server.security.SrvToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
 
 @Service
 public class SrvSecurity {
@@ -43,6 +42,6 @@ public class SrvSecurity {
 	}
 
 	public User getUserData(final String name) {
-		return this.daoUser.findByEmailAndDeletedAtIsNull(name).orElseThrow(() -> new EntityNotFoundException("L'utilisateur n'existe pas "));
+		return this.daoUser.findByEmailAndDeletedAtIsNull(name).orElseThrow(() -> new NotFoundException("L'utilisateur n'existe pas "));
 	}
 }

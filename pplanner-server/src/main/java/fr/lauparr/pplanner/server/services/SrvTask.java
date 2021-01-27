@@ -4,12 +4,12 @@ import fr.lauparr.pplanner.server.controllers.CtrlTask;
 import fr.lauparr.pplanner.server.dao.DaoProjectMenuItem;
 import fr.lauparr.pplanner.server.dao.DaoTask;
 import fr.lauparr.pplanner.server.entities.Task;
+import fr.lauparr.pplanner.server.exceptions.NotFoundException;
 import fr.lauparr.pplanner.server.projections.ProjTask;
 import fr.lauparr.pplanner.server.services.utils.SrvJpaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,7 +28,7 @@ public class SrvTask {
 		final Task task = new Task();
 		task.setName(params.getName());
 		task.setDescription(params.getDescription());
-		task.setItem(this.daoProjectMenuItem.findById(itemId).orElseThrow(() -> new EntityNotFoundException("Le menu n'existe pas")));
+		task.setItem(this.daoProjectMenuItem.findById(itemId).orElseThrow(() -> new NotFoundException("Le menu n'existe pas")));
 		this.daoTask.save(task);
 	}
 
