@@ -1,7 +1,10 @@
 import { Component, Vue } from 'nuxt-property-decorator'
+import { VModel } from 'vue-property-decorator'
 
 @Component
 export class TasksMixin extends Vue {
+	@VModel() item: Models.ProjectMenuItem
+
 	public tasks: any = null
 
 	async created () {

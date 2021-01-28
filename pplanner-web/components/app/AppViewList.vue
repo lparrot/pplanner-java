@@ -43,7 +43,6 @@
 
 <script lang="ts">
 import { Component } from 'nuxt-property-decorator'
-import { VModel } from "vue-property-decorator";
 import { TasksMixin } from "~/mixins/tasks.mixin";
 import AppViewListContainer from "~/components/app/AppViewList/AppViewListContainer.vue";
 
@@ -53,8 +52,6 @@ import AppViewListContainer from "~/components/app/AppViewList/AppViewListContai
 	}
 })
 export default class AppViewList extends TasksMixin {
-	@VModel() item: any
-
 	get taskCount () {
 		if (this.tasks == null) {
 			return 0
