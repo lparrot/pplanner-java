@@ -64,10 +64,10 @@ public class SrvDatabaseInitializer {
 
 			// Task status
 			Arrays.asList(sprint1, sprint2, sprint3).forEach(projectMenuItem -> {
-				final TaskStatus statusOpen = TaskStatus.builder().name("Ouverte").color("gray").type(TaskStatusType.ACTIVE).build();
-				final TaskStatus statusInProgress = TaskStatus.builder().name("En cours").color("blue").type(TaskStatusType.ACTIVE).build();
-				final TaskStatus statusReady = TaskStatus.builder().name("Prête").color("purple").type(TaskStatusType.DONE).build();
-				final TaskStatus statusClosed = TaskStatus.builder().name("Terminée").color("green").type(TaskStatusType.CLOSED).build();
+				final TaskStatus statusOpen = TaskStatus.builder().name("Ouverte").color("bg-gray-500 text-white").type(TaskStatusType.ACTIVE).build();
+				final TaskStatus statusInProgress = TaskStatus.builder().name("En cours").color("bg-blue-500 text-white").type(TaskStatusType.ACTIVE).build();
+				final TaskStatus statusReady = TaskStatus.builder().name("Prête").color("bg-purple-500 text-white").type(TaskStatusType.DONE).build();
+				final TaskStatus statusClosed = TaskStatus.builder().name("Terminée").color("bg-green-500 text-white").type(TaskStatusType.CLOSED).build();
 
 				projectMenuItem.addTaskStatus(statusOpen);
 				projectMenuItem.addTaskStatus(statusInProgress);
@@ -96,7 +96,7 @@ public class SrvDatabaseInitializer {
 			this.daoProjectMenuItem.findAll((path, query, criteriaBuilder) -> criteriaBuilder.equal(path.get("type"), ProjectMenuItemType.LIST)).forEach(projectMenuItem -> {
 				final List<TaskStatus> allStatus = this.daoTaskStatus.findAllByItemId(projectMenuItem.getId());
 
-				IntStream.range(1, faker.random().nextInt(1, 15)).forEach(value -> {
+				IntStream.range(10, faker.random().nextInt(11, 20)).forEach(value -> {
 					final int index = random.nextInt(allStatus.size());
 					this.daoTask.save(Task.builder().name("Tache " + value).description("Description tache " + value).status(allStatus.get(index)).item(projectMenuItem).build());
 				});

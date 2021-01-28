@@ -29,6 +29,11 @@ public class CtrlTask {
 		this.srvTask.createTask(params, itemId);
 	}
 
+	@PutMapping("/{taskId}/status/{statusId}")
+	public void updateTaskStatus(@PathVariable final String taskId, @PathVariable final String statusId) {
+		this.srvTask.updateTaskStatus(taskId, statusId);
+	}
+
 	@Data
 	public static class ParamsCreateTask {
 		private String name;

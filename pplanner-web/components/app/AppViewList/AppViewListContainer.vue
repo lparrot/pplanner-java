@@ -11,7 +11,9 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator'
 import AppViewListItem from "~/components/app/AppViewList/AppViewListItem.vue";
 
 @Component({
-	components: { AppViewListItem }
+	components: {
+		AppViewListItem
+	}
 })
 export default class AppViewListContainer extends Vue {
 	@Prop({ required: true }) tasksByStatus: any;
