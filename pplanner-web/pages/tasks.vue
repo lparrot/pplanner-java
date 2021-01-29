@@ -112,7 +112,7 @@ export default class PageParentTask extends Vue {
 			await this.selectMenu(this.$store.getters.activeMenu)
 		}
 
-		this.favorites = await this.$api.favorites.findAllByProjectId(this.activeProject)
+		this.favorites = await this.$api.favorites.findAllByProjectId()
 
 		if (this.activeProject != null && (this.$route.params.id == null || this.$route.query.view == null)) {
 			await this.$router.push(`/tasks/${ this.activeMenu }?view=list`)
@@ -123,7 +123,7 @@ export default class PageParentTask extends Vue {
 
 	created () {
 		this.$bus.$on('pplanner:update-favorites', async () => {
-			this.favorites = await this.$api.favorites.findAllByProjectId(this.activeProject)
+			this.favorites = await this.$api.favorites.findAllByProjectId()
 		})
 	}
 }

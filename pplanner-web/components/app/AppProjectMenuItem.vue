@@ -1,9 +1,9 @@
 <template>
 	<fragment>
 		<div :class="{'bg-secondary': selected, 'cursor-pointer': selectable}" class="flex justify-between items-center px-2 py-1 rounded">
-			<div class="flex items-center w-full" @click="selectable && selectItem(item)">
+			<div class="flex items-center w-full">
 				<i :class="[itemIcon, {'text-white': selected}]" class="mr-2" @click="openOrCloseChildren"></i>
-				<div :class="{'text-white': selected}" class="text-base font-medium hover:underline">{{ item.name }}</div>
+				<div :class="{'text-white': selected}" class="text-base font-medium hover:underline w-full" @click="selectable && selectItem(item)">{{ item.name }}</div>
 			</div>
 			<div v-if="editable" class="flex gap-4">
 				<slot name="icons">
