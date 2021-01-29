@@ -65,7 +65,7 @@ export default class AppViewList extends TasksMixin {
 	}
 
 	async fetch () {
-		await this.fetchTasks()
+		await this.fetchData()
 	}
 }
 </script>

@@ -4,7 +4,7 @@
 			<div v-for="item in items" :key="item.title" class="bg-gray-100 rounded-lg px-3 py-3 column-width rounded mr-4">
 				<p class="text-gray-700 font-semibold font-sans tracking-wide text-sm">{{ item.status.name }}</p>
 				<!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
-				<draggable :animation="200" :list="item.tasks" ghost-class="ghost-card" group="tasks" @move="handleMoveTask">
+				<draggable :animation="200" :list="item.tasks" ghost-class="ghost-card" group="tasks" @change="handleChangeDragTask($event, item.status.id)">
 					<!-- Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
 					<tw-task-card v-for="(task) in item.tasks" :key="task.id" :task="task" class="mt-3 cursor-move"></tw-task-card>
 					<!-- </transition-group> -->
@@ -28,11 +28,9 @@ import { TasksMixin } from "~/mixins/tasks.mixin";
 })
 export default class AppViewKanban extends TasksMixin {
 	public items = []
-	public statusList: any[] = []
 
 	async fetch () {
-		await this.fetchTasks();
-		this.statusList = await this.$axios.$get(`/task_status/items/${ this.item.id }`)
+		await this.fetchData();
 
 		this.items = Object.keys(this.tasks).map(taskByStatus => {
 			return {
@@ -42,8 +40,10 @@ export default class AppViewKanban extends TasksMixin {
 		})
 	}
 
-	async handleMoveTask (event) {
-		console.log(event);
+	async handleChangeDragTask (e, statusId) {
+		if (e.added) {
+			await this.$axios.$put(`/tasks/${ e.added.element.id }/status/${ statusId }`)
+		}
 	}
 }
 </script>

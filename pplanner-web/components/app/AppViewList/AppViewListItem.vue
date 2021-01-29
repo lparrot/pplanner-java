@@ -29,8 +29,6 @@ export default class AppViewListItem extends Vue {
 	@Prop({ required: true }) tasks: any[];
 	@Prop({ required: true }) statusId: any;
 
-	public test = null
-
 	get status () {
 		return this.statusList.find(status => this.statusId === status.id)
 	}
