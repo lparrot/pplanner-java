@@ -1,16 +1,4 @@
-import { ActionTree, GetterTree, MutationTree, Store } from 'vuex'
-import localforage from 'localforage'
-
-const persistPlugin = async (store: Store<RootState>) => {
-	localforage.config({
-		driver: localforage.INDEXEDDB,
-		name: 'pplanner',
-		version: 1.0,
-		storeName: 'pplanner'
-	})
-}
-
-export const plugins = [ persistPlugin ]
+import { ActionTree, GetterTree, MutationTree } from 'vuex'
 
 /**
  * State

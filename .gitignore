@@ -11,6 +11,4 @@ target
 application-*.properties
 
 # Web
-.nuxt-storybook
-storybook-static
 node

@@ -45,10 +45,12 @@
 import { Component } from 'nuxt-property-decorator'
 import { TasksMixin } from "~/mixins/tasks.mixin";
 import AppViewListContainer from "~/components/app/AppViewList/AppViewListContainer.vue";
+import TwDropdown from "~/components/shared/TwDropdown.vue";
 
 @Component({
 	components: {
-		AppViewListContainer
+		AppViewListContainer,
+		TwDropdown
 	}
 })
 export default class AppViewList extends TasksMixin {

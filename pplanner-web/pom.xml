@@ -32,30 +32,29 @@
 					<execution>
 						<id>install node and npm</id>
 						<goals>
-							<goal>install-node-and-yarn</goal>
+							<goal>install-node-and-npm</goal>
 						</goals>
 						<configuration>
 							<nodeVersion>${node.version}</nodeVersion>
-							<yarnVersion>${yarn.version}</yarnVersion>
 						</configuration>
 					</execution>
 					<execution>
 						<id>yarn install</id>
 						<goals>
-							<goal>yarn</goal>
+							<goal>npm</goal>
 						</goals>
 						<phase>generate-resources</phase>
 						<configuration>
-							<arguments>install</arguments>
+							<arguments>install --no-package-lock --loglevel silent</arguments>
 						</configuration>
 					</execution>
 					<execution>
-						<id>yarn run</id>
+						<id>npm run</id>
 						<goals>
-							<goal>yarn</goal>
+							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<arguments>generate</arguments>
+							<arguments>run generate</arguments>
 							<testFailureIgnore>true</testFailureIgnore>
 						</configuration>
 					</execution>
