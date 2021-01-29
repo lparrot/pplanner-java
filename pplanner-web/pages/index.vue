@@ -13,7 +13,7 @@
 				</h2>
 				<div class="lg:mt-0 lg:flex-shrink-0">
 					<div class="mt-12 inline-flex rounded-md shadow">
-						<router-link class="py-4 px-6  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg " tag="button" to="/login" type="button">
+						<router-link class="py-4 px-6 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg" tag="button" to="/tasks" type="button">
 							C'est parti
 						</router-link>
 					</div>
@@ -103,7 +103,7 @@
 				<div class="p-4">
 					<div class="text-center mb-4 opacity-90">
 						<a class="block relative" href="#">
-							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=3" />
+							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=3"/>
 						</a>
 					</div>
 					<div class="text-center">
@@ -118,7 +118,7 @@
 				<div class="p-4">
 					<div class="text-center mb-4 opacity-90">
 						<a class="block relative" href="#">
-							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=6" />
+							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=6"/>
 						</a>
 					</div>
 					<div class="text-center">
@@ -133,7 +133,7 @@
 				<div class="p-4">
 					<div class="text-center mb-4 opacity-90">
 						<a class="block relative" href="#">
-							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=7" />
+							<img alt="profil" class="mx-auto rounded-full h-40 w-40 " src="https://i.pravatar.cc/300?img=7"/>
 						</a>
 					</div>
 					<div class="text-center">
@@ -153,7 +153,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({
 	layout: 'landing',
