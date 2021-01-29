@@ -1,13 +1,11 @@
 <template>
-	<div class="flex justify-center flex-wrap overflow-x-auto">
-		<div class="min-h-screen flex overflow-x-scroll py-12">
-			<div v-for="item in items" :key="item.title" class="bg-gray-100 rounded-lg px-3 py-3 column-width rounded mr-4">
-				<p class="text-gray-700 font-semibold font-sans tracking-wide text-sm">{{ item.status.name }}</p>
-				<!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
-				<draggable :animation="200" :list="item.tasks" ghost-class="ghost-card" group="tasks" @change="handleChangeDragTask($event, item.status.id)">
-					<!-- Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
+	<div class="flex h-full justify-center flex-wrap overflow-x-auto">
+		<div class="flex flex-row h-full">
+			<div v-for="item in items" :key="item.title" class="flex flex-col h-full items-center justify-start bg-gray-100 rounded-lg px-3 w-56 py-3 column-width rounded mr-4">
+				<p :class="item.status.color" class="font-semibold font-sans tracking-wide text-sm w-full px-2 py-1 text-center rounded-lg">{{ item.status.name }}</p>
+
+				<draggable :list="item.tasks" class="h-full" group="tasks" @change="handleChangeDragTask($event, item.status.id)">
 					<tw-task-card v-for="(task) in item.tasks" :key="task.id" :task="task" class="mt-3 cursor-move"></tw-task-card>
-					<!-- </transition-group> -->
 				</draggable>
 			</div>
 		</div>
@@ -31,18 +29,11 @@ export default class AppViewKanban extends TasksMixin {
 
 	async fetch () {
 		await this.fetchData();
-
-		this.items = Object.keys(this.tasks).map(taskByStatus => {
-			return {
-				status: this.statusList.find(status => taskByStatus === status.id),
-				tasks: this.tasks[taskByStatus]
-			}
-		})
 	}
 
 	async handleChangeDragTask (e, statusId) {
 		if (e.added) {
-			await this.$axios.$put(`/tasks/${ e.added.element.id }/status/${ statusId }`)
+			await this.$api.tasks.updateStatus(e.added.element.id, statusId)
 		}
 	}
 }

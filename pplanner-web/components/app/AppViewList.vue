@@ -5,7 +5,7 @@
 			<div class="flex justify-between items-center text-primary">
 				<div class="flex items-center">
 					<div class="mr-2">
-						<span>{{ taskCount }} tâche(s) actives</span>
+						<span>{{ total }} tâche(s) actives</span>
 					</div>
 					<tw-dropdown>
 						<template #activator>
@@ -36,7 +36,9 @@
 		</div>
 		<div class="flex flex-col overflow-auto">
 			<!-- Contenu -->
-			<app-view-list-container :menu-item="item" :tasks-by-status="tasks"></app-view-list-container>
+			<section v-for="(item, itemIndex) in items" :key="itemIndex">
+				<app-view-list-item :item="item"></app-view-list-item>
+			</section>
 		</div>
 	</div>
 </template>
@@ -44,25 +46,17 @@
 <script lang="ts">
 import { Component } from 'nuxt-property-decorator'
 import { TasksMixin } from "~/mixins/tasks.mixin";
-import AppViewListContainer from "~/components/app/AppViewList/AppViewListContainer.vue";
 import TwDropdown from "~/components/shared/TwDropdown.vue";
+import AppViewListItem from "~/components/app/AppViewList/AppViewListItem.vue";
 
 @Component({
 	components: {
-		AppViewListContainer,
+		AppViewListItem,
 		TwDropdown
 	}
 })
 export default class AppViewList extends TasksMixin {
-	get taskCount () {
-		if (this.tasks == null) {
-			return 0
-		}
-
-		let count = 0
-		Object.keys(this.tasks).forEach(key => count += this.tasks[key].length)
-		return count
-	}
+	public items = []
 
 	async fetch () {
 		await this.fetchData()

@@ -21,8 +21,8 @@ public class CtrlTaskStatus {
 	private SrvTaskStatus srvTaskStatus;
 
 	@GetMapping("/items/{itemId}")
-	public List<ProjTaskStatus> findAllByItemId(@PathVariable final String itemId) {
-		return this.srvJpaUtils.convertListDto(this.srvTaskStatus.findAllByItemId(itemId), ProjTaskStatus.class);
+	public List<ProjTaskStatus> findStatusByItemId(@PathVariable final String itemId) {
+		return this.srvJpaUtils.convertListDto(this.srvTaskStatus.findStatusByItemId(itemId), ProjTaskStatus.class);
 	}
 
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -16,6 +17,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 @Service
+@Transactional
 public class SrvDatabaseInitializer {
 
 	@Autowired
@@ -53,7 +55,7 @@ public class SrvDatabaseInitializer {
 			this.daoUser.save(root);
 
 			// Projects
-			final Project cdadr = Project.builder().name("CDAD-R").build();
+			Project cdadr = Project.builder().name("CDAD-R").build();
 
 			// Menu items
 			final ProjectMenuItem ccs = ProjectMenuItem.builder().name("CCS").type(ProjectMenuItemType.WORKSPACE).project(cdadr).build();
@@ -82,7 +84,7 @@ public class SrvDatabaseInitializer {
 			sprints.addChild(sprint2);
 			sprints.addChild(sprint3);
 
-			this.daoProject.save(cdadr);
+			cdadr = this.daoProject.save(cdadr);
 
 			// Favorites
 			final Favorite favorite1 = Favorite.builder().user(root).menuItem(ccs).build();
@@ -94,13 +96,21 @@ public class SrvDatabaseInitializer {
 			final Random random = new Random();
 
 			this.daoProjectMenuItem.findAll((path, query, criteriaBuilder) -> criteriaBuilder.equal(path.get("type"), ProjectMenuItemType.LIST)).forEach(projectMenuItem -> {
-				final List<TaskStatus> allStatus = this.daoTaskStatus.findAllByItemId(projectMenuItem.getId());
+				final List<TaskStatus> allStatus = this.daoTaskStatus.findStatusByItemId(projectMenuItem.getId());
 
-				IntStream.range(10, faker.random().nextInt(11, 20)).forEach(value -> {
+				IntStream.range(1, 10).forEach(value -> {
 					final int index = random.nextInt(allStatus.size());
-					this.daoTask.save(Task.builder().name("Tache " + value).description("Description tache " + value).status(allStatus.get(index)).item(projectMenuItem).build());
+					projectMenuItem.addTask(Task.builder().name("Tache " + value).description("Description tache " + value).status(allStatus.get(index)).build());
 				});
 			});
+
+			cdadr = this.daoProject.findById(cdadr.getId()).orElse(null);
+
+			if (cdadr != null) {
+				cdadr.reindexOrder();
+				this.daoProject.save(cdadr);
+			}
+
 		}
 	}
 

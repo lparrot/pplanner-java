@@ -2,6 +2,7 @@ package fr.lauparr.pplanner.server.projections;
 
 import fr.lauparr.pplanner.server.enums.ProjectMenuItemType;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProjMenuItem {
@@ -11,6 +12,8 @@ public interface ProjMenuItem {
 	String getName();
 
 	ProjectMenuItemType getType();
+
+	BigDecimal getOrderIndex();
 
 	List<ProjMenuItem> getChildren();
 

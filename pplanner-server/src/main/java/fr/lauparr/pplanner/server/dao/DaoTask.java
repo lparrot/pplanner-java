@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface DaoTask extends JpaRepository<Task, String>, JpaSpecificationExecutor<Task> {
 
-	@Query("select t from Task t where t.item.id = :itemId and t.deletedAt is null")
+	@Query("select t from Task t where t.item.id = :itemId and t.deletedAt is null order by t.orderIndex")
 	List<Task> findAllTasksByMenuItemId(@Param("itemId") String itemId);
 
 }

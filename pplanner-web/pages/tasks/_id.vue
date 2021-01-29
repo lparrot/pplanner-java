@@ -19,7 +19,7 @@
 			</div>
 
 			<div class="flex flex-col border-t bg-primary-100 w-full h-full overflow-x-auto overflow-y-auto">
-				<div v-if="viewComponent != null">
+				<div v-if="viewComponent != null" class="h-full">
 					<component :is="viewComponent" v-model="menuItem"></component>
 				</div>
 			</div>
@@ -123,9 +123,7 @@ export default class PageTaskIndex extends Vue {
 		}
 
 		this.menuItem = await this.$api.items.findById(this.activeMenu)
-	}
 
-	async created () {
 		this.$bus.$on('on-select-view-tab', (event) => {
 			this.$router.push({ name: 'tasks-id', params: { id: this.$route.params.id }, query: { view: event.name } })
 		})

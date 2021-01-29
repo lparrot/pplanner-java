@@ -1,7 +1,9 @@
 import { Repository } from '~/api/Repository'
+import { ApiLog } from '~/decorators/ApiLog'
 
+@ApiLog
 export class FavoritesApi extends Repository {
-	findAllByProjectId (projectId) {
+	findAllByProjectId () {
 		return this.axios.$get(`/favorites/users/${ this.store.state.auth.user.id }/projects/${ this.store.getters.activeProject }`)
 	}
 

@@ -5,6 +5,7 @@ import { ProjectsApi } from '~/api/services/projects.api'
 import { TasksApi } from '~/api/services/tasks.api'
 import { MenuItemsApi } from '~/api/services/menu_item'
 import { AuthApi } from '~/api/services/auth.api'
+import { TaskStatusApi } from '~/api/services/task_status.api'
 
 export interface Repositories {
 	auth: AuthApi
@@ -12,6 +13,7 @@ export interface Repositories {
 	items: MenuItemsApi
 	projects: ProjectsApi
 	tasks: TasksApi
+	task_status: TaskStatusApi
 }
 
 export class Api {
@@ -27,6 +29,7 @@ export class Api {
 		this._createRepository('items', MenuItemsApi)
 		this._createRepository('projects', ProjectsApi)
 		this._createRepository('tasks', TasksApi)
+		this._createRepository('task_status', TaskStatusApi)
 	}
 
 	_createRepository (name, type) {

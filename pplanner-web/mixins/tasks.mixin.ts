@@ -5,8 +5,8 @@ import { VModel } from 'vue-property-decorator'
 export class TasksMixin extends Vue {
 	@VModel() item: Models.ProjectMenuItem
 
-	public tasks: any = null
-	public statusList: any[] = []
+	public items: any[] = []
+	public total: number = 0
 
 	async created () {
 		this.$root.$on('pplanner:update-task-list', async () => {
@@ -15,7 +15,16 @@ export class TasksMixin extends Vue {
 	}
 
 	async fetchData () {
-		this.tasks = await this.$api.tasks.findAllTasksByMenuItemId(this.$store.getters.activeMenu)
-		this.statusList = await this.$axios.$get(`/task_status/items/${ this.item.id }`)
+		const tasks = await this.$api.tasks.findAllTasksByMenuItemId(this.$store.getters.activeMenu)
+		const statusList = await this.$api.task_status.findStatusByItemId(this.item.id)
+
+		this.total = tasks.length
+
+		statusList.forEach(status => {
+			this.items.push({
+				status,
+				tasks: tasks[status.id] ?? []
+			})
+		})
 	}
 }

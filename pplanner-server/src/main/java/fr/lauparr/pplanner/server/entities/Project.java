@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,4 +39,11 @@ public class Project extends BaseEntity {
 		return this;
 	}
 
+	public void reindexOrder() {
+		int i = 1;
+		for (final ProjectMenuItem item : this.items) {
+			item.setOrderIndex(new BigDecimal(i++));
+			item.reindexOrder();
+		}
+	}
 }

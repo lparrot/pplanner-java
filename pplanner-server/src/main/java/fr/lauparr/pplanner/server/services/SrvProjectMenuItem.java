@@ -27,6 +27,6 @@ public class SrvProjectMenuItem {
 		if (allWorkspaceByProjectId.size() > 0) {
 			return allWorkspaceByProjectId.get(0);
 		}
-		return null;
+		throw new NotFoundException();
 	}
 }

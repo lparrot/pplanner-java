@@ -84,6 +84,7 @@ export default class PageParentTask extends Vue {
 
 	public visible: boolean = true
 	public favorites: any[] = []
+	public initialized = false
 
 	public show = {
 		favoriteActions: false,
@@ -116,6 +117,8 @@ export default class PageParentTask extends Vue {
 		if (this.activeProject != null && (this.$route.params.id == null || this.$route.query.view == null)) {
 			await this.$router.push(`/tasks/${ this.activeMenu }?view=list`)
 		}
+
+		this.initialized = true
 	}
 
 	created () {

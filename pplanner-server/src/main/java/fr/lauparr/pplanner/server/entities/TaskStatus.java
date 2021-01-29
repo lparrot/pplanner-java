@@ -8,8 +8,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -21,6 +23,10 @@ public class TaskStatus extends BaseEntity {
 	private String name;
 
 	private String color;
+
+	@SortNatural
+	@Column(precision = 14, scale = 10)
+	private BigDecimal orderIndex;
 
 	@Enumerated(EnumType.STRING)
 	private TaskStatusType type;

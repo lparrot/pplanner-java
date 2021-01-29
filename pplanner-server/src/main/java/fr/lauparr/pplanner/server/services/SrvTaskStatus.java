@@ -12,7 +12,7 @@ public class SrvTaskStatus {
 	@Autowired
 	private DaoTaskStatus daoTaskStatus;
 
-	public List<TaskStatus> findAllByItemId(final String itemId) {
-		return this.daoTaskStatus.findAllByItemId(itemId);
+	public List<TaskStatus> findStatusByItemId(final String itemId) {
+		return this.daoTaskStatus.findStatusByItemId(itemId);
 	}
 }
