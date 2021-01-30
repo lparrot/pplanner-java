@@ -42,7 +42,7 @@ public class SrvTask {
 
 	public Map<String, List<ProjTask>> findAllTasksByMenuItemIdGroupedByStatus(final String itemId) {
 		final List<ProjTask> tasks = this.srvJpaUtils.convertListDto(this.daoTask.findAllTasksByMenuItemId(itemId), ProjTask.class);
-		return tasks.stream().collect(Collectors.groupingBy(projTask -> projTask.getStatus().getId()));
+		return tasks.stream().collect(Collectors.groupingBy(projTask -> projTask.getStatus() != null ? projTask.getStatus().getId() : "0"));
 	}
 
 	public void updateTaskStatus(final String taskId, final String statusId) {

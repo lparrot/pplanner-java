@@ -1,6 +1,6 @@
 <template>
-	<div class="flex h-full justify-center flex-wrap overflow-x-auto">
-		<div class="flex flex-row h-full">
+	<div class="h-full justify-center overflow-x-auto">
+		<div class="flex flex-col flex-wrap h-full">
 			<div v-for="item in items" :key="item.title" class="flex flex-col h-full items-center justify-start bg-gray-100 rounded-lg px-3 w-72 py-3 column-width rounded mr-4">
 				<p :class="item.status.color" class="font-semibold font-sans tracking-wide text-sm w-full px-2 py-1 text-center rounded-lg">{{ `${item.status.name} ( ${item.tasks.length} )` }}</p>
 
