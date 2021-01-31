@@ -2,10 +2,7 @@ package fr.lauparr.pplanner.server.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import fr.lauparr.pplanner.server.entities.abstracts.BaseEntity;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -19,7 +16,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "projects")
-@EqualsAndHashCode(callSuper = true)
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Project extends BaseEntity {
 
 	private String name;

@@ -47,6 +47,7 @@ export default {
 		'~/plugins/vee-validate',
 		'~/plugins/api',
 		'~/plugins/click-outside',
+		'~/plugins/pplanner',
 	],
 
 	// Auto import components (https://go.nuxtjs.dev/config-components)

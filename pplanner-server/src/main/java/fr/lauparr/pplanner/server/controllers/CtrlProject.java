@@ -1,17 +1,15 @@
 package fr.lauparr.pplanner.server.controllers;
 
+import fr.lauparr.pplanner.server.entities.User;
 import fr.lauparr.pplanner.server.projections.ProjMenuItem;
 import fr.lauparr.pplanner.server.projections.ProjProject;
 import fr.lauparr.pplanner.server.services.SrvProject;
 import fr.lauparr.pplanner.server.services.SrvProjectMenuItem;
 import fr.lauparr.pplanner.server.services.utils.SrvJpaUtils;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,8 +25,8 @@ public class CtrlProject {
 	private SrvProjectMenuItem srvProjectMenuItem;
 
 	@GetMapping
-	public Page<ProjProject> findAll(final Pageable page) {
-		return this.srvJpaUtils.convertPageDto(this.srvProject.findAllProject(page), ProjProject.class);
+	public List<ProjProject> findAllByCreatorAndMember(@AuthenticationPrincipal final User user) {
+		return this.srvJpaUtils.convertListDto(this.srvProject.findAllByCreatorAndMember(user), ProjProject.class);
 	}
 
 	@GetMapping("/{projectId}")
@@ -37,8 +35,18 @@ public class CtrlProject {
 	}
 
 	@GetMapping("/{id}/workspaces")
-	public List<ProjMenuItem> findAllWorkspaceByProjectId(@PathVariable final String id) {
-		return this.srvJpaUtils.convertListDto(this.srvProjectMenuItem.findAllWorkspaceByProjectId(id), ProjMenuItem.class);
+	public List<ProjMenuItem> findAllWorkspaceByProjectId(@PathVariable final String id, @AuthenticationPrincipal final User user) {
+		return this.srvJpaUtils.convertListDto(this.srvProjectMenuItem.findAllWorkspaceByProjectId(id, user), ProjMenuItem.class);
+	}
+
+	@PostMapping
+	public void createProject(@RequestBody final ParamsCreateProject params) {
+		this.srvProject.createProject(params);
+	}
+
+	@Data
+	public static class ParamsCreateProject {
+		private String name;
 	}
 
 }

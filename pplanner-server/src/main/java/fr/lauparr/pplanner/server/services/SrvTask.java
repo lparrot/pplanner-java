@@ -46,8 +46,11 @@ public class SrvTask {
 	}
 
 	public void updateTaskStatus(final String taskId, final String statusId) {
+		TaskStatus newStatus = null;
+		if (!"0".equals(statusId)) {
+			newStatus = this.daoTaskStatus.findById(statusId).orElseThrow(NotFoundException::new);
+		}
 		final Task task = this.daoTask.findById(taskId).orElseThrow(NotFoundException::new);
-		final TaskStatus newStatus = this.daoTaskStatus.findById(statusId).orElseThrow(NotFoundException::new);
 		task.setStatus(newStatus);
 		this.daoTask.save(task);
 	}

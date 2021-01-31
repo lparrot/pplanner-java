@@ -1,5 +1,6 @@
 package fr.lauparr.pplanner.server.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import fr.lauparr.pplanner.server.entities.abstracts.BaseEntity;
 import lombok.*;
@@ -15,7 +16,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "members")
-@EqualsAndHashCode(callSuper = true)
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Member extends BaseEntity {
 
 	private String email;
@@ -38,4 +40,11 @@ public class Member extends BaseEntity {
 		this.job = job;
 		this.tasks = tasks;
 	}
+
+	@JsonIgnore
+	public String getFullname() {
+		return (this.getLastname() + ' ' + this.getFirstname()).trim();
+	}
 }
+
+

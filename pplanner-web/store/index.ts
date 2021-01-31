@@ -70,4 +70,11 @@ export const actions: ActionTree<RootState, RootState> = {
 		commit('SET_PROJECT', id)
 		localStorage.setItem(`pplanner.project`, id)
 	},
+
+	async selectFirstProject ({ dispatch }) {
+		const res = await this.$api.projects.findAllByCreatorAndMember()
+		if (res.length > 0) {
+			await dispatch('selectProject', res[0].id)
+		}
+	}
 }

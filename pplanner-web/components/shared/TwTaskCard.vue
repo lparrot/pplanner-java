@@ -7,7 +7,7 @@
 		</div>
 		<div class="flex mt-4 justify-between items-center">
 			<span class="text-sm text-gray-600">{{ task.createdAt }}</span>
-			<tw-badge v-if="task.status != null" :color="task.status.color">{{ task.status.name }}</tw-badge>
+			<tw-badge color="primary">{{ task.creatorName }}</tw-badge>
 		</div>
 	</div>
 </template>

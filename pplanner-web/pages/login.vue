@@ -43,8 +43,7 @@ export default class PageLogin extends Vue {
 
 				// TODO : A supprimer à terme
 				if (this.activeProject == null) {
-					const res = await this.$api.projects.findAll()
-					await this.$store.dispatch('selectProject', res.content[0].id)
+					await this.$store.dispatch('selectFirstProject')
 				}
 
 				await this.$router.push({ name: 'tasks' })

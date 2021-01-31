@@ -10,7 +10,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "groups")
-@EqualsAndHashCode(callSuper = true)
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Group extends BaseEntity {
 
 	private String name;

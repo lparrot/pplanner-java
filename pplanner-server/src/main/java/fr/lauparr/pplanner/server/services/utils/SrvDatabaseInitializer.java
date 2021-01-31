@@ -6,14 +6,14 @@ import fr.lauparr.pplanner.server.entities.*;
 import fr.lauparr.pplanner.server.enums.ProjectMenuItemType;
 import fr.lauparr.pplanner.server.enums.TaskStatusType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.IntStream;
 
 @Service
@@ -55,6 +55,8 @@ public class SrvDatabaseInitializer {
 			final User root = User.builder().email("kestounet@gmail.com").group(admin).member(rootMember).build();
 			root.setPassword(this.passwordEncoder.encode("123"));
 			this.daoUser.save(root);
+
+			this.authenticate(root);
 
 			// Projects
 			Project cdadr = Project.builder().name("CDAD-R").build();
@@ -117,7 +119,48 @@ public class SrvDatabaseInitializer {
 				this.daoProject.save(cdadr);
 			}
 
+			SecurityContextHolder.clearContext();
+
 		}
+	}
+
+	public void authenticate(final User user) {
+		SecurityContextHolder.getContext().setAuthentication(new Authentication() {
+			@Override
+			public Collection<? extends GrantedAuthority> getAuthorities() {
+				return user.getAuthorities();
+			}
+
+			@Override
+			public Object getCredentials() {
+				return user.getPassword();
+			}
+
+			@Override
+			public Object getDetails() {
+				return user;
+			}
+
+			@Override
+			public Object getPrincipal() {
+				return user;
+			}
+
+			@Override
+			public boolean isAuthenticated() {
+				return true;
+			}
+
+			@Override
+			public void setAuthenticated(final boolean isAuthenticated) throws IllegalArgumentException {
+
+			}
+
+			@Override
+			public String getName() {
+				return user.getEmail();
+			}
+		});
 	}
 
 }

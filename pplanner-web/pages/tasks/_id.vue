@@ -62,6 +62,7 @@ import AppTaskCreate from "~/components/app/AppTaskCreate.vue";
 
 
 @Component({
+	watchQuery: [ 'view' ],
 	components: {
 		AppTaskCreate,
 		AppProjectMenuItemContainer,
@@ -105,24 +106,25 @@ export default class PageTaskIndex extends Vue {
 
 	async fetch () {
 		if (this.activeProject == null) {
-			return;
+			return this.$router.push('/tasks');
 		}
 
 		if (this.activeMenu == null) {
 			// Si pas de paramètre, on récupère le premier workspace créé. S'il n'y en a pas, alors on retourne vide
-			const firstWorkspace = await this.$api.items.findFirstWorkspaceByProjectId(this.activeProject)
-
-			if (firstWorkspace != null) {
+			try {
+				const firstWorkspace = await this.$api.items.findFirstWorkspaceByProjectId(this.activeProject)
 				await this.selectMenu(firstWorkspace.id)
 				return this.$router.push(`/tasks/${ firstWorkspace.id }?view=list`)
+			} catch (err) {
+				return this.$router.push('/tasks')
 			}
-		}
-
-		if (this.activeMenu == null) {
+		} else {
 			await this.selectMenu(this.activeMenu)
 		}
 
-		this.menuItem = await this.$api.items.findById(this.activeMenu)
+		if (this.activeMenu != null) {
+			this.menuItem = await this.$api.items.findById(this.activeMenu)
+		}
 
 		this.$bus.$on('on-select-view-tab', (event) => {
 			this.$router.push({ name: 'tasks-id', params: { id: this.$route.params.id }, query: { view: event.name } })

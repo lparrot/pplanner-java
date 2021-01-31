@@ -4,14 +4,21 @@ import { ApiLog } from '~/decorators/ApiLog'
 @ApiLog
 export class TasksApi extends Repository {
 	findAllTasksByMenuItemId (itemId: string) {
+		if (itemId == null) {
+			return []
+		}
 		return this.axios.$get(`/tasks/items/${ itemId }`)
 	}
 
 	createTask (task: Models.TaskEdit) {
-		return this.axios.$post('/tasks/items/' + task.item.id, task)
+		if (task != null && task.item != null && task.item.id != null) {
+			return this.axios.$post('/tasks/items/' + task.item.id, task)
+		}
 	}
 
-	updateStatus (taskId, statusId) {
-		return this.axios.$put(`/tasks/${ taskId }/status/${ statusId }`)
+	updateTaskStatus (taskId, statusId) {
+		if (taskId != null && statusId != null) {
+			return this.axios.$put(`/tasks/${ taskId }/status/${ statusId }`)
+		}
 	}
 }

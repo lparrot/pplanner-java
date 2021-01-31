@@ -2,10 +2,7 @@ package fr.lauparr.pplanner.server.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import fr.lauparr.pplanner.server.entities.abstracts.BaseEntity;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
@@ -18,7 +15,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "tasks")
-@EqualsAndHashCode(callSuper = true)
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class Task extends BaseEntity {
 
 	private String name;
@@ -66,3 +64,4 @@ public class Task extends BaseEntity {
 		return this;
 	}
 }
+

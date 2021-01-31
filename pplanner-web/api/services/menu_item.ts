@@ -3,15 +3,17 @@ import { ApiLog } from '~/decorators/ApiLog'
 
 @ApiLog
 export class MenuItemsApi extends Repository {
-	findAllByProjectId (id: string) {
-		return this.axios.$get(`/projects/${ id }/workspaces`)
-	}
-
-	findById (id: string) {
-		return this.axios.$get(`/items/${ id }`)
+	findById (itemId: string) {
+		if (itemId == null) {
+			return null
+		}
+		return this.axios.$get(`/items/${ itemId }`)
 	}
 
 	findFirstWorkspaceByProjectId (projectId: string) {
+		if (projectId == null) {
+			return []
+		}
 		return this.axios.$get(`/items/projects/${ projectId }/first`)
 	}
 }

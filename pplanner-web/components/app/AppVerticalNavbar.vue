@@ -1,16 +1,21 @@
 <template>
-	<div class="flex">
-		<div class="flex flex-col w-16 h-full py-4 justify-start items-center bg-primary text-white overflow-auto">
+	<div class="flex text-primary-200 border-primary-200">
+		<div class="flex flex-col w-16 h-full py-4 justify-start items-center bg-primary overflow-auto">
 			<router-link to="/">
 				<img alt="logo" class="w-8 p-1 mb-8 bg-white rounded" src="/logo.png">
 			</router-link>
 
-			<div id="navbar-content" class="h-full flex flex-col items-center justify-between">
-				<div class="flex flex-col gap-6 text-xl">
-					<router-link v-for="(item, itemIndex) in items" :key="itemIndex" :title="item.name" :to="item.to">
-						<i :class="item.icon" class="with-bubble"></i>
-					</router-link>
+			<div id="navbar-content" class="h-full flex flex-col justify-between">
+				<div class="flex flex-col gap-6 text-xl text-center">
+					<template v-for="(item, itemIndex) in items">
+						<div v-if="item.type === 'divider'" class="px-4 border-b"></div>
+						<slot v-else-if="item.type === 'slot'" :name="item.name"></slot>
+						<router-link v-else :key="itemIndex" :title="item.name" :to="item.to">
+							<i :class="item.icon" class="with-bubble"></i>
+						</router-link>
+					</template>
 				</div>
+
 				<div class="flex flex-col gap-6 items-center text-xl">
 					<slot name="bottom-icons"></slot>
 					<hr class="w-full text-gray-700">

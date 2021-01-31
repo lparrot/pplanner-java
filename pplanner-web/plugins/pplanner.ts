@@ -1,0 +1,8 @@
+import { Context } from '@nuxt/types'
+import Vue from 'vue'
+
+export default async (ctx: Context, inject) => {
+	Vue.config.errorHandler = (err, vm, info) => {
+		console.log(err, vm, info)
+	}
+}

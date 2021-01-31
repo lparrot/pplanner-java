@@ -15,9 +15,9 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "projects_menu_items")
-@EqualsAndHashCode(callSuper = true)
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class ProjectMenuItem extends BaseEntity {
 
 	private String name;

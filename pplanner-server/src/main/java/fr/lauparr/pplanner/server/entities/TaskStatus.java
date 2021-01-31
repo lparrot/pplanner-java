@@ -4,10 +4,7 @@ package fr.lauparr.pplanner.server.entities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import fr.lauparr.pplanner.server.entities.abstracts.BaseEntity;
 import fr.lauparr.pplanner.server.enums.TaskStatusType;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
@@ -17,7 +14,8 @@ import java.math.BigDecimal;
 @Entity
 @NoArgsConstructor
 @Table(name = "tasks_status")
-@EqualsAndHashCode(callSuper = true)
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class TaskStatus extends BaseEntity {
 
 	private String name;

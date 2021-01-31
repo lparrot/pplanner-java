@@ -58,7 +58,7 @@ export default class AppViewListItem extends Vue {
 
 	async handleChangeDragTask (e) {
 		if (e.added) {
-			await this.$api.tasks.updateStatus(e.added.element.id, this.item.status.id)
+			await this.$api.tasks.updateTaskStatus(e.added.element.id, this.item.status.id)
 		}
 	}
 }

@@ -3,6 +3,7 @@ declare namespace Models {
 		name: string
 		to: string | object
 		icon: string
+		type?: 'divider' | 'slot'
 	}
 
 	interface ProjectMenuItem {
