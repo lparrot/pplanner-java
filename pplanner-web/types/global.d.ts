@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { Auth } from '@nuxtjs/auth-next'
 
 declare global {
 	declare module 'vue-fragment' {
@@ -24,7 +25,7 @@ declare module 'vue/types/vue' {
 declare module 'vue/types/options' {
 	// option dans le composant
 	interface ComponentOptions<V extends Vue> {
-		auth?: boolean;
+		auth?: Auth;
 	}
 }
 

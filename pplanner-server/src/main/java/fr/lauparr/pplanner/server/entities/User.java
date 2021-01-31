@@ -9,11 +9,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
@@ -33,10 +32,14 @@ public class User extends BaseEntity implements UserDetails {
 	@ManyToOne
 	private Group group;
 
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	private Member member;
+
 	@Builder
-	public User(@NotBlank final String email, final Group group) {
+	public User(@NotBlank final String email, final Group group, final Member member) {
 		this.email = email;
 		this.group = group;
+		this.member = member;
 	}
 
 	public Claims getClaims() {
@@ -52,6 +55,9 @@ public class User extends BaseEntity implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		if (this.group == null) {
+			return AuthorityUtils.NO_AUTHORITIES;
+		}
 		return this.group.getRoles();
 	}
 

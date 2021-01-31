@@ -8,7 +8,7 @@
 
 			<div>
 				<draggable :animation="200" :list="item.tasks" group="tasks" @change="handleChangeDragTask">
-					<div v-for="task in item.tasks" :key="task.id" class="mb-1 bg-white shadow rounded p-2 text-base">
+					<div v-for="task in item.tasks" :key="task.id" class="bg-white rounded p-2 text-base shadow-inner">
 						{{ task.name }}
 					</div>
 				</draggable>

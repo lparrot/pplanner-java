@@ -1,9 +1,12 @@
 package fr.lauparr.pplanner.server.exceptions;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.logging.Level;
 
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class MessageException extends RuntimeException {
 
 	@Getter

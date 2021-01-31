@@ -50,7 +50,9 @@ public class SrvDatabaseInitializer {
 			this.daoGroup.save(user);
 
 			// Users
-			final User root = User.builder().email("kestounet@gmail.com").group(admin).build();
+			final Member rootMember = Member.builder().email("kestounet@gmail.com").lastname("Parrot").firstname("Laurent").build();
+
+			final User root = User.builder().email("kestounet@gmail.com").group(admin).member(rootMember).build();
 			root.setPassword(this.passwordEncoder.encode("123"));
 			this.daoUser.save(root);
 
@@ -100,7 +102,11 @@ public class SrvDatabaseInitializer {
 
 				IntStream.range(1, 10).forEach(value -> {
 					final int index = random.nextInt(allStatus.size());
-					projectMenuItem.addTask(Task.builder().name("Tache " + value).description("Description tache " + value).status(allStatus.get(index)).build());
+
+					final Task task = Task.builder().name("Tache " + value).description("Description tache " + value).status(allStatus.get(index)).assignee(rootMember).build();
+					task.addComment(TaskComment.builder().author(rootMember).text(faker.lorem().paragraph()).build())
+						.addComment(TaskComment.builder().author(rootMember).text(faker.lorem().paragraph()).build());
+					projectMenuItem.addTask(task);
 				});
 			});
 

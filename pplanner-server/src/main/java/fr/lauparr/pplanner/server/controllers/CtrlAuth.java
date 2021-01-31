@@ -1,6 +1,7 @@
 package fr.lauparr.pplanner.server.controllers;
 
 import fr.lauparr.pplanner.server.dto.JwtToken;
+import fr.lauparr.pplanner.server.entities.User;
 import fr.lauparr.pplanner.server.projections.UserProj;
 import fr.lauparr.pplanner.server.security.SrvToken;
 import fr.lauparr.pplanner.server.services.SrvSecurity;
@@ -33,7 +34,7 @@ public class CtrlAuth {
 
 	@PostMapping("/login")
 
-	public JwtToken postLogin(@RequestBody final SecurityPostLoginParams params) {
+	public JwtToken login(@RequestBody final ParamsSecurityLogin params) {
 		return this.srvSecurity.login(params.getUsername(), params.getPassword());
 	}
 
@@ -47,9 +48,24 @@ public class CtrlAuth {
 		return this.srvJpaUtils.convertToDto(this.srvSecurity.getUserData(principal.getName()), UserProj.class);
 	}
 
+	@PostMapping
+	public String createAccount(@RequestBody final ParamsSecurityCreateAccount params) {
+		final User user = this.srvSecurity.createAccount(params);
+		return this.srvToken.createToken(user);
+	}
+
 	@Data
-	public static class SecurityPostLoginParams {
+	public static class ParamsSecurityLogin {
 		private String username;
 		private String password;
+	}
+
+	@Data
+	public static class ParamsSecurityCreateAccount {
+		private String email;
+		private String password;
+		private String firstname;
+		private String lastname;
+		private String job;
 	}
 }

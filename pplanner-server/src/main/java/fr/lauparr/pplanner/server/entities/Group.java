@@ -16,6 +16,7 @@ public class Group extends BaseEntity {
 	private String name;
 
 	@Enumerated(EnumType.STRING)
+	@CollectionTable(name = "groups_roles")
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<Role> roles;
 
