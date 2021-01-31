@@ -23,6 +23,9 @@ public class SrvJpaUtils {
 	private SpelAwareProxyProjectionFactory projectionFactory;
 
 	public <T> T convertToDto(final Object data, final Class<T> clazz) {
+		if (data == null) {
+			return null;
+		}
 		return this.projectionFactory.createProjection(clazz, data);
 	}
 

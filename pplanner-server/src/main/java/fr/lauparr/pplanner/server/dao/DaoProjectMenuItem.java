@@ -14,6 +14,9 @@ public interface DaoProjectMenuItem extends JpaRepository<ProjectMenuItem, Strin
 	@Query("select i from ProjectMenuItem i where i.id = ?1 and i.createdBy = ?2")
 	Optional<ProjectMenuItem> findById(String itemId, User user);
 
+	@Query("select i from ProjectMenuItem  i where i.id = ?1 and i.project.id = ?2 and i.createdBy = ?3")
+	Optional<ProjectMenuItem> findByIdAndProjectId(String itemId, String projectId, User user);
+
 	@Query("select i from ProjectMenuItem i where i.project.id = ?1 and i.type = 'WORKSPACE' and i.deletedAt is null and i.createdBy = ?2 order by i.orderIndex")
 	List<ProjectMenuItem> findAllWorkspaceByProjectId(String projectId, User user);
 }

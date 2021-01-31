@@ -20,9 +20,14 @@ public class CtrlProjectMenuItem {
 	@Autowired
 	private SrvProjectMenuItem srvProjectMenuItem;
 
-	@GetMapping("/{projectId}")
-	public ProjMenuItem findById(@PathVariable final String projectId, @AuthenticationPrincipal final User user) {
-		return this.srvJpaUtils.convertToDto(this.srvProjectMenuItem.findById(projectId, user), ProjMenuItem.class);
+	@GetMapping("/{itemId}")
+	public ProjMenuItem findById(@PathVariable final String itemId, @AuthenticationPrincipal final User user) {
+		return this.srvJpaUtils.convertToDto(this.srvProjectMenuItem.findById(itemId, user), ProjMenuItem.class);
+	}
+
+	@GetMapping("/{itemId}/projects/{projectId}")
+	public ProjMenuItem findByIdAndProjectId(@PathVariable final String itemId, @PathVariable final String projectId, @AuthenticationPrincipal final User user) {
+		return this.srvJpaUtils.convertToDto(this.srvProjectMenuItem.findByIdAndProjectId(itemId, projectId, user), ProjMenuItem.class);
 	}
 
 	@GetMapping("/projects/{projectId}/first")

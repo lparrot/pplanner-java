@@ -6,7 +6,7 @@ public interface ProjFavorite {
 
 	String getId();
 
-	@Value("#{target.user.id}")
+	@Value("#{target.createdBy?.id}")
 	String getUserId();
 
 	@Value("#{target.menuItem.id}")

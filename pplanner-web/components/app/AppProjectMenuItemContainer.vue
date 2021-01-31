@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Provide, Vue } from "nuxt-property-decorator";
+import { Component, Getter, Prop, Provide, Vue, Watch } from "nuxt-property-decorator";
 import AppProjectMenuItem from "~/components/app/AppProjectMenuItem.vue";
 import { VModel } from "vue-property-decorator";
 
@@ -23,14 +23,21 @@ export default class AppProjectMenuItemContainer extends Vue {
 
 	@VModel() model: Models.ProjectMenuItem
 
+	@Getter('activeProject') activeProject
+
 	public workspaces: Models.ProjectMenuItem[] = []
 
-	async created () {
-		this.workspaces = await this.$api.projects.findAllWorkspaceByProjectId(this.$store.getters.activeProject)
+	async fetch () {
+		this.workspaces = await this.$api.projects.findAllWorkspaceByProjectId(this.activeProject)
 	}
 
 	setModel (item: Models.ProjectMenuItem) {
 		this.model = item
+	}
+
+	@Watch('activeProject')
+	public async onChangeActiveProject (val, old) {
+		await this.$fetch()
 	}
 }
 </script>

@@ -91,9 +91,9 @@ public class SrvDatabaseInitializer {
 			cdadr = this.daoProject.save(cdadr);
 
 			// Favorites
-			final Favorite favorite1 = Favorite.builder().user(root).menuItem(ccs).build();
-			final Favorite favorite2 = Favorite.builder().user(root).menuItem(sprints).build();
-			final Favorite favorite3 = Favorite.builder().user(root).menuItem(sprint3).build();
+			final Favorite favorite1 = Favorite.builder().menuItem(ccs).build();
+			final Favorite favorite2 = Favorite.builder().menuItem(sprints).build();
+			final Favorite favorite3 = Favorite.builder().menuItem(sprint3).build();
 
 			this.daoFavorite.saveAll(Arrays.asList(favorite1, favorite2, favorite3));
 

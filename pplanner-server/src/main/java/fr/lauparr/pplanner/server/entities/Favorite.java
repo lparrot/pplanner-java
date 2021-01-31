@@ -17,14 +17,10 @@ import javax.persistence.Table;
 public class Favorite extends BaseEntity {
 
 	@ManyToOne(cascade = {CascadeType.REFRESH})
-	private User user;
-
-	@ManyToOne(cascade = {CascadeType.REFRESH})
 	private ProjectMenuItem menuItem;
 
 	@Builder
-	public Favorite(final User user, final ProjectMenuItem menuItem) {
-		this.user = user;
+	public Favorite(final ProjectMenuItem menuItem) {
 		this.menuItem = menuItem;
 	}
 }

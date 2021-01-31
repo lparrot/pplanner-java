@@ -84,7 +84,6 @@ export default class PageParentTask extends Vue {
 
 	public visible: boolean = true
 	public favorites: any[] = []
-	public initialized = false
 
 	public show = {
 		favoriteActions: false,
@@ -99,7 +98,7 @@ export default class PageParentTask extends Vue {
 
 	async handleClickDeleteFavorite (favorite) {
 		await this.$api.favorites.delete(favorite.id)
-		this.$bus.$emit('pplanner:update-favorites')
+		this.$bus.$emit('pplanner:favorites_update')
 	}
 
 	async handleSelectMenuItem (item) {
@@ -108,23 +107,15 @@ export default class PageParentTask extends Vue {
 	}
 
 	async fetch () {
-		if (this.$store.getters.activeMenu != null) {
-			await this.selectMenu(this.$store.getters.activeMenu)
+		if (this.activeMenu != null && this.$route.params.id == null) {
+			this.$router.push({ name: 'tasks-id', params: { id: this.activeMenu }, query: { view: 'list' } })
 		}
 
-		this.favorites = await this.$api.favorites.findAllByProjectId()
-
-		if (this.activeProject != null && (this.$route.params.id == null || this.$route.query.view == null)) {
-			await this.$router.push(`/tasks/${ this.activeMenu }?view=list`)
-		}
-
-		this.initialized = true
-	}
-
-	created () {
-		this.$bus.$on('pplanner:update-favorites', async () => {
+		this.$bus.$on('pplanner:favorites_update', async () => {
 			this.favorites = await this.$api.favorites.findAllByProjectId()
 		})
+
+		this.$bus.$emit('pplanner:favorites_update')
 	}
 }
 </script>

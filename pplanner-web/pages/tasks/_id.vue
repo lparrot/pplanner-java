@@ -109,17 +109,19 @@ export default class PageTaskIndex extends Vue {
 			return this.$router.push('/tasks');
 		}
 
-		if (this.activeMenu == null) {
-			// Si pas de paramètre, on récupère le premier workspace créé. S'il n'y en a pas, alors on retourne vide
-			try {
+		try {
+			if (this.activeMenu == null) {
+				// Si pas de paramètre, on récupère le premier workspace créé. S'il n'y en a pas, alors on retourne vide
 				const firstWorkspace = await this.$api.items.findFirstWorkspaceByProjectId(this.activeProject)
 				await this.selectMenu(firstWorkspace.id)
 				return this.$router.push(`/tasks/${ firstWorkspace.id }?view=list`)
-			} catch (err) {
-				return this.$router.push('/tasks')
+			} else {
+				await this.$api.items.findByIdAndProjectId(this.activeMenu, this.activeProject)
+				await this.selectMenu(this.activeMenu)
 			}
-		} else {
-			await this.selectMenu(this.activeMenu)
+		} catch (err) {
+			this.selectMenu(null)
+			return this.$router.push('/tasks')
 		}
 
 		if (this.activeMenu != null) {
@@ -150,7 +152,7 @@ export default class PageTaskIndex extends Vue {
 		if (valid) {
 			await this.$api.tasks.createTask(this.task)
 			this.showModalEditTask = false
-			this.$root.$emit('pplanner:update-task-list')
+			this.$root.$emit('pplanner:tasks_update')
 		}
 	}
 }

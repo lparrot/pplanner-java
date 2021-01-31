@@ -22,7 +22,7 @@ public class SrvProject {
 	}
 
 	public Project findById(final String projectId) {
-		return this.daoProject.findById(projectId).orElseThrow(() -> new NotFoundException("Le projet n'existe pas"));
+		return this.daoProject.findById(projectId).orElseThrow(NotFoundException::new);
 	}
 
 	@Transactional

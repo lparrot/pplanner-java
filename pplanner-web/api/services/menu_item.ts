@@ -10,6 +10,13 @@ export class MenuItemsApi extends Repository {
 		return this.axios.$get(`/items/${ itemId }`)
 	}
 
+	findByIdAndProjectId (itemId: string, projectId: string) {
+		if (itemId == null || projectId == null) {
+			return null
+		}
+		return this.axios.$get(`/items/${ itemId }/projects/${ projectId }`)
+	}
+
 	findFirstWorkspaceByProjectId (projectId: string) {
 		if (projectId == null) {
 			return []

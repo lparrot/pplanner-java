@@ -3,7 +3,6 @@ package fr.lauparr.pplanner.server.services;
 import fr.lauparr.pplanner.server.controllers.CtrlFavorite;
 import fr.lauparr.pplanner.server.dao.DaoFavorite;
 import fr.lauparr.pplanner.server.dao.DaoProjectMenuItem;
-import fr.lauparr.pplanner.server.dao.DaoUser;
 import fr.lauparr.pplanner.server.entities.Favorite;
 import fr.lauparr.pplanner.server.entities.ProjectMenuItem;
 import fr.lauparr.pplanner.server.entities.User;
@@ -19,28 +18,25 @@ public class SrvFavorite {
 	@Autowired
 	private DaoFavorite daoFavorite;
 	@Autowired
-	private DaoUser daoUser;
-	@Autowired
 	private DaoProjectMenuItem daoProjectMenuItem;
 
-	public List<Favorite> findAllFavoriteByUserIdAndProjectId(final String userId, final String projectId) {
-		return this.daoFavorite.findAllFavoriteByUserIdAndProjectId(userId, projectId);
+	public List<Favorite> findAllFavoriteByProjectId(final String projectId, final User user) {
+		return this.daoFavorite.findAllFavoriteByProjectId(projectId, user);
 	}
 
-	public void createFavorite(final CtrlFavorite.ParamsCreateFavorite params) {
-		if (this.daoFavorite.existsByUserIdAndMenuId(params.getUserId(), params.getMenuId())) {
+	public void createFavorite(final CtrlFavorite.ParamsCreateFavorite params, final User user) {
+		if (this.daoFavorite.existsByMenuId(params.getMenuId(), user)) {
 			return;
 		}
 
-		final User user = this.daoUser.findById(params.getUserId()).orElseThrow(() -> new NotFoundException("L'utilisateur n'existe pas"));
-		final ProjectMenuItem projectMenuItem = this.daoProjectMenuItem.findById(params.getMenuId()).orElseThrow(() -> new NotFoundException("Le menu n'existe pas"));
+		final ProjectMenuItem projectMenuItem = this.daoProjectMenuItem.findById(params.getMenuId()).orElseThrow(NotFoundException::new);
 
-		final Favorite favorite = Favorite.builder().user(user).menuItem(projectMenuItem).build();
+		final Favorite favorite = Favorite.builder().menuItem(projectMenuItem).build();
 		this.daoFavorite.save(favorite);
 	}
 
 	public void deleteFavorite(final String favoriteId) {
-		final Favorite favorite = this.daoFavorite.findById(favoriteId).orElseThrow(() -> new NotFoundException("Le favoris n'existe pas"));
+		final Favorite favorite = this.daoFavorite.findById(favoriteId).orElseThrow(NotFoundException::new);
 
 		favorite.delete();
 		this.daoFavorite.save(favorite);

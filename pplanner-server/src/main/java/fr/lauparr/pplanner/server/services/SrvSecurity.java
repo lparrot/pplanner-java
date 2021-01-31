@@ -46,7 +46,7 @@ public class SrvSecurity {
 	}
 
 	public User getUserData(final String name) {
-		return this.daoUser.findByEmailAndDeletedAtIsNull(name).orElseThrow(() -> new NotFoundException("L'utilisateur n'existe pas "));
+		return this.daoUser.findByEmailAndDeletedAtIsNull(name).orElseThrow(NotFoundException::new);
 	}
 
 	public User createAccount(final CtrlAuth.ParamsSecurityCreateAccount params) {

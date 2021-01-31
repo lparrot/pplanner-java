@@ -127,7 +127,7 @@ export default class AppProjectMenuItem extends Vue {
 
 	async handleClickAddFavorite () {
 		await this.$api.favorites.create(this.item.id)
-		this.$bus.$emit('pplanner:update-favorites')
+		this.$bus.$emit('pplanner:favorites_update')
 	}
 }
 </script>

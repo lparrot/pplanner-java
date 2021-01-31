@@ -32,7 +32,7 @@ public class SrvTask {
 		final Task task = new Task();
 		task.setName(params.getName());
 		task.setDescription(params.getDescription());
-		task.setItem(this.daoProjectMenuItem.findById(itemId).orElseThrow(() -> new NotFoundException("Le menu n'existe pas")));
+		task.setItem(this.daoProjectMenuItem.findById(itemId).orElseThrow(NotFoundException::new));
 		this.daoTask.save(task);
 	}
 

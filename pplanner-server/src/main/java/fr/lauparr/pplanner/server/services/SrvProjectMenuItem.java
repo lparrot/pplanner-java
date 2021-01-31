@@ -15,8 +15,12 @@ public class SrvProjectMenuItem {
 	@Autowired
 	private DaoProjectMenuItem daoProjectMenuItem;
 
-	public ProjectMenuItem findById(final String projectId, final User user) {
-		return this.daoProjectMenuItem.findById(projectId, user).orElseThrow(() -> new NotFoundException("Le menu n'existe pas"));
+	public ProjectMenuItem findById(final String itemId, final User user) {
+		return this.daoProjectMenuItem.findById(itemId, user).orElseThrow(NotFoundException::new);
+	}
+
+	public ProjectMenuItem findByIdAndProjectId(final String itemId, final String projectId, final User user) {
+		return this.daoProjectMenuItem.findByIdAndProjectId(itemId, projectId, user).orElseThrow(NotFoundException::new);
 	}
 
 	public List<ProjectMenuItem> findAllWorkspaceByProjectId(final String projectId, final User user) {

@@ -7,7 +7,7 @@
 
 			<template #projects>
 				<div class="flex flex-col gap-2">
-					<div v-for="project in projects" class="p-2 cursor-pointer rounded bg-secondary-400 text-white" @click="handleSelectProject(project)">{{ project.name.substring(0, 1) }}</div>
+					<div v-for="project in projects" :class="{'bg-info-400': activeProject === project.id}" class="p-2 cursor-pointer rounded bg-secondary-400 text-white" @click="handleSelectProject(project)">{{ project.name.substring(0, 1) }}</div>
 					<div class="p-2 cursor-pointer rounded text-base" @click="handleShowModalCreateProject">
 						<i class="fas fa-plus"></i>
 					</div>
@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { Action, Component, Ref, Vue } from 'nuxt-property-decorator'
+import { Action, Component, Getter, Ref, Vue } from 'nuxt-property-decorator'
 import AppVerticalNavbar from "~/components/app/AppVerticalNavbar.vue";
 import TwModal from "~/components/shared/TwModal.vue";
 import TwInputText from "~/components/shared/TwInputText.vue";
@@ -52,7 +52,10 @@ export default class LayoutDefault extends Vue {
 
 	@Ref('validator') validator
 
+	@Getter('activeMenu') activeMenu
+	@Getter('activeProject') activeProject
 	@Action('logout') logout
+	@Action('initialize') initialize
 	@Action('selectProject') selectProject
 
 	public items: Partial<Models.PVerticalNavbarItem>[] = []
@@ -80,8 +83,11 @@ export default class LayoutDefault extends Vue {
 
 	async handleSelectProject (project) {
 		await this.selectProject(project.id)
-		await this.$router.push('/tasks')
-		this.$fetch()
+		if (this.activeMenu != null) {
+			await this.$router.push({ name: 'tasks-id', params: { id: this.activeMenu }, query: { view: 'list' } })
+		} else {
+			await this.$router.push('/tasks')
+		}
 	}
 
 	async handleShowModalCreateProject () {

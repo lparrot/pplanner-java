@@ -56,6 +56,10 @@ export const actions: ActionTree<RootState, RootState> = {
 		}
 	},
 
+	async refreshData () {
+		console.log(this)
+	},
+
 	async logout () {
 		await this.$auth.logout()
 		await this.$router.push('/login')
@@ -63,12 +67,21 @@ export const actions: ActionTree<RootState, RootState> = {
 
 	async selectMenu ({ getters, commit }, id) {
 		commit('SET_MENU', id)
-		localStorage.setItem(`pplanner.menu-${ getters.activeProject }`, id)
+		if (id == null) {
+			localStorage.removeItem(`pplanner.menu-${ getters.activeProject }`)
+		} else {
+			localStorage.setItem(`pplanner.menu-${ getters.activeProject }`, id)
+		}
 	},
 
 	async selectProject ({ commit }, id) {
 		commit('SET_PROJECT', id)
-		localStorage.setItem(`pplanner.project`, id)
+		commit('SET_MENU', null)
+		if (id == null) {
+			localStorage.removeItem(`pplanner.project`)
+		} else {
+			localStorage.setItem(`pplanner.project`, id)
+		}
 	},
 
 	async selectFirstProject ({ dispatch }) {
