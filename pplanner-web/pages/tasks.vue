@@ -44,7 +44,7 @@
 
 				<app-project-menu-item-container editable @input="handleSelectMenuItem"></app-project-menu-item-container>
 
-				<div class="text-gray-400 hover:text-secondary cursor-pointer mt-4">
+				<div class="text-gray-400 hover:text-secondary cursor-pointer mt-4" @click="handleShowModalCreateNewWorkspace">
 					<i class="fas fa-plus mr-2"></i>
 					<span>Nouvel espace de travail</span>
 				</div>
@@ -54,20 +54,38 @@
 		<div class="p-container h-full overflow-auto">
 			<nuxt-child :key="$route.fullPath"></nuxt-child>
 		</div>
+
+		<validation-observer ref="validator_newWorkspace" tag="form" @submit.prevent="handleSubmitCreateNewWorkspace">
+			<template v-if="newWorkspace != null">
+				<tw-modal :visible.sync="modals.createNewWorkspace" title="Création d'un nouvel espace de travail">
+
+					<validation-provider #default="{invalid, errors}" name="nom" rules="required">
+						<tw-input-text v-model="newWorkspace.name" :error="invalid" :error-message="errors[0]" label="Nom de l'espace de travail" required></tw-input-text>
+					</validation-provider>
+
+					<template #actions>
+						<button class="p-btn p-btn--primary" @click="modals.createNewWorkspace = false">Annuler</button>
+						<button class="p-btn p-btn--secondary" type="submit">Créer</button>
+					</template>
+				</tw-modal>
+			</template>
+		</validation-observer>
 	</fragment>
 </template>
 
 <script lang="ts">
-import { Action, Component, Getter, Vue } from "nuxt-property-decorator";
+import { Action, Component, Getter, Ref, Vue } from "nuxt-property-decorator";
 import AppVerticalMenu from "../components/app/AppVerticalMenu.vue";
 import { Fragment } from 'vue-fragment'
 import AppProjectMenuItem from "~/components/app/AppProjectMenuItem.vue";
 import TwModal from "~/components/shared/TwModal.vue";
 import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
 import TwDropdown from "~/components/shared/TwDropdown.vue";
+import TwInputText from "~/components/shared/TwInputText.vue";
 
 @Component({
 	components: {
+		TwInputText,
 		AppProjectMenuItemContainer,
 		AppProjectMenuItem,
 		AppVerticalMenu,
@@ -78,13 +96,16 @@ import TwDropdown from "~/components/shared/TwDropdown.vue";
 })
 export default class PageParentTask extends Vue {
 
+	@Ref('validator_newWorkspace') validatorNewWorkspace
+
 	@Action('goToTaskIdListPage') goToTaskIdListPage
 	@Action('selectMenu') selectMenu
 	@Getter('activeProject') activeProject
 	@Getter('activeMenu') activeMenu
 
-	public visible: boolean = true
+	public newWorkspace = null
 	public favorites: any[] = []
+	public visible: boolean = true
 
 	public show = {
 		favoriteActions: false,
@@ -92,8 +113,24 @@ export default class PageParentTask extends Vue {
 		workspaceActions: false,
 	}
 
-	async handleClickFavorite (favorite) {
-		await this.selectMenu(favorite.menuItemId)
+	public modals = {
+		createNewWorkspace: false
+	}
+
+	async fetch () {
+		if (this.activeMenu != null && this.$route.params.id == null) {
+			await this.goToTaskIdListPage()
+		}
+
+		this.$bus.$on('pplanner:favorites_update', async () => {
+			this.favorites = await this.$api.favorites.findAllByProjectId()
+		})
+
+		this.$bus.$emit('pplanner:favorites_update')
+	}
+
+	handleClickFavorite (favorite) {
+		this.selectMenu(favorite.menuItemId)
 		await this.goToTaskIdListPage()
 	}
 
@@ -107,16 +144,19 @@ export default class PageParentTask extends Vue {
 		await this.goToTaskIdListPage()
 	}
 
-	async fetch () {
-		if (this.activeMenu != null && this.$route.params.id == null) {
-			await this.goToTaskIdListPage()
+	handleShowModalCreateNewWorkspace () {
+		this.newWorkspace = {}
+		this.modals.createNewWorkspace = true
+	}
+
+	/**
+	 *
+	 */
+	async handleSubmitCreateNewWorkspace () {
+		const valid = await this.validatorNewWorkspace.validate()
+		if (valid) {
+			this.modals.createNewWorkspace = false
 		}
-
-		this.$bus.$on('pplanner:favorites_update', async () => {
-			this.favorites = await this.$api.favorites.findAllByProjectId()
-		})
-
-		this.$bus.$emit('pplanner:favorites_update')
 	}
 }
 </script>
