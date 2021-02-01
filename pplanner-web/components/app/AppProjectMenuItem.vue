@@ -12,11 +12,35 @@
 							<i :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-ellipsis-h cursor-pointer"></i>
 						</template>
 
-						<tw-menu class="p-2">
-							<tw-menu-item icon="fas fa-star" label="Ajouter aux favoris" @click="handleClickAddFavorite"></tw-menu-item>
-						</tw-menu>
+						<div class="p-2">
+							<tw-menu>
+								<tw-menu-item icon="fas fa-star" label="Ajouter aux favoris" @click="handleClickAddFavorite"></tw-menu-item>
+							</tw-menu>
+						</div>
 					</tw-dropdown>
-					<i v-if="openable" :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-plus-circle cursor-pointer"></i>
+
+					<tw-dropdown container-class="w-56" fixed>
+						<template #activator>
+							<i v-if="openable" :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-plus-circle cursor-pointer"></i>
+						</template>
+
+						<div class="p-2">
+							<template v-if="item.type === 'WORKSPACE'">
+								<div class="font-semibold uppercase text-primary-400 ml-2 mb-2">Options de l'espace de travail</div>
+								<tw-menu>
+									<tw-menu-item icon="fas fa-folder" label="Nouveau dossier" @click="handleClickAddFolder"></tw-menu-item>
+									<tw-menu-item icon="fas fa-list" label="Nouvelle liste" @click="handleClickAddList"></tw-menu-item>
+								</tw-menu>
+							</template>
+
+							<template v-else>
+								<div class="font-semibold uppercase text-primary-400 ml-2 mb-2">Options du dossier</div>
+								<tw-menu>
+									<tw-menu-item icon="fas fa-list" label="Nouvelle liste" @click="handleClickAddList"></tw-menu-item>
+								</tw-menu>
+							</template>
+						</div>
+					</tw-dropdown>
 				</slot>
 			</div>
 		</div>
@@ -128,6 +152,14 @@ export default class AppProjectMenuItem extends Vue {
 	async handleClickAddFavorite () {
 		await this.$api.favorites.create(this.item.id)
 		this.$bus.$emit('pplanner:favorites_update')
+	}
+
+	async handleClickAddFolder () {
+
+	}
+
+	async handleClickAddList () {
+
 	}
 }
 </script>
