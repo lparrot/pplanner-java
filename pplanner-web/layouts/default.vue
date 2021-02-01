@@ -52,11 +52,13 @@ export default class LayoutDefault extends Vue {
 
 	@Ref('validator') validator
 
+	@Action('goToTaskIdListPage') goToTaskIdListPage
+	@Action('initialize') initialize
+	@Action('logout') logout
+	@Action('selectMenu') selectMenu
+	@Action('selectProject') selectProject
 	@Getter('activeMenu') activeMenu
 	@Getter('activeProject') activeProject
-	@Action('logout') logout
-	@Action('initialize') initialize
-	@Action('selectProject') selectProject
 
 	public items: Partial<Models.PVerticalNavbarItem>[] = []
 	public projects: any[] = []
@@ -84,7 +86,8 @@ export default class LayoutDefault extends Vue {
 	async handleSelectProject (project) {
 		await this.selectProject(project.id)
 		if (this.activeMenu != null) {
-			await this.$router.push({ name: 'tasks-id', params: { id: this.activeMenu }, query: { view: 'list' } })
+			await this.selectMenu(this.activeMenu)
+			await this.goToTaskIdListPage()
 		} else {
 			await this.$router.push('/tasks')
 		}

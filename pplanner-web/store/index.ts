@@ -36,6 +36,10 @@ export const mutations: MutationTree<RootState> = {
  * Actions
  */
 export const actions: ActionTree<RootState, RootState> = {
+	async goToTaskIdListPage ({ state }) {
+		this.$router.push({ name: 'tasks-id', params: { id: state.selectedMenu }, query: { view: 'list' } })
+	},
+
 	async initialize ({ commit }) {
 		const projectId = localStorage.getItem('pplanner.project')
 		if (projectId != null) {
@@ -56,13 +60,13 @@ export const actions: ActionTree<RootState, RootState> = {
 		}
 	},
 
-	async refreshData () {
-		console.log(this)
-	},
-
 	async logout () {
 		await this.$auth.logout()
 		await this.$router.push('/login')
+	},
+
+	async refreshData () {
+		console.log(this)
 	},
 
 	async selectMenu ({ getters, commit }, id) {

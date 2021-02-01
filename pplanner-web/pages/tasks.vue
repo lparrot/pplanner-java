@@ -78,9 +78,10 @@ import TwDropdown from "~/components/shared/TwDropdown.vue";
 })
 export default class PageParentTask extends Vue {
 
+	@Action('goToTaskIdListPage') goToTaskIdListPage
+	@Action('selectMenu') selectMenu
 	@Getter('activeProject') activeProject
 	@Getter('activeMenu') activeMenu
-	@Action('selectMenu') selectMenu
 
 	public visible: boolean = true
 	public favorites: any[] = []
@@ -91,9 +92,9 @@ export default class PageParentTask extends Vue {
 		workspaceActions: false,
 	}
 
-	handleClickFavorite (favorite) {
-		this.selectMenu(favorite.menuItemId)
-		this.$router.push(`/tasks/${ favorite.menuItemId }`)
+	async handleClickFavorite (favorite) {
+		await this.selectMenu(favorite.menuItemId)
+		await this.goToTaskIdListPage()
 	}
 
 	async handleClickDeleteFavorite (favorite) {
@@ -103,12 +104,12 @@ export default class PageParentTask extends Vue {
 
 	async handleSelectMenuItem (item) {
 		await this.selectMenu(item.id)
-		await this.$router.push({ name: 'tasks-id', params: { id: item.id }, query: { view: 'list' } })
+		await this.goToTaskIdListPage()
 	}
 
 	async fetch () {
 		if (this.activeMenu != null && this.$route.params.id == null) {
-			this.$router.push({ name: 'tasks-id', params: { id: this.activeMenu }, query: { view: 'list' } })
+			await this.goToTaskIdListPage()
 		}
 
 		this.$bus.$on('pplanner:favorites_update', async () => {

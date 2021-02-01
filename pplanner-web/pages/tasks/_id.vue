@@ -77,6 +77,7 @@ export default class PageTaskIndex extends Vue {
 
 	@Ref('validator') validator: any
 
+	@Action('goToTaskIdListPage') goToTaskIdListPage
 	@Action('selectMenu') selectMenu
 	@Getter('activeProject') activeProject
 	@Getter('activeMenu') activeMenu
@@ -109,12 +110,16 @@ export default class PageTaskIndex extends Vue {
 			return this.$router.push('/tasks');
 		}
 
+		if (this.$route.query.view == null) {
+			return this.goToTaskIdListPage()
+		}
+
 		try {
 			if (this.activeMenu == null) {
 				// Si pas de paramètre, on récupère le premier workspace créé. S'il n'y en a pas, alors on retourne vide
 				const firstWorkspace = await this.$api.items.findFirstWorkspaceByProjectId(this.activeProject)
 				await this.selectMenu(firstWorkspace.id)
-				return this.$router.push(`/tasks/${ firstWorkspace.id }?view=list`)
+				return this.goToTaskIdListPage()
 			} else {
 				await this.$api.items.findByIdAndProjectId(this.activeMenu, this.activeProject)
 				await this.selectMenu(this.activeMenu)
