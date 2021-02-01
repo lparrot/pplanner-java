@@ -26,8 +26,8 @@
 					</validation-provider>
 
 					<template #actions>
-						<button class="p-btn p-btn--primary" @click="modals.createProject = false">Annuler</button>
-						<button class="p-btn p-btn--secondary" type="submit">Créer</button>
+						<button class="p-btn p-btn--primary" type="button" @click="modals.createProject = false">Annuler</button>
+						<button class="p-btn p-btn--success" type="submit">Créer</button>
 					</template>
 				</tw-modal>
 			</validation-observer>

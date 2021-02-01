@@ -31,11 +31,15 @@ export default class AppProjectMenuItemContainer extends Vue {
 	public workspaces: Models.ProjectMenuItem[] = []
 
 	async fetch () {
-		this.workspaces = await this.$api.projects.findAllWorkspaceByProjectId(this.activeProject)
-		if (this.activeMenu == null && this.workspaces.length > 0) {
-			await this.selectMenu(this.workspaces[0].id)
-			await this.goToTaskIdListPage()
-		}
+		this.$bus.$on('pplanner:items_update', async () => {
+			this.workspaces = await this.$api.projects.findAllWorkspaceByProjectId(this.activeProject)
+			if (this.activeMenu == null && this.workspaces.length > 0) {
+				await this.selectMenu(this.workspaces[0].id)
+				await this.goToTaskIdListPage()
+			}
+		})
+
+		this.$bus.$emit('pplanner:items_update')
 	}
 
 	setModel (item: Models.ProjectMenuItem) {

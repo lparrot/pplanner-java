@@ -1,6 +1,7 @@
 package fr.lauparr.pplanner.server.utils;
 
 import fr.lauparr.pplanner.server.entities.User;
+import fr.lauparr.pplanner.server.exceptions.UnauthorizedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -14,6 +15,10 @@ public abstract class UtilsSecurity {
 			return Optional.of((User) authentication.getPrincipal());
 		}
 		return Optional.empty();
+	}
+
+	public static User getCurrentUserOrThrowUnauthorizedException() {
+		return getCurrentUser().orElseThrow(UnauthorizedException::new);
 	}
 
 }

@@ -41,7 +41,7 @@
 					<app-task-create v-model="task"></app-task-create>
 
 					<template #actions>
-						<button class="p-btn p-btn--primary" @click="showModalEditTask = false">Annuler</button>
+						<button class="p-btn p-btn--primary" type="button" @click="showModalEditTask = false">Annuler</button>
 						<button class="p-btn p-btn--success" type="submit">Créer</button>
 					</template>
 				</tw-modal>
@@ -157,7 +157,7 @@ export default class PageTaskIndex extends Vue {
 		if (valid) {
 			await this.$api.tasks.createTask(this.task)
 			this.showModalEditTask = false
-			this.$root.$emit('pplanner:tasks_update')
+			this.$bus.$emit('pplanner:tasks_update')
 		}
 	}
 }

@@ -64,8 +64,8 @@
 					</validation-provider>
 
 					<template #actions>
-						<button class="p-btn p-btn--primary" @click="modals.createNewWorkspace = false">Annuler</button>
-						<button class="p-btn p-btn--secondary" type="submit">Créer</button>
+						<button class="p-btn p-btn--primary" type="button" @click="modals.createNewWorkspace = false">Annuler</button>
+						<button class="p-btn p-btn--success" type="submit">Créer</button>
 					</template>
 				</tw-modal>
 			</template>
@@ -129,7 +129,7 @@ export default class PageParentTask extends Vue {
 		this.$bus.$emit('pplanner:favorites_update')
 	}
 
-	handleClickFavorite (favorite) {
+	async handleClickFavorite (favorite) {
 		this.selectMenu(favorite.menuItemId)
 		await this.goToTaskIdListPage()
 	}
@@ -145,7 +145,9 @@ export default class PageParentTask extends Vue {
 	}
 
 	handleShowModalCreateNewWorkspace () {
-		this.newWorkspace = {}
+		this.newWorkspace = {
+			projectId: this.activeProject
+		}
 		this.modals.createNewWorkspace = true
 	}
 
@@ -155,6 +157,9 @@ export default class PageParentTask extends Vue {
 	async handleSubmitCreateNewWorkspace () {
 		const valid = await this.validatorNewWorkspace.validate()
 		if (valid) {
+			const itemId = await this.$api.items.createItemByType('workspace', this.newWorkspace)
+			this.$bus.$emit('pplanner:items_update')
+			this.selectMenu(itemId)
 			this.modals.createNewWorkspace = false
 		}
 	}

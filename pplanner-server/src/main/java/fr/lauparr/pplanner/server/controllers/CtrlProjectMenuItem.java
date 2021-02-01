@@ -1,15 +1,16 @@
 package fr.lauparr.pplanner.server.controllers;
 
+import fr.lauparr.pplanner.server.entities.ProjectMenuItem;
 import fr.lauparr.pplanner.server.entities.User;
+import fr.lauparr.pplanner.server.enums.ProjectMenuItemType;
+import fr.lauparr.pplanner.server.exceptions.NotFoundException;
 import fr.lauparr.pplanner.server.projections.ProjMenuItem;
 import fr.lauparr.pplanner.server.services.SrvProjectMenuItem;
 import fr.lauparr.pplanner.server.services.utils.SrvJpaUtils;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/items")
@@ -35,4 +36,20 @@ public class CtrlProjectMenuItem {
 		return this.srvJpaUtils.convertToDto(this.srvProjectMenuItem.findFirstWorkspaceByProjectId(projectId, user), ProjMenuItem.class);
 	}
 
+	@PostMapping("/{itemType}")
+	public String createItemByType(@PathVariable final String itemType, @RequestBody final ParamsCreateItemByType params) {
+		try {
+			final ProjectMenuItemType menuItemType = ProjectMenuItemType.valueOf(itemType.toUpperCase());
+			final ProjectMenuItem item = this.srvProjectMenuItem.createItemByType(menuItemType, params);
+			return item.getId();
+		} catch (final IllegalArgumentException e) {
+			throw new NotFoundException();
+		}
+	}
+
+	@Data
+	public static class ParamsCreateItemByType {
+		private String name;
+		private String projectId;
+	}
 }

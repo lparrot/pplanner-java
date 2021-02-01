@@ -13,7 +13,7 @@ export class TasksMixin extends Vue {
 		this.statusList = await this.$api.task_status.findStatusByItemId(this.item.id)
 		this.statusList.unshift({ id: '0', name: 'Sans statut', color: 'bg-warn text-white' })
 
-		this.$root.$on('pplanner:tasks_update', async () => {
+		this.$bus.$on('pplanner:tasks_update', async () => {
 			await this.fetchData()
 		})
 

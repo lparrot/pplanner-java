@@ -50,10 +50,11 @@ public class ProjectMenuItem extends BaseEntity {
 	private List<Task> tasks = new ArrayList<>();
 
 	@Builder
-	public ProjectMenuItem(final String name, final ProjectMenuItemType type, final Project project) {
+	public ProjectMenuItem(final String name, final ProjectMenuItemType type, final Project project, final BigDecimal orderIndex) {
 		this.name = name;
 		this.type = type;
 		this.project = project;
+		this.orderIndex = orderIndex;
 	}
 
 	public ProjectMenuItem addChild(final ProjectMenuItem item) {
