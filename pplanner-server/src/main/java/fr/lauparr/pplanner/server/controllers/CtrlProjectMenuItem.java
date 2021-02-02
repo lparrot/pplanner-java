@@ -44,5 +44,6 @@ public class CtrlProjectMenuItem {
 	public static class ParamsCreateItemByType {
 		private String name;
 		private String projectId;
+		private String parentId;
 	}
 }

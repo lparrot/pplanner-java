@@ -44,7 +44,7 @@
 
 				<app-project-menu-item-container editable @input="handleSelectMenuItem"></app-project-menu-item-container>
 
-				<div class="text-gray-400 hover:text-secondary cursor-pointer mt-4" @click="handleShowModalCreateNewWorkspace">
+				<div class="text-gray-400 hover:text-secondary cursor-pointer mt-4" @click="handleShowModalCreateItem('workspace')">
 					<i class="fas fa-plus mr-2"></i>
 					<span>Nouvel espace de travail</span>
 				</div>
@@ -56,15 +56,47 @@
 		</div>
 
 		<validation-observer ref="validator_newWorkspace" tag="form" @submit.prevent="handleSubmitCreateNewWorkspace">
-			<template v-if="newWorkspace != null">
+			<template v-if="newItem != null">
 				<tw-modal :visible.sync="modals.createNewWorkspace" title="Création d'un nouvel espace de travail">
 
 					<validation-provider #default="{invalid, errors}" name="nom" rules="required">
-						<tw-input-text v-model="newWorkspace.name" :error="invalid" :error-message="errors[0]" label="Nom de l'espace de travail" required></tw-input-text>
+						<tw-input-text v-model="newItem.name" :error="invalid" :error-message="errors[0]" label="Nom de l'espace de travail" required></tw-input-text>
 					</validation-provider>
 
 					<template #actions>
 						<button class="p-btn p-btn--primary" type="button" @click="modals.createNewWorkspace = false">Annuler</button>
+						<button class="p-btn p-btn--success" type="submit">Créer</button>
+					</template>
+				</tw-modal>
+			</template>
+		</validation-observer>
+
+		<validation-observer ref="validator_newFolder" tag="form" @submit.prevent="handleSubmitCreateNewFolder">
+			<template v-if="newItem != null">
+				<tw-modal :visible.sync="modals.createNewFolder" title="Création d'un nouveau dossier">
+
+					<validation-provider #default="{invalid, errors}" name="nom" rules="required">
+						<tw-input-text v-model="newItem.name" :error="invalid" :error-message="errors[0]" label="Nom du dossier" required></tw-input-text>
+					</validation-provider>
+
+					<template #actions>
+						<button class="p-btn p-btn--primary" type="button" @click="modals.createNewFolder = false">Annuler</button>
+						<button class="p-btn p-btn--success" type="submit">Créer</button>
+					</template>
+				</tw-modal>
+			</template>
+		</validation-observer>
+
+		<validation-observer ref="validator_newList" tag="form" @submit.prevent="handleSubmitCreateNewList">
+			<template v-if="newItem != null">
+				<tw-modal :visible.sync="modals.createNewList" title="Création d'une nouvelle liste">
+
+					<validation-provider #default="{invalid, errors}" name="nom" rules="required">
+						<tw-input-text v-model="newItem.name" :error="invalid" :error-message="errors[0]" label="Nom de la liste" required></tw-input-text>
+					</validation-provider>
+
+					<template #actions>
+						<button class="p-btn p-btn--primary" type="button" @click="modals.createNewList = false">Annuler</button>
 						<button class="p-btn p-btn--success" type="submit">Créer</button>
 					</template>
 				</tw-modal>
@@ -95,13 +127,15 @@ import TwInputText from "~/components/shared/TwInputText.vue";
 export default class PageParentTask extends Vue {
 
 	@Ref('validator_newWorkspace') validatorNewWorkspace
+	@Ref('validator_newFolder') validatorNewFolder
+	@Ref('validator_newList') validatorNewList
 
 	@Action('goToTaskIdListPage') goToTaskIdListPage
 	@Action('selectMenu') selectMenu
 	@Getter('activeProject') activeProject
 	@Getter('activeMenu') activeMenu
 
-	public newWorkspace = null
+	public newItem = null
 	public favorites: any[] = []
 	public visible: boolean = true
 
@@ -112,17 +146,27 @@ export default class PageParentTask extends Vue {
 	}
 
 	public modals = {
-		createNewWorkspace: false
+		createNewWorkspace: false,
+		createNewFolder: false,
+		createNewList: false
 	}
 
 	async fetch () {
-		if (this.activeMenu != null && this.$route.params.id == null) {
-			await this.goToTaskIdListPage()
-		}
-
 		this.$bus.$on('pplanner:favorites_update', async () => {
 			this.favorites = await this.$api.favorites.findAllByProjectId()
 		})
+
+		this.$bus.$on('pplanner:folder_add', async (item) => {
+			this.handleShowModalCreateItem('folder', item)
+		})
+
+		this.$bus.$on('pplanner:list_add', async (item) => {
+			this.handleShowModalCreateItem('list', item)
+		})
+
+		if (this.activeMenu != null && this.$route.params.id == null) {
+			await this.goToTaskIdListPage()
+		}
 
 		this.$bus.$emit('pplanner:favorites_update')
 	}
@@ -142,11 +186,31 @@ export default class PageParentTask extends Vue {
 		await this.goToTaskIdListPage()
 	}
 
-	handleShowModalCreateNewWorkspace () {
-		this.newWorkspace = {
+	handleShowModalCreateItem (type, parent?) {
+		this.newItem = {
 			projectId: this.activeProject
 		}
-		this.modals.createNewWorkspace = true
+
+		if (parent != null) {
+			this.newItem.parentId = parent.id
+		}
+
+		switch (type) {
+			case 'workspace':
+				this.validatorNewWorkspace.reset()
+				this.modals.createNewWorkspace = true
+				break;
+			case 'folder':
+				this.validatorNewFolder.reset()
+				this.modals.createNewFolder = true
+				break;
+			case 'list':
+				this.validatorNewList.reset()
+				this.modals.createNewList = true
+				break;
+			default:
+				break;
+		}
 	}
 
 	/**
@@ -155,10 +219,36 @@ export default class PageParentTask extends Vue {
 	async handleSubmitCreateNewWorkspace () {
 		const valid = await this.validatorNewWorkspace.validate()
 		if (valid) {
-			const itemId = await this.$api.items.createItemByType('workspace', this.newWorkspace)
+			const itemId = await this.$api.items.createItemByType('workspace', this.newItem)
 			this.$bus.$emit('pplanner:items_update')
 			this.selectMenu(itemId)
 			this.modals.createNewWorkspace = false
+		}
+	}
+
+	/**
+	 *
+	 */
+	async handleSubmitCreateNewFolder () {
+		const valid = await this.validatorNewFolder.validate()
+		if (valid) {
+			const itemId = await this.$api.items.createItemByType('folder', this.newItem)
+			this.$bus.$emit('pplanner:items_update')
+			this.selectMenu(itemId)
+			this.modals.createNewFolder = false
+		}
+	}
+
+	/**
+	 *
+	 */
+	async handleSubmitCreateNewList () {
+		const valid = await this.validatorNewList.validate()
+		if (valid) {
+			const itemId = await this.$api.items.createItemByType('list', this.newItem)
+			this.$bus.$emit('pplanner:items_update')
+			this.selectMenu(itemId)
+			this.modals.createNewList = false
 		}
 	}
 }

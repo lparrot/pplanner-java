@@ -141,8 +141,11 @@ export default class PageTaskIndex extends Vue {
 	}
 
 	async handleShowModalCreateTask () {
+		const item = await this.$api.items.findById(this.activeMenu);
 		this.task = {}
-		this.$set(this.task, 'item', await this.$api.items.findById(this.activeMenu))
+		if (item.type === 'LIST') {
+			this.$set(this.task, 'item', item)
+		}
 		this.showModalEditTask = true
 		this.validator.reset()
 	}

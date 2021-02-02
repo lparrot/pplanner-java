@@ -46,6 +46,18 @@ public class SrvProjectMenuItem {
 			.name(params.getName())
 			.orderIndex(orderIndex == null ? BigDecimal.ONE : orderIndex.add(BigDecimal.ONE))
 			.build();
+
+		switch (menuItemType) {
+			case WORKSPACE:
+				break;
+			case FOLDER:
+			case LIST:
+				final ProjectMenuItem parent = this.daoProjectMenuItem.findByIdAndProjectId(params.getParentId(), params.getProjectId(), UtilsSecurity.getCurrentUserOrThrowUnauthorizedException()).orElseThrow(NotFoundException::new);
+				projectMenuItem.addParent(parent);
+				break;
+			default:
+				throw new NotFoundException();
+		}
 		return this.daoProjectMenuItem.save(projectMenuItem);
 	}
 }

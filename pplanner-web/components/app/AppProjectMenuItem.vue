@@ -7,7 +7,7 @@
 			</div>
 			<div v-if="editable" class="flex gap-4">
 				<slot name="icons">
-					<tw-dropdown container-class="w-56" fixed>
+					<tw-dropdown ref="addFavoriteDropdown" container-class="w-56" fixed>
 						<template #activator>
 							<i :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-ellipsis-h cursor-pointer"></i>
 						</template>
@@ -19,27 +19,29 @@
 						</div>
 					</tw-dropdown>
 
-					<tw-dropdown container-class="w-56" fixed>
+					<tw-dropdown ref="addItemDropdown" container-class="w-56" fixed>
 						<template #activator>
 							<i v-if="openable" :class="{'text-white': selected, 'text-gray-400 hover:text-secondary': !selected}" class="flex fas fa-plus-circle cursor-pointer"></i>
 						</template>
 
-						<div class="p-2">
-							<template v-if="item.type === 'WORKSPACE'">
-								<div class="font-semibold uppercase text-primary-400 ml-2 mb-2">Options de l'espace de travail</div>
-								<tw-menu>
-									<tw-menu-item icon="fas fa-folder" label="Nouveau dossier" @click="handleClickAddFolder"></tw-menu-item>
-									<tw-menu-item icon="fas fa-list" label="Nouvelle liste" @click="handleClickAddList"></tw-menu-item>
-								</tw-menu>
-							</template>
+						<template>
+							<div class="p-2">
+								<template v-if="item.type === 'WORKSPACE'">
+									<div class="font-semibold uppercase text-primary-400 ml-2 mb-2">Options de l'espace de travail</div>
+									<tw-menu>
+										<tw-menu-item icon="fas fa-folder" label="Nouveau dossier" @click="handleClickAddFolder(item)"></tw-menu-item>
+										<tw-menu-item icon="fas fa-list" label="Nouvelle liste" @click="handleClickAddList(item)"></tw-menu-item>
+									</tw-menu>
+								</template>
 
-							<template v-else>
-								<div class="font-semibold uppercase text-primary-400 ml-2 mb-2">Options du dossier</div>
-								<tw-menu>
-									<tw-menu-item icon="fas fa-list" label="Nouvelle liste" @click="handleClickAddList"></tw-menu-item>
-								</tw-menu>
-							</template>
-						</div>
+								<template v-else>
+									<div class="font-semibold uppercase text-primary-400 ml-2 mb-2">Options du dossier</div>
+									<tw-menu>
+										<tw-menu-item icon="fas fa-list" label="Nouvelle liste" @click="handleClickAddList(item)"></tw-menu-item>
+									</tw-menu>
+								</template>
+							</div>
+						</template>
 					</tw-dropdown>
 				</slot>
 			</div>
@@ -53,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { Action, Component, Getter, Inject, Prop, Provide, Vue } from "nuxt-property-decorator";
+import { Action, Component, Getter, Inject, Prop, Provide, Ref, Vue } from "nuxt-property-decorator";
 import TwDropdown from "~/components/shared/TwDropdown.vue";
 import TwMenu from "~/components/shared/TwMenu.vue";
 import TwMenuItem from "~/components/shared/TwMenuItem.vue";
@@ -71,6 +73,9 @@ export default class AppProjectMenuItem extends Vue {
 	@Provide("parent") parentInstance = this
 	@Inject({ default: null, from: "container" }) container!: AppProjectMenuItemContainer
 	@Inject({ default: null, from: "parent" }) parent!: AppProjectMenuItem
+
+	@Ref('addFavoriteDropdown') addFavoriteDropdown: TwDropdown
+	@Ref('addItemDropdown') addItemDropdown: TwDropdown
 
 	@Prop() item: Models.ProjectMenuItem
 
@@ -148,16 +153,19 @@ export default class AppProjectMenuItem extends Vue {
 	}
 
 	async handleClickAddFavorite () {
+		this.addFavoriteDropdown.hide()
 		await this.$api.favorites.create(this.item.id)
 		this.$bus.$emit('pplanner:favorites_update')
 	}
 
-	async handleClickAddFolder () {
-
+	async handleClickAddFolder (item) {
+		this.addItemDropdown.hide()
+		this.$bus.$emit('pplanner:folder_add', item)
 	}
 
-	async handleClickAddList () {
-
+	async handleClickAddList (item) {
+		this.addItemDropdown.hide()
+		this.$bus.$emit('pplanner:list_add', item)
 	}
 }
 </script>
