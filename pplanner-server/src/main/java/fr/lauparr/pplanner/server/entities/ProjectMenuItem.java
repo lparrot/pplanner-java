@@ -29,11 +29,11 @@ public class ProjectMenuItem extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private ProjectMenuItemType type;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonManagedReference("project_menu_item")
 	private Project project;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonManagedReference("menu_item_children")
 	private ProjectMenuItem parent;
 

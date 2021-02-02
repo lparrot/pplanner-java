@@ -1,13 +1,6 @@
 import Vue from 'vue'
 import { Auth } from '@nuxtjs/auth-next'
 
-declare global {
-	declare module 'vue-fragment' {
-		class Fragment {
-		}
-	}
-}
-
 declare module '*.vue' {
 	import Vue from 'vue'
 	export default Vue

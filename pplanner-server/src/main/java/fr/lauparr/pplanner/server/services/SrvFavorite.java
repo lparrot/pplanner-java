@@ -5,8 +5,8 @@ import fr.lauparr.pplanner.server.dao.DaoFavorite;
 import fr.lauparr.pplanner.server.dao.DaoProjectMenuItem;
 import fr.lauparr.pplanner.server.entities.Favorite;
 import fr.lauparr.pplanner.server.entities.ProjectMenuItem;
-import fr.lauparr.pplanner.server.entities.User;
 import fr.lauparr.pplanner.server.exceptions.NotFoundException;
+import fr.lauparr.pplanner.server.utils.UtilsSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +20,12 @@ public class SrvFavorite {
 	@Autowired
 	private DaoProjectMenuItem daoProjectMenuItem;
 
-	public List<Favorite> findAllFavoriteByProjectId(final String projectId, final User user) {
-		return this.daoFavorite.findAllFavoriteByProjectId(projectId, user);
+	public List<Favorite> findAllFavoriteByProjectId(final String projectId) {
+		return this.daoFavorite.findAllFavoriteByProjectId(projectId, UtilsSecurity.getCurrentUserOrThrowUnauthorizedException());
 	}
 
-	public void createFavorite(final CtrlFavorite.ParamsCreateFavorite params, final User user) {
-		if (this.daoFavorite.existsByMenuId(params.getMenuId(), user)) {
+	public void createFavorite(final CtrlFavorite.ParamsCreateFavorite params) {
+		if (this.daoFavorite.existsByMenuId(params.getMenuId(), UtilsSecurity.getCurrentUserOrThrowUnauthorizedException())) {
 			return;
 		}
 

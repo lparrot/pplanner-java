@@ -27,7 +27,7 @@ public class User extends BaseEntity implements UserDetails {
 	@JsonIgnore
 	private String password;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Group group;
 
 	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})

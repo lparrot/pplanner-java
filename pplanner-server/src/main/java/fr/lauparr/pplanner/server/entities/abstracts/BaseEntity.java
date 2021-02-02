@@ -33,10 +33,10 @@ public class BaseEntity implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	protected LocalDateTime deletedAt;
 	@CreatedBy
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User createdBy;
 	@LastModifiedBy
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User updatedBy;
 
 	@Id

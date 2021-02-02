@@ -48,7 +48,7 @@ export default class AppProjectMenuItemContainer extends Vue {
 
 	@Watch('activeProject')
 	public async onChangeActiveProject (val, old) {
-		await this.$fetch()
+		await this.$bus.$emit('pplanner:items_update')
 	}
 }
 </script>

@@ -115,12 +115,7 @@ export default class PageTaskIndex extends Vue {
 		}
 
 		try {
-			if (this.activeMenu == null) {
-				// Si pas de paramètre, on récupère le premier workspace créé. S'il n'y en a pas, alors on retourne vide
-				const firstWorkspace = await this.$api.items.findFirstWorkspaceByProjectId(this.activeProject)
-				await this.selectMenu(firstWorkspace.id)
-				return this.goToTaskIdListPage()
-			} else {
+			if (this.activeMenu != null) {
 				await this.$api.items.findByIdAndProjectId(this.activeMenu, this.activeProject)
 				await this.selectMenu(this.activeMenu)
 			}

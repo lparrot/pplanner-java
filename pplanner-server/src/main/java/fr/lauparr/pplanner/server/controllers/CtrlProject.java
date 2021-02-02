@@ -1,6 +1,5 @@
 package fr.lauparr.pplanner.server.controllers;
 
-import fr.lauparr.pplanner.server.entities.User;
 import fr.lauparr.pplanner.server.projections.ProjMenuItem;
 import fr.lauparr.pplanner.server.projections.ProjProject;
 import fr.lauparr.pplanner.server.services.SrvProject;
@@ -8,7 +7,6 @@ import fr.lauparr.pplanner.server.services.SrvProjectMenuItem;
 import fr.lauparr.pplanner.server.services.utils.SrvJpaUtils;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,18 +23,18 @@ public class CtrlProject {
 	private SrvProjectMenuItem srvProjectMenuItem;
 
 	@GetMapping
-	public List<ProjProject> findAllByCreatorAndMember(@AuthenticationPrincipal final User user) {
-		return this.srvJpaUtils.convertListDto(this.srvProject.findAllByCreatorAndMember(user), ProjProject.class);
+	public List<ProjProject> findAllByCreatorAndMember() {
+		return this.srvJpaUtils.convertListDto(this.srvProject.findAllByCreatorAndMember(), ProjProject.class);
 	}
 
 	@GetMapping("/{projectId}")
-	public ProjProject findAll(@PathVariable final String projectId) {
+	public ProjProject findById(@PathVariable final String projectId) {
 		return this.srvJpaUtils.convertToDto(this.srvProject.findById(projectId), ProjProject.class);
 	}
 
 	@GetMapping("/{id}/workspaces")
-	public List<ProjMenuItem> findAllWorkspaceByProjectId(@PathVariable final String id, @AuthenticationPrincipal final User user) {
-		return this.srvJpaUtils.convertListDto(this.srvProjectMenuItem.findAllWorkspaceByProjectId(id, user), ProjMenuItem.class);
+	public List<ProjMenuItem> findAllWorkspaceByProjectId(@PathVariable final String id) {
+		return this.srvJpaUtils.convertListDto(this.srvProjectMenuItem.findAllWorkspaceByProjectId(id), ProjMenuItem.class);
 	}
 
 	@PostMapping

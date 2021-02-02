@@ -44,19 +44,27 @@ public class SrvDatabaseInitializer {
 			final Faker faker = Faker.instance(Locale.FRENCH);
 
 			// Groups
-			final Group admin = Group.builder().name("Administrateur").role(Role.ADMIN).build();
-			final Group user = Group.builder().name("Invité").role(Role.USER).build();
-			this.daoGroup.save(admin);
-			this.daoGroup.save(user);
+			final Group adminGroup = Group.builder().name("Administrateur").role(Role.ADMIN).build();
+			final Group userGroup = Group.builder().name("Utilisateur").role(Role.USER).build();
+			final Group invitedGroup = Group.builder().name("Invité").defaultGroup(true).build();
+			this.daoGroup.save(adminGroup);
+			this.daoGroup.save(userGroup);
+			this.daoGroup.save(invitedGroup);
 
 			// Users
 			final Member rootMember = Member.builder().email("kestounet@gmail.com").lastname("Parrot").firstname("Laurent").build();
+			final Member invitedMember = Member.builder().email("invited@gmail.com").lastname("Invité").firstname("-").build();
 
-			final User root = User.builder().email("kestounet@gmail.com").group(admin).member(rootMember).build();
-			root.setPassword(this.passwordEncoder.encode("123"));
-			this.daoUser.save(root);
+			final User rootUser = User.builder().email("kestounet@gmail.com").group(adminGroup).member(rootMember).build();
+			final User invitedUser = User.builder().email("invited@gmail.com").group(invitedGroup).member(invitedMember).build();
 
-			this.authenticate(root);
+			rootUser.setPassword(this.passwordEncoder.encode("123"));
+			invitedUser.setPassword(this.passwordEncoder.encode("123"));
+
+			this.daoUser.save(rootUser);
+			this.daoUser.save(invitedUser);
+
+			this.authenticate(rootUser);
 
 			// Projects
 			Project cdadr = Project.builder().name("CDAD-R").build();

@@ -1,5 +1,5 @@
 <template>
-	<fragment>
+	<div>
 		<div :class="{'bg-secondary': selected, 'cursor-pointer': selectable}" class="flex justify-between items-center px-2 py-1 rounded">
 			<div class="flex items-center w-full">
 				<i :class="[itemIcon, {'text-white': selected}]" class="mr-2" @click="openOrCloseChildren"></i>
@@ -49,12 +49,11 @@
 				<app-project-menu-item v-for="itemChild in item.children" :key="itemChild.id" :item="itemChild"></app-project-menu-item>
 			</div>
 		</transition>
-	</fragment>
+	</div>
 </template>
 
 <script lang="ts">
 import { Action, Component, Getter, Inject, Prop, Provide, Vue } from "nuxt-property-decorator";
-import { Fragment } from 'vue-fragment'
 import TwDropdown from "~/components/shared/TwDropdown.vue";
 import TwMenu from "~/components/shared/TwMenu.vue";
 import TwMenuItem from "~/components/shared/TwMenuItem.vue";
@@ -62,7 +61,6 @@ import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemCont
 
 @Component({
 	components: {
-		Fragment,
 		TwDropdown,
 		TwMenu,
 		TwMenuItem

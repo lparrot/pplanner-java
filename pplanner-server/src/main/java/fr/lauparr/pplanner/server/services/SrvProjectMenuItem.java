@@ -5,7 +5,6 @@ import fr.lauparr.pplanner.server.dao.DaoProject;
 import fr.lauparr.pplanner.server.dao.DaoProjectMenuItem;
 import fr.lauparr.pplanner.server.entities.Project;
 import fr.lauparr.pplanner.server.entities.ProjectMenuItem;
-import fr.lauparr.pplanner.server.entities.User;
 import fr.lauparr.pplanner.server.enums.ProjectMenuItemType;
 import fr.lauparr.pplanner.server.exceptions.NotFoundException;
 import fr.lauparr.pplanner.server.utils.UtilsSecurity;
@@ -23,35 +22,29 @@ public class SrvProjectMenuItem {
 	@Autowired
 	private DaoProject daoProject;
 
-	public ProjectMenuItem findById(final String itemId, final User user) {
-		return this.daoProjectMenuItem.findById(itemId, user).orElseThrow(NotFoundException::new);
+	public ProjectMenuItem findById(final String itemId) {
+		return this.daoProjectMenuItem.findById(itemId, UtilsSecurity.getCurrentUserOrThrowUnauthorizedException()).orElseThrow(NotFoundException::new);
 	}
 
-	public ProjectMenuItem findByIdAndProjectId(final String itemId, final String projectId, final User user) {
-		return this.daoProjectMenuItem.findByIdAndProjectId(itemId, projectId, user).orElseThrow(NotFoundException::new);
+	public ProjectMenuItem findByIdAndProjectId(final String itemId, final String projectId) {
+		return this.daoProjectMenuItem.findByIdAndProjectId(itemId, projectId, UtilsSecurity.getCurrentUserOrThrowUnauthorizedException()).orElseThrow(NotFoundException::new);
 	}
 
-	public List<ProjectMenuItem> findAllWorkspaceByProjectId(final String projectId, final User user) {
-		return this.daoProjectMenuItem.findAllWorkspaceByProjectId(projectId, user);
-	}
-
-	public ProjectMenuItem findFirstWorkspaceByProjectId(final String projectId, final User user) {
-		final List<ProjectMenuItem> allWorkspaceByProjectId = this.findAllWorkspaceByProjectId(projectId, user);
-		if (allWorkspaceByProjectId.size() > 0) {
-			return allWorkspaceByProjectId.get(0);
-		}
-		throw new NotFoundException();
+	public List<ProjectMenuItem> findAllWorkspaceByProjectId(final String projectId) {
+		return this.daoProjectMenuItem.findAllWorkspaceByProjectId(projectId, UtilsSecurity.getCurrentUserOrThrowUnauthorizedException());
 	}
 
 	public ProjectMenuItem createItemByType(final ProjectMenuItemType menuItemType, final CtrlProjectMenuItem.ParamsCreateItemByType params) {
 		final Project project = this.daoProject.findByIdAndCreatorAndMember(params.getProjectId(), UtilsSecurity.getCurrentUserOrThrowUnauthorizedException())
 			.orElseThrow(NotFoundException::new);
 
+		final BigDecimal orderIndex = this.daoProjectMenuItem.getMaxByTypeAndProjectId(menuItemType, params.getProjectId());
+
 		final ProjectMenuItem projectMenuItem = ProjectMenuItem.builder()
 			.project(project)
 			.type(menuItemType)
 			.name(params.getName())
-			.orderIndex(this.daoProjectMenuItem.getMaxByTypeAndProjectId(menuItemType, params.getProjectId()).add(BigDecimal.ONE))
+			.orderIndex(orderIndex == null ? BigDecimal.ONE : orderIndex.add(BigDecimal.ONE))
 			.build();
 		return this.daoProjectMenuItem.save(projectMenuItem);
 	}

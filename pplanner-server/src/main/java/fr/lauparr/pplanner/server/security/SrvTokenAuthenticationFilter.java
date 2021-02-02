@@ -15,6 +15,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.io.IOException;
 
 @Service
@@ -32,6 +33,7 @@ public class SrvTokenAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	@Override
+	@Transactional
 	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws ServletException, IOException {
 		final String header = request.getHeader(this.headerName);
 		boolean doFilter = true;

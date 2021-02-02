@@ -1,8 +1,10 @@
 package fr.lauparr.pplanner.server.services;
 
 import fr.lauparr.pplanner.server.controllers.CtrlAuth;
+import fr.lauparr.pplanner.server.dao.DaoGroup;
 import fr.lauparr.pplanner.server.dao.DaoUser;
 import fr.lauparr.pplanner.server.dto.JwtToken;
+import fr.lauparr.pplanner.server.entities.Group;
 import fr.lauparr.pplanner.server.entities.Member;
 import fr.lauparr.pplanner.server.entities.User;
 import fr.lauparr.pplanner.server.exceptions.MessageException;
@@ -23,6 +25,8 @@ public class SrvSecurity {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private SrvToken srvToken;
+	@Autowired
+	private DaoGroup daoGroup;
 
 	public JwtToken login(final String username, final String password) {
 		final User user = this.daoUser.findByEmailAndDeletedAtIsNull(username).orElse(null);
@@ -56,8 +60,11 @@ public class SrvSecurity {
 			throw new MessageException("Un utilisateur ayant le même email éxiste déjà");
 		}
 
+		final Group defaultGroup = this.daoGroup.findDefaultGroup();
+
 		final User userToCreate = User.builder()
 			.email(params.getEmail())
+			.group(defaultGroup)
 			.member(Member.builder()
 				.email(params.getEmail())
 				.lastname(params.getLastname())

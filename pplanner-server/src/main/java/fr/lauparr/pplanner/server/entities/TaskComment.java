@@ -3,10 +3,7 @@ package fr.lauparr.pplanner.server.entities;
 import fr.lauparr.pplanner.server.entities.abstracts.BaseEntity;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -19,10 +16,10 @@ public class TaskComment extends BaseEntity {
 	@Column(columnDefinition = "TEXT")
 	private String text;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Member author;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Task task;
 
 	@Builder

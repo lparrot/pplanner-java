@@ -1,13 +1,11 @@
 package fr.lauparr.pplanner.server.controllers;
 
-import fr.lauparr.pplanner.server.entities.User;
 import fr.lauparr.pplanner.server.projections.ProjFavorite;
 import fr.lauparr.pplanner.server.services.SrvFavorite;
 import fr.lauparr.pplanner.server.services.utils.SrvJpaUtils;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,14 +20,14 @@ public class CtrlFavorite {
 	private SrvJpaUtils srvJpaUtils;
 
 	@GetMapping("/projects/{projectId}")
-	public List<ProjFavorite> findAllFavoriteByProjectId(@PathVariable final String projectId, @AuthenticationPrincipal final User user) {
-		return this.srvJpaUtils.convertListDto(this.srvFavorite.findAllFavoriteByProjectId(projectId, user), ProjFavorite.class);
+	public List<ProjFavorite> findAllFavoriteByProjectId(@PathVariable final String projectId) {
+		return this.srvJpaUtils.convertListDto(this.srvFavorite.findAllFavoriteByProjectId(projectId), ProjFavorite.class);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createFavorite(@RequestBody final ParamsCreateFavorite favorite, @AuthenticationPrincipal final User user) {
-		this.srvFavorite.createFavorite(favorite, user);
+	public void createFavorite(@RequestBody final ParamsCreateFavorite favorite) {
+		this.srvFavorite.createFavorite(favorite);
 	}
 
 	@DeleteMapping("/{favoriteId}")

@@ -29,7 +29,7 @@ public class Task extends BaseEntity {
 
 	private LocalDate closedDate;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonManagedReference("member_tasks")
 	private Member assignee;
 
@@ -37,11 +37,11 @@ public class Task extends BaseEntity {
 	@Column(precision = 14, scale = 10)
 	private BigDecimal orderIndex;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonManagedReference("menu_item_tasks")
 	private ProjectMenuItem item;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonManagedReference("menu_item_status")
 	private TaskStatus status;
 

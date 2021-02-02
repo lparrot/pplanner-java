@@ -1,5 +1,5 @@
 <template>
-	<fragment>
+	<section class="contents">
 		<app-vertical-menu :visible.sync="visible">
 			<div class="p-6">
 				<!-- Favorites -->
@@ -70,13 +70,12 @@
 				</tw-modal>
 			</template>
 		</validation-observer>
-	</fragment>
+	</section>
 </template>
 
 <script lang="ts">
 import { Action, Component, Getter, Ref, Vue } from "nuxt-property-decorator";
 import AppVerticalMenu from "../components/app/AppVerticalMenu.vue";
-import { Fragment } from 'vue-fragment'
 import AppProjectMenuItem from "~/components/app/AppProjectMenuItem.vue";
 import TwModal from "~/components/shared/TwModal.vue";
 import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
@@ -89,7 +88,6 @@ import TwInputText from "~/components/shared/TwInputText.vue";
 		AppProjectMenuItemContainer,
 		AppProjectMenuItem,
 		AppVerticalMenu,
-		Fragment,
 		TwDropdown,
 		TwModal,
 	},

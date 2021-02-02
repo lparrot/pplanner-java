@@ -6,7 +6,6 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex'
 export const state = () => ({
 	selectedProject: null,
 	selectedMenu: null,
-	tasks: [],
 })
 
 export type RootState = ReturnType<typeof state>

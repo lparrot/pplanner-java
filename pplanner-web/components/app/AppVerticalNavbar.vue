@@ -30,13 +30,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator'
-import { Fragment } from 'vue-fragment'
 
-@Component({
-	components: {
-		Fragment,
-	},
-})
+@Component({})
 export default class AppVerticalNavbar extends Vue {
 	@Prop() items!: Models.PVerticalNavbarItem[]
 }

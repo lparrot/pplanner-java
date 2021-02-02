@@ -29,7 +29,7 @@ public class TaskStatus extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private TaskStatusType type;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonManagedReference("menu_item_status")
 	private ProjectMenuItem item;
 

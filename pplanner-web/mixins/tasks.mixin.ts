@@ -20,6 +20,7 @@ export class TasksMixin extends Vue {
 		this.items = []
 		const tasks = await this.$api.tasks.findAllTasksByMenuItemId(this.$store.getters.activeMenu)
 
+		// TODO : Récupérer le bon total
 		this.total = tasks.length
 
 		this.statusList.forEach(status => {

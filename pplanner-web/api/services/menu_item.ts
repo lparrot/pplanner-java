@@ -17,13 +17,6 @@ export class MenuItemsApi extends Repository {
 		return this.axios.$get(`/items/${ itemId }/projects/${ projectId }`)
 	}
 
-	findFirstWorkspaceByProjectId (projectId: string) {
-		if (projectId == null) {
-			return []
-		}
-		return this.axios.$get(`/items/projects/${ projectId }/first`)
-	}
-
 	createItemByType (type: string, newWorkspace: any) {
 		return this.axios.$post(`/items/${ type }`, newWorkspace)
 	}
