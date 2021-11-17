@@ -1,7 +1,7 @@
 const theme = require('./themes/default')
 
 module.exports = {
-	// mode: 'jit',
+	mode: 'jit',
 	darkMode: false, // or 'media' or 'class'
 	theme,
 	variants: {
