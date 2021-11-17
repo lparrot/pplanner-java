@@ -29,7 +29,7 @@
 			<div class="text-primary font-medium px-4">Aucun workspace existant, merci de créer un workspace</div>
 		</template>
 
-		<div class="fixed bottom-10 right-10 p-2 rounded-lg bg-secondary text-white font-bold shadow-2xl cursor-pointer" @click="handleShowModalCreateTask">
+		<div class="fixed bottom-10 right-10 btn btn-primary" @click="handleShowModalCreateTask">
 			<i class="fas fa-plus mr-2"></i>
 			<span>Tasks</span>
 		</div>

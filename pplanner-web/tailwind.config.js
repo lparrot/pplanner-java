@@ -1,6 +1,7 @@
 const theme = require('./themes/default')
 
 module.exports = {
+	// mode: 'jit',
 	darkMode: false, // or 'media' or 'class'
 	theme,
 	variants: {
@@ -8,7 +9,10 @@ module.exports = {
 			fontWeight: ['hover', 'focus'],
 		},
 	},
-	plugins: [],
+	plugins: [
+		require('@tailwindcss/forms'),
+		require('daisyui'),
+	],
 	purge: {
 		enabled: process.env.NODE_ENV === 'production',
 		content: ['./**/*.html', './**/*.scss', './**/*.vue'],
