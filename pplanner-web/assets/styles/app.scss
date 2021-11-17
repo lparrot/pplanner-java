@@ -10,10 +10,6 @@ $colors: primary, secondary, success, info, warn, danger;
 		font-family: Proxima Nova;
 		src: url(~font-proxima-nova/fonts/ProximaNova-Regular.woff) format("woff");
 	}
-
-	html, body, #__nuxt, #__layout {
-		@apply text-gray-700 text-sm h-full antialiased font-sans;
-	}
 }
 
 @layer components {
@@ -22,6 +18,10 @@ $colors: primary, secondary, success, info, warn, danger;
 	@import 'components/button';
 	@import 'components/form';
 
+}
+
+html, body, #__nuxt, #__layout {
+	@apply text-gray-700 text-sm h-full antialiased font-sans;
 }
 
 .p-container {
