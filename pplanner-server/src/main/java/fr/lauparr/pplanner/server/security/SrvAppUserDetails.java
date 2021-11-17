@@ -17,7 +17,6 @@ public class SrvAppUserDetails implements UserDetailsService {
 	@Override
 	@Cacheable(value = "userTokenCache", key = "#username")
 	public UserDetails loadUserByUsername(final String username) {
-		System.out.println(username);
 		return this.daoUser.findByEmailAndDeletedAtIsNull(username).orElseThrow(() -> new UsernameNotFoundException("Mauvais login ou mot de passe"));
 	}
 
