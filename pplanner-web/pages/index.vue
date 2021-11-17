@@ -99,7 +99,7 @@
 				Equipe professionnelle </p>
 			<p class="text-center mb-12 text-xl font-normal text-gray-500 dark:text-gray-200">
 				Rencontrez la meilleure équipe au monde ! </p>
-			<div class="flex items-center flex-col md:flex-row justify evenly">
+			<div class="flex flex-row items-center justify">
 				<div class="p-4">
 					<div class="text-center mb-4 opacity-90">
 						<a class="block relative" href="#">
