@@ -1,6 +1,14 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
+	fontFamily: {
+		'sans': [
+			'Proxima Nova',
+			'Roboto',
+			'Helvetica',
+			'Arial',
+			'sans-serif'],
+	},
 	extend: {
 		colors: {
 			'default': colorsWithDefault(colors.gray),
