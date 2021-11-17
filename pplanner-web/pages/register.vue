@@ -1,12 +1,12 @@
 <template>
 	<div class="flex justify-center items-center">
-		<div class="w-full max-w-lg mx-auto rounded-lg dark:bg-gray-800">
+		<div class="w-full max-w-2xl mx-auto rounded-lg dark:bg-primary-800">
 			<div class="px-6 py-4">
-				<h2 class="text-3xl font-bold text-center text-gray-700 dark:text-white">PPLANNER</h2>
+				<h2 class="text-3xl font-bold text-center text-primary-700 dark:text-white">PPLANNER</h2>
 
-				<h3 class="mt-1 text-xl font-medium text-center text-gray-600 dark:text-gray-200">Ecran de création de compte</h3>
+				<h3 class="mt-1 text-xl font-medium text-center text-primary-600 dark:text-primary-200">Ecran de création de compte</h3>
 
-				<p class="mt-1 text-center text-gray-500 dark:text-gray-400">Créez un nouveau compte</p>
+				<p class="mt-1 text-center text-primary-500 dark:text-primary-400">Créez un nouveau compte</p>
 
 				<validation-observer ref="validator" class="md:w-1/2 md:mx-0 w-full border border-primary p-6 mx-4 rounded-xl" novalidate tag="form" @submit.prevent="handleSubmitRegisterForm">
 					<div class="w-full mt-4">
@@ -19,8 +19,8 @@
 						<validation-provider #default="{invalid, errors}" name="adresse e-mail" rules="required|email" slim>
 							<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Adresse e-mail" label-for="input_email" required>
 								<input id="input_email" v-model="form.username" aria-label="Adresse e-mail"
-											 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="Adresse e-mail"
-											 type="email"/>
+											 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primary-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
+											 placeholder="Adresse e-mail" type="email"/>
 							</tw-input-text>
 						</validation-provider>
 					</div>
@@ -29,8 +29,8 @@
 						<validation-provider #default="{invalid, errors}" name="mot de passe" rules="required|confirmed:confirmation" slim>
 							<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Mot de passe" label-for="input_password" required>
 								<input id="input_password" v-model="form.confirm_password" aria-label="Mot de passe"
-											 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="Mot de passe"
-											 type="password"/>
+											 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primaryy-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
+											 placeholder="Mot de passe" type="password"/>
 							</tw-input-text>
 						</validation-provider>
 					</div>
@@ -39,7 +39,7 @@
 						<validation-provider #default="{invalid, errors}" name="confirmation mot de passe" rules="required" slim vid="confirmation">
 							<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Confirmation du mot de passe" label-for="input_confirm_password" required>
 								<input id="input_confirm_password" v-model="form.password" aria-label="Confirmation du mot de passe"
-											 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+											 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primary-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
 											 placeholder="Confirmation du mot de passe" type="password"/>
 							</tw-input-text>
 						</validation-provider>
@@ -49,7 +49,8 @@
 						<validation-provider #default="{invalid, errors}" name="nom" rules="required" slim>
 							<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Nom" label-for="input_lastname" required>
 								<input id="input_lastname" v-model="form.lastname" aria-label="Nom"
-											 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="Nom" type="email"/>
+											 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primary-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
+											 placeholder="Nom" type="email"/>
 							</tw-input-text>
 						</validation-provider>
 
@@ -57,8 +58,8 @@
 							<validation-provider #default="{invalid, errors}" name="prénom" rules="required" slim>
 								<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Prénom" label-for="input_firstname" required>
 									<input id="input_firstname" v-model="form.firstname" aria-label="Prénom"
-												 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="Prénom"
-												 type="email"/>
+												 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primary-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
+												 placeholder="Prénom" type="email"/>
 								</tw-input-text>
 							</validation-provider>
 						</div>
@@ -67,14 +68,14 @@
 							<validation-provider #default="{invalid, errors}" name="emploi" rules="required" slim>
 								<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Emploi" label-for="input_job" required>
 									<input id="input_job" v-model="form.job" aria-label="Emploi"
-												 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="Emploi"
-												 type="email"/>
+												 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primary-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
+												 placeholder="Emploi" type="email"/>
 								</tw-input-text>
 							</validation-provider>
 						</div>
 
 						<div class="flex items-center justify-between mt-4">
-							<button class="px-4 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-700 rounded hover:bg-gray-600 focus:outline-none" type="submit">Créer le compte</button>
+							<button class="px-4 py-2 leading-5 text-white transition-colors duration-200 transform bg-primary-700 rounded hover:bg-primary-600 focus:outline-none" type="submit">Créer le compte</button>
 						</div>
 					</div>
 				</validation-observer>
@@ -83,7 +84,7 @@
 			<div class="flex items-center justify-center py-4 text-center bg-gray-50 dark:bg-gray-700">
 				<span class="text-sm text-gray-600 dark:text-gray-200">Déjà un compte ? </span>
 
-				<nuxt-link class="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline" to="/login">Connexion</nuxt-link>
+				<nuxt-link class="mx-2 text-sm font-bold text-secondary-500 dark:text-secondary-400 hover:underline" to="/login">Connexion</nuxt-link>
 			</div>
 		</div>
 	</div>

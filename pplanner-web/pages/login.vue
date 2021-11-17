@@ -1,12 +1,12 @@
 <template>
 	<div class="flex justify-center items-center">
-		<div class="w-full max-w-lg mx-auto rounded-lg dark:bg-gray-800">
+		<div class="w-full max-w-2xl mx-auto rounded-lg dark:bg-primary-800">
 			<div class="px-6 py-4">
-				<h2 class="text-3xl font-bold text-center text-gray-700 dark:text-white">PPLANNER</h2>
+				<h2 class="text-3xl font-bold text-center text-primary-700 dark:text-white">PPLANNER</h2>
 
-				<h3 class="mt-1 text-xl font-medium text-center text-gray-600 dark:text-gray-200">Ecran de connexion</h3>
+				<h3 class="mt-1 text-xl font-medium text-center text-primary-600 dark:text-primary-200">Ecran de connexion</h3>
 
-				<p class="mt-1 text-center text-gray-500 dark:text-gray-400">Connectez-vous ou créez un nouveau compte</p>
+				<p class="mt-1 text-center text-primary-500 dark:text-primary-400">Connectez-vous ou créez un nouveau compte</p>
 
 				<validation-observer ref="validator" class="md:w-1/2 md:mx-0 w-full border border-primary p-6 mx-4 rounded-xl" novalidate tag="form" @submit.prevent="handleSubmitLoginForm">
 					<div class="w-full mt-4">
@@ -19,8 +19,8 @@
 						<validation-provider #default="{invalid, errors}" name="adresse e-mail" rules="required|email" slim>
 							<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Adresse e-mail" label-for="input_email" required>
 								<input id="input_email" v-model="form.username" aria-label="Adresse e-mail"
-											 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="Adresse e-mail"
-											 type="email"/>
+											 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primary-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
+											 placeholder="Adresse e-mail" type="email"/>
 							</tw-input-text>
 						</validation-provider>
 					</div>
@@ -30,24 +30,24 @@
 						<validation-provider #default="{invalid, errors}" name="mot de passe" rules="required" slim>
 							<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Mot de passe" label-for="input_password" required>
 								<input id="imput_password" v-model="form.password" aria-label="Mot de passe"
-											 class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" placeholder="Mot de passe"
-											 type="password"/>
+											 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primary-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
+											 placeholder="Mot de passe" type="password"/>
 							</tw-input-text>
 						</validation-provider>
 					</div>
 
 					<div class="flex items-center justify-between mt-4">
-						<a class="text-sm text-gray-600 dark:text-gray-200 hover:text-gray-500" href="#">Mot de passe oublié ?</a>
+						<a class="text-sm text-primary-600 dark:text-primary-200 hover:text-primary-500" href="#">Mot de passe oublié ?</a>
 
-						<button class="px-4 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-700 rounded hover:bg-gray-600 focus:outline-none" type="submit">Connexion</button>
+						<button class="px-4 py-2 leading-5 text-white transition-colors duration-200 transform bg-primary-700 rounded hover:bg-primary-600 focus:outline-none" type="submit">Connexion</button>
 					</div>
 				</validation-observer>
 			</div>
 
-			<div class="flex items-center justify-center py-4 text-center bg-gray-50 dark:bg-gray-700">
-				<span class="text-sm text-gray-600 dark:text-gray-200">Vous n'avez pas de compte ? </span>
+			<div class="flex items-center justify-center py-4 text-center bg-primary-50 dark:bg-primary-700">
+				<span class="text-sm text-primary-600 dark:text-primary-200">Vous n'avez pas de compte ? </span>
 
-				<nuxt-link class="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline" to="/register">S'enregistrer</nuxt-link>
+				<nuxt-link class="mx-2 text-sm font-bold text-secondary-500 dark:text-secondary-400 hover:underline" to="/register">S'enregistrer</nuxt-link>
 			</div>
 		</div>
 	</div>
