@@ -1,17 +1,18 @@
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Action, Component, State, Vue } from 'nuxt-property-decorator'
 import { VModel } from 'vue-property-decorator'
 
 @Component
 export class TasksMixin extends Vue {
 	@VModel() item: Models.ProjectMenuItem
 
+	@State(state => state['task-view'].statusList) statusList!: any[]
+	@Action('task-view/findStatusListByItemId') findStatusListByItemId
+
 	public items: any[] = []
 	public total: number = 0
-	public statusList: any[]
 
 	async fetchData () {
-		this.statusList = await this.$api.task_status.findStatusByItemId(this.item.id)
-		this.statusList.unshift({ id: '0', name: 'Sans statut', color: 'bg-warn text-white' })
+		await this.findStatusListByItemId(this.item.id)
 
 		this.$bus.$on('pplanner:tasks_update', async () => {
 			await this.fetchData()
@@ -26,7 +27,7 @@ export class TasksMixin extends Vue {
 		this.statusList.forEach(status => {
 			this.items.push({
 				status,
-				tasks: tasks[status.id] ?? []
+				tasks: tasks[status.id] ?? [],
 			})
 		})
 	}

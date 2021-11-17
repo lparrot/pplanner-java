@@ -12,7 +12,7 @@ export class TasksApi extends Repository {
 
 	createTask (task: Partial<Models.TaskEdit>) {
 		if (task != null && task.item != null && task.item.id != null) {
-			return this.axios.$post('/tasks/items/' + task.item.id, { description: task.description, name: task.name, item: { id: task.item.id } })
+			return this.axios.$post('/tasks/items/' + task.item.id, { description: task.description, name: task.name, statusId: task?.status?.id })
 		}
 	}
 

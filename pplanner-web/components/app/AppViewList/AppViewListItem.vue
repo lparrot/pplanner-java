@@ -13,7 +13,7 @@
 					</div>
 				</draggable>
 
-				<div class="mt-2 inline-block text-primary cursor-pointer rounded-lg hover:bg-primary-200 px-2 py-1">
+				<div class="mt-2 inline-block text-primary cursor-pointer rounded-lg hover:bg-primary-200 px-2 py-1" @click="$root.$emit('app:add-task-modal', { status: item.status })">
 					<i class="fas fa-plus mr-1"></i>
 					<span>Nouvelle tâche</span>
 				</div>

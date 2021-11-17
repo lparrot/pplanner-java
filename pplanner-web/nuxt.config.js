@@ -118,6 +118,11 @@ export default {
 	// Build Configuration (https://go.nuxtjs.dev/config-build)
 	build: {
 		extractCSS: true,
+		loaders: {
+			vue: {
+				compiler: require('vue-template-babel-compiler'),
+			},
+		},
 		postcss: {
 			preset: {
 				features: {

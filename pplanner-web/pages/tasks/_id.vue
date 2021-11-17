@@ -138,16 +138,20 @@ export default class PageTaskIndex extends Vue {
 			{ id: 3, name: 'calendar', label: 'Calendrier', icon: 'fas fa-calendar-alt', component: 'app-view-calendar' },
 			{ id: 4, name: 'gantt', label: 'Gantt', icon: 'fas fa-stream', component: 'app-view-gantt' },
 		]
+
+		this.$root.$on('app:add-task-modal', async (task) => {
+			const item = await this.$api.items.findById(this.activeMenu);
+			this.task = task || {}
+			if (item.type === 'LIST') {
+				this.$set(this.task, 'item', item)
+			}
+			this.showModalEditTask = true
+			this.validator.reset()
+		})
 	}
 
 	async handleShowModalCreateTask () {
-		const item = await this.$api.items.findById(this.activeMenu);
-		this.task = {}
-		if (item.type === 'LIST') {
-			this.$set(this.task, 'item', item)
-		}
-		this.showModalEditTask = true
-		this.validator.reset()
+		this.$root.$emit('app:add-task-modal')
 	}
 
 	async handleSubmitCreateTask () {

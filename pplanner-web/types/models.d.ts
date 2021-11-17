@@ -25,6 +25,7 @@ declare namespace Models {
 	interface TaskEdit {
 		name?: string
 		description?: string
+		status?: any
 		item?: ProjectMenuItem
 	}
 }

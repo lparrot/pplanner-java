@@ -4,6 +4,7 @@ import fr.lauparr.pplanner.server.controllers.CtrlTask;
 import fr.lauparr.pplanner.server.dao.DaoProjectMenuItem;
 import fr.lauparr.pplanner.server.dao.DaoTask;
 import fr.lauparr.pplanner.server.dao.DaoTaskStatus;
+import fr.lauparr.pplanner.server.entities.ProjectMenuItem;
 import fr.lauparr.pplanner.server.entities.Task;
 import fr.lauparr.pplanner.server.entities.TaskStatus;
 import fr.lauparr.pplanner.server.exceptions.NotFoundException;
@@ -28,11 +29,12 @@ public class SrvTask {
 	@Autowired
 	private DaoTaskStatus daoTaskStatus;
 
-	public void createTask(final CtrlTask.ParamsCreateTask params, final String itemId) {
+	public void createTask(final CtrlTask.ParamsCreateTask params, final ProjectMenuItem projectMenuItem) {
 		final Task task = new Task();
 		task.setName(params.getName());
 		task.setDescription(params.getDescription());
-		task.setItem(this.daoProjectMenuItem.findById(itemId).orElseThrow(NotFoundException::new));
+		task.setItem(projectMenuItem);
+		task.setStatus(this.daoTaskStatus.findById(params.getStatusId()).orElseThrow(NotFoundException::new));
 		this.daoTask.save(task);
 	}
 
@@ -45,13 +47,8 @@ public class SrvTask {
 		return tasks.stream().collect(Collectors.groupingBy(projTask -> projTask.getStatus() != null ? projTask.getStatus().getId() : "0"));
 	}
 
-	public void updateTaskStatus(final String taskId, final String statusId) {
-		TaskStatus newStatus = null;
-		if (!"0".equals(statusId)) {
-			newStatus = this.daoTaskStatus.findById(statusId).orElseThrow(NotFoundException::new);
-		}
-		final Task task = this.daoTask.findById(taskId).orElseThrow(NotFoundException::new);
-		task.setStatus(newStatus);
+	public void updateTaskStatus(final Task task, final TaskStatus taskStatus) {
+		task.setStatus(taskStatus);
 		this.daoTask.save(task);
 	}
 }
