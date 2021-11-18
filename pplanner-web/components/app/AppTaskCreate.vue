@@ -16,7 +16,7 @@
 				</template>
 				<div class="p-2">
 					<tw-menu>
-						<div v-for="status in statusList" :key="status.id" :class="['px-2 rounded flex items-center hover:bg-primary-100', selectedStatus?.id === status?.id && 'bg-primary-300']" @click="handleSelectStatus(status)">
+						<div v-for="status in statusList" :key="status.id" :class="['px-2 rounded flex items-center hover:bg-primary-100', status?.id === status?.id && 'bg-primary-300']" @click="handleSelectStatus(status)">
 							<div :class="['w-4 h-4', status.color]"></div>
 							<tw-menu-item :label="status.name"></tw-menu-item>
 						</div>
@@ -43,8 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref, State, Vue, Watch } from 'nuxt-property-decorator'
-import { VModel } from "vue-property-decorator";
+import { Action, Component, Ref, State, Vue, Watch } from 'nuxt-property-decorator'
 import AppProjectMenuItemContainer from "~/components/app/AppProjectMenuItemContainer.vue";
 import TwInputText from "~/components/shared/TwInputText.vue";
 import TwDropdown from "~/components/shared/TwDropdown.vue";
@@ -58,25 +57,25 @@ export default class AppTaskCreate extends Vue {
 	@Ref('task_item_dropdown') taskItemDropdown: TwDropdown
 	@Ref('status_dropdown') statusDropdown: TwDropdown
 
-	@State(state => state['task-view'].statusList) statusList!: any[]
+	@State(state => state['task-view'].statusList) readonly statusList!: any[]
+	@State(state => state['task-view'].task) readonly task !: any
+	@State(state => state['task-view'].status) readonly status !: any
 
-	@VModel() task: any
+	@Action('task-view/selectStatus') selectStatus
 
-	selectedStatus = null
-
-	async handleSelectMenuItemTaskCreate (event) {
+	async handleSelectMenuItemTaskCreate () {
 		this.taskItemDropdown.hide()
 	}
 
 	async handleSelectStatus (status) {
-		this.selectedStatus = status
+		await this.selectStatus(status)
 		this.statusDropdown.hide()
 	}
 
 	@Watch("task", { immediate: true, deep: true })
-	async onTaskChanged (val: any, oldVal: any) {
+	async onTaskChanged (task: any) {
 		this.$nextTick(async () => {
-			this.selectedStatus = val.status
+			await this.selectStatus(task.status)
 			await this.taskItemDropdown.hide()
 		})
 	}
