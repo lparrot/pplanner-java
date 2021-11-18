@@ -38,7 +38,7 @@
 			<template v-if="task != null">
 				<tw-modal :visible.sync="showModalEditTask" title="Création d'une tâche">
 
-					<app-task-create></app-task-create>
+					<app-task-create v-model="task"></app-task-create>
 
 					<template #actions>
 						<button class="p-btn p-btn--primary" type="button" @click="showModalEditTask = false">Annuler</button>
@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import { Action, Component, Getter, Mutation, Ref, State, Vue } from 'nuxt-property-decorator'
+import { Action, Component, Getter, Ref, Vue } from 'nuxt-property-decorator'
 import TwTabContainer from "~/components/shared/TwTabContainer.vue";
 import TwTabItem from "~/components/shared/TwTabItem.vue";
 import TwInputText from "~/components/shared/TwInputText.vue";
@@ -77,15 +77,14 @@ export default class PageTaskIndex extends Vue {
 
 	@Ref('validator') validator: any
 
-	@State(state => state['task-view'].task) readonly task !: any
 	@Action('goToTaskIdListPage') goToTaskIdListPage
 	@Action('selectMenu') selectMenu
-	@Mutation('task-view/SET_TASK') setTask
 	@Getter('activeProject') readonly activeProject
 	@Getter('activeMenu') readonly activeMenu
 
 	public menuItem: Models.ProjectMenuItem = null
 	public showModalEditTask = false
+	public task: Models.TaskEdit = null
 	public views: Models.TaskViewMenu[] = []
 
 	get iconItem () {
@@ -142,10 +141,10 @@ export default class PageTaskIndex extends Vue {
 
 		this.$bus.$on('app:add-task-modal', async (task) => {
 			const item = await this.$api.items.findById(this.activeMenu);
-			if (task != null && item.type === 'LIST') {
-				this.$set(task, 'item', item)
+			this.task = task || {}
+			if (item.type === 'LIST') {
+				this.$set(this.task, 'item', item)
 			}
-			this.setTask(task || {})
 			this.showModalEditTask = true
 			this.validator.reset()
 		})
