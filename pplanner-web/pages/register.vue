@@ -18,7 +18,7 @@
 					<div class="w-full mt-4">
 						<validation-provider #default="{invalid, errors}" name="adresse e-mail" rules="required|email" slim>
 							<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Adresse e-mail" label-for="input_email" required>
-								<input id="input_email" v-model="form.username" aria-label="Adresse e-mail"
+								<input id="input_email" v-model="form.email" aria-label="Adresse e-mail"
 											 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primary-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
 											 placeholder="Adresse e-mail" type="email"/>
 							</tw-input-text>
@@ -50,7 +50,7 @@
 							<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Nom" label-for="input_lastname" required>
 								<input id="input_lastname" v-model="form.lastname" aria-label="Nom"
 											 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primary-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
-											 placeholder="Nom" type="email"/>
+											 placeholder="Nom" type="text"/>
 							</tw-input-text>
 						</validation-provider>
 
@@ -59,7 +59,7 @@
 								<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Prénom" label-for="input_firstname" required>
 									<input id="input_firstname" v-model="form.firstname" aria-label="Prénom"
 												 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primary-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
-												 placeholder="Prénom" type="email"/>
+												 placeholder="Prénom" type="text"/>
 								</tw-input-text>
 							</validation-provider>
 						</div>
@@ -69,7 +69,7 @@
 								<tw-input-text :error="invalid" :error-message="errors[0]" class="my-2" label="Emploi" label-for="input_job" required>
 									<input id="input_job" v-model="form.job" aria-label="Emploi"
 												 class="block w-full px-4 py-2 mt-2 text-primary-700 placeholder-primary-500 bg-white border rounded-md dark:bg-primary-800 dark:border-primary-600 dark:placeholder-primary-400 focus:border-secondary-500 dark:focus:border-secondary-500 focus:outline-none focus:ring"
-												 placeholder="Emploi" type="email"/>
+												 placeholder="Emploi" type="text"/>
 								</tw-input-text>
 							</validation-provider>
 						</div>
