@@ -12,7 +12,7 @@
 							<i class="fas fa-filter"></i>
 						</template>
 					</tw-dropdown>
-					<input class="ml-2 w-48 bg-transparent focus:outline-none" placeholder="Filtrer par nom de tâche ..." type="text">
+					<input class="ml-2 h-4 w-48 border-0 bg-transparent focus:outline-none" placeholder="Rechercher des tâches..." type="text">
 				</div>
 
 				<div class="flex gap-4 items-center">

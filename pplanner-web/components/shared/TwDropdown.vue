@@ -4,7 +4,7 @@
 			<slot name="activator"></slot>
 			<i v-if="showIcon" :class="{[iconOpen]: visible, [iconClose]: !visible}"></i>
 		</div>
-		<button v-if="visible" class="fixed inset-0 top-0 left-0 h-full w-full bg-black opacity-50 cursor-default" tabindex="-1" @click="visible = false"></button>
+		<button v-if="visible" class="fixed inset-0 top-0 left-0 h-full w-full cursor-default" tabindex="-1" @click="visible = false"></button>
 		<transition name="scale-in-ver-top">
 			<div v-show="visible" :class="[containerClass, { 'fixed': fixed, 'absolute': !fixed }]" class="z-10 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 w-auto">
 				<slot :hide="hide" :show="show" :toggle="toggle"></slot>
