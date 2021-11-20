@@ -45,7 +45,7 @@ public class CtrlTask {
 		private String name;
 		@NotBlank
 		private String description;
-		@NotBlank
+
 		private String statusId;
 	}
 }

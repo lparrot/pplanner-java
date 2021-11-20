@@ -10,11 +10,11 @@
 				<tw-input-text :error="invalid" :error-message="errors[0]" label="Statut" label-for="input_status" required>
 					<tw-dropdown ref="status_dropdown" container-class="w-full" label="Statut">
 						<template #activator>
-							<input id="input_status" :value="selectedStatus?.name" class="w-full form-control" readonly type="text">
+							<input id="input_status" :value="task?.status?.name" class="w-full form-control" readonly type="text">
 						</template>
 						<div class="p-2">
 							<tw-menu>
-								<div v-for="status in statusList" :key="status.id" :class="['px-2 rounded flex items-center hover:bg-primary-100', selectedStatus?.id === status?.id && 'bg-primary-300']" @click="handleSelectStatus(status)">
+								<div v-for="status in statusList" :key="status.id" :class="['px-2 rounded flex items-center hover:bg-primary-100', task?.status?.id === status?.id && 'bg-primary-300']" @click="handleSelectStatus(status)">
 									<div :class="['w-4 h-4', status.color]"></div>
 									<tw-menu-item :label="status.name"></tw-menu-item>
 								</div>
@@ -62,21 +62,21 @@ export default class AppTaskCreate extends Vue {
 
 	@VModel() task: any
 
-	selectedStatus = null
-
 	async handleSelectMenuItemTaskCreate () {
 		this.taskItemDropdown.hide()
 	}
 
 	async handleSelectStatus (status) {
-		this.selectedStatus = status
-		this.statusDropdown.hide()
+		const valid = await this.statusValidator.validate(status)
+		if (valid) {
+			this.task.status = status
+			this.statusDropdown.hide()
+		}
 	}
 
 	@Watch("task", { immediate: true, deep: true })
 	async onTaskChanged (task: any) {
 		this.$nextTick(async () => {
-			this.selectedStatus = task.status
 			await this.taskItemDropdown.hide()
 		})
 	}

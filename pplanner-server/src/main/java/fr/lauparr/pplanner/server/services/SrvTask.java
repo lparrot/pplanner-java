@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +35,9 @@ public class SrvTask {
 		task.setName(params.getName());
 		task.setDescription(params.getDescription());
 		task.setItem(projectMenuItem);
-		task.setStatus(this.daoTaskStatus.findById(params.getStatusId()).orElseThrow(NotFoundException::new));
+		if (!Objects.equals(params.getStatusId(), "0")) {
+			task.setStatus(this.daoTaskStatus.findById(params.getStatusId()).orElseThrow(NotFoundException::new));
+		}
 		this.daoTask.save(task);
 	}
 

@@ -31,7 +31,7 @@
 
 		<div class="fixed bottom-10 right-10 btn btn-primary" @click="handleShowModalCreateTask">
 			<i class="fas fa-plus mr-2"></i>
-			<span>Tasks</span>
+			<span>Tâche</span>
 		</div>
 
 		<validation-observer ref="validator" tag="form" @submit.prevent="handleSubmitCreateTask">

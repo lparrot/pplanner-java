@@ -30,7 +30,7 @@ export const mutations: MutationTree<RootState> = {
 export const actions: ActionTree<RootState, RootState> = {
 	async findStatusListByItemId ({ commit }, itemId) {
 		const statusList = await this.$api.task_status.findStatusByItemId(itemId)
-		statusList.unshift({ name: 'Sans statut', color: 'bg-warn text-white' })
+		statusList.unshift({ id: '0', name: 'Sans statut', color: 'bg-warn text-white' })
 		commit('SET_STATUS_LIST', statusList)
 	},
 }
