@@ -33,7 +33,6 @@ public class CtrlAuth {
 	private HttpServletRequest request;
 
 	@PostMapping("/login")
-
 	public JwtToken login(@RequestBody final ParamsSecurityLogin params) {
 		return this.srvSecurity.login(params.getUsername(), params.getPassword());
 	}

@@ -1,0 +1,14 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+	@font-face {
+		font-family: Proxima Nova;
+		src: url(~font-proxima-nova/fonts/ProximaNova-Regular.woff) format("woff");
+	}
+
+	html, body {
+		@apply h-full subpixel-antialiased tracking-widest text-gray-600 text-sm;
+	}
+}
