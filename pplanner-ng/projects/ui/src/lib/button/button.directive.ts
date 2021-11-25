@@ -12,7 +12,8 @@ export class ButtonDirective implements OnInit {
 	}
 
 	@HostBinding('class') get class () {
-		return [ 'btn', `btn-${ this.color }` ]
+		const classes = [ 'btn', `btn-${ this.color }` ]
+		return classes
 	}
 
 	ngOnInit (): void {
