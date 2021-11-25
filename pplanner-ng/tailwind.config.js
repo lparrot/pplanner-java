@@ -7,6 +7,9 @@ module.exports = {
 		content: [
 			'./projects/**/*.{html,ts}',
 		],
+		options: {
+			keyframes: true,
+		},
 	},
 	darkMode: false, // or 'media' or 'class'
 	theme: {
