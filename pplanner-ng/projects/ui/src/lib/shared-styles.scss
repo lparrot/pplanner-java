@@ -1,0 +1,29 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+$colors: 'default', 'primary', 'secondary', 'success', 'info', 'warn', 'danger';
+$maxWidthSizes: 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', 'full', 'min', 'max', 'prose', 'screen-sm', 'screen-md', 'screen-lg', 'screen-xl', 'screen-2xl';
+
+/* button */
+.btn {
+	@apply py-2 px-4 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-lg disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+@each $color in $colors {
+	.btn-#{$color} {
+		@apply bg-#{$color}-600 hover:bg-#{$color}-700 focus:ring-#{$color}-500 focus:ring-offset-#{$color}-200;
+
+		&.btn-outlined {
+			@apply bg-transparent text-#{$color} border-2 border-#{$color}-700 hover:bg-#{$color}-700 hover:text-white focus:ring-#{$color}-500 focus:ring-offset-#{$color}-200;
+		}
+	}
+}
+
+/* modal */
+
+@each $size in $maxWidthSizes {
+	.modal-#{$size} {
+		@apply max-w-#{$size};
+	}
+}

@@ -7,12 +7,16 @@ import { TailwindColors } from '../ui.models'
 export class ButtonDirective implements OnInit {
 
 	@Input() color: TailwindColors = 'default'
+	@Input() outlined: boolean = false
 
 	constructor () {
 	}
 
 	@HostBinding('class') get class () {
 		const classes = [ 'btn', `btn-${ this.color }` ]
+		if (this.outlined) {
+			classes.push('btn-outlined')
+		}
 		return classes
 	}
 
