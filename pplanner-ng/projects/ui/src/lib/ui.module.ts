@@ -5,9 +5,12 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { ModalComponent } from './modal/modal.component'
 import { ButtonDirective } from './button/button.directive'
 import { PortalModule } from '@angular/cdk/portal'
+import { MenuOverlayComponent } from './menu-overlay/menu-overlay.component'
+import { OverlayModule } from '@angular/cdk/overlay'
 
 const components: any[] = [
 	ButtonDirective,
+	MenuOverlayComponent,
 	ModalComponent,
 ]
 
@@ -21,6 +24,7 @@ const directives: any[] = [
 		BrowserAnimationsModule,
 		ReactiveFormsModule,
 		PortalModule,
+		OverlayModule,
 	],
 	declarations: [
 		...components,

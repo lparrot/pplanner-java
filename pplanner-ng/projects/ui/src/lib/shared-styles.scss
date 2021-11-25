@@ -5,6 +5,15 @@
 $colors: 'default', 'primary', 'secondary', 'success', 'info', 'warn', 'danger';
 $maxWidthSizes: 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', 'full', 'min', 'max', 'prose', 'screen-sm', 'screen-md', 'screen-lg', 'screen-xl', 'screen-2xl';
 
+.cdk-overlay-backdrop-app {
+	@apply absolute top-0 left-0 h-full w-full z-[1000];
+	pointer-events: none;
+}
+
+.cdk-overlay-pane {
+	@apply relative inline-block z-[1001];
+}
+
 /* button */
 .btn {
 	@apply py-2 px-4 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-lg disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2;

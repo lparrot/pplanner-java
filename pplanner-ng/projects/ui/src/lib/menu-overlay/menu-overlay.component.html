@@ -1,0 +1,9 @@
+<div #trigger="cdkOverlayOrigin" cdkOverlayOrigin class="inline-block">
+	<ng-content select="[activator]"></ng-content>
+</div>
+
+<ng-template (overlayOutsideClick)="show = false" [cdkConnectedOverlayHasBackdrop]="true" [cdkConnectedOverlayOpen]="show" [cdkConnectedOverlayOrigin]="trigger" cdkConnectedOverlay cdkConnectedOverlayBackdropClass="cdk-overlay-backdrop-app">
+	<div class="inline-block">
+		<ng-content></ng-content>
+	</div>
+</ng-template>
