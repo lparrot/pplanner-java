@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { AuthService } from '../../services/auth.service'
 
 @Component({
 	selector: 'app-layout-default',
@@ -9,7 +10,7 @@ export class LayoutDefaultComponent implements OnInit {
 
 	showMenu = false
 
-	constructor () {
+	constructor (public authService: AuthService) {
 	}
 
 	ngOnInit (): void {
