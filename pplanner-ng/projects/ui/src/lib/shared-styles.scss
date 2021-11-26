@@ -19,10 +19,10 @@ $maxWidthSizes: 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'
 /* form */
 
 .form-group {
-	@apply block mb-4;
+	@apply block mb-4 w-full;
 
 	& .form-label {
-		@apply block;
+		@apply block ml-1 mb-1;
 
 		&.required {
 			@apply after:content-['*'] after:text-danger after:font-bold;
@@ -38,7 +38,7 @@ $maxWidthSizes: 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'
 	}
 
 	& .form-error {
-		@apply text-sm text-danger mt-1;
+		@apply text-sm text-danger mt-1 ml-1;
 	}
 }
 
