@@ -58,6 +58,23 @@ $maxWidthSizes: 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'
 	}
 }
 
+/* card */
+.card {
+	@apply border border-primary rounded-xl;
+
+	& .card-header {
+		@apply bg-primary-100 py-3 px-5 rounded-t-xl;
+	}
+
+	& .card-content {
+		@apply mx-5 my-3;
+	}
+
+	& .card-actions {
+		@apply bg-primary-100 px-5 py-3 rounded-b-xl;
+	}
+}
+
 /* modal */
 
 @each $size in $maxWidthSizes {

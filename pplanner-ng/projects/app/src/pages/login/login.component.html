@@ -1,27 +1,33 @@
-<section class="max-w-4xl mx-auto">
-	<div class="text-center mb-10">
+<section class="card max-w-2xl mx-auto">
+	<section class="card-header text-center">
 		<h3 class="text-2xl font-bold">Connexion</h3>
 		<h4 class="text-lg text-primary">Renseignez votre email ainsi que votre mot de passe pour accéder à l'application</h4>
-	</div>
+	</section>
 
 	<form (ngSubmit)="login()" [formGroup]="form">
-		<div class="form-group">
-			<label class="form-label required" for="username">Email</label>
-			<input class="form-input w-full" formControlName="username" id="username" type="text">
-			<div class="form-error">
-				<span *ngIf="form.hasError('required', 'username')">L'email est requis</span>
-				<span *ngIf="form.hasError('email', 'username')">L'email n'est pas au bon format</span>
+		<section class="card-content">
+			<div class="form-group">
+				<label class="form-label required" for="username">Email</label>
+				<input class="form-input w-full" formControlName="username" id="username" type="text">
+				<div class="form-error">
+					<span *ngIf="form.hasError('required', 'username')">L'email est requis</span>
+					<span *ngIf="form.hasError('email', 'username')">L'email n'est pas au bon format</span>
+				</div>
 			</div>
-		</div>
 
-		<div class="form-group">
-			<label class="form-label required" for="password">Mot de passe</label>
-			<input class="form-input w-full" formControlName="password" id="password" type="password">
-			<div class="form-error">
-				<span *ngIf="form.hasError('required', 'password')">Le mot de passe est requis</span>
+			<div class="form-group">
+				<label class="form-label required" for="password">Mot de passe</label>
+				<input class="form-input w-full" formControlName="password" id="password" type="password">
+				<div class="form-error">
+					<span *ngIf="form.hasError('required', 'password')">Le mot de passe est requis</span>
+				</div>
 			</div>
-		</div>
+		</section>
 
-		<button [disabled]="form.invalid" color="primary" twButton type="submit">Connexion</button>
+		<section class="card-actions">
+			<div>
+				<button [disabled]="form.invalid" color="primary" twButton type="submit">Connexion</button>
+			</div>
+		</section>
 	</form>
 </section>
