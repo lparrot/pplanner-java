@@ -51,11 +51,11 @@ export class AuthService {
 					.subscribe(data => {
 						this.token = token
 						this.user = data
-						console.log(this.user)
 						subscriber.next()
 					})
+			} else {
+				subscriber.next()
 			}
-			subscriber.next()
 		})
 	}
 
