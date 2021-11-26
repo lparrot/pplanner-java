@@ -25,7 +25,7 @@ $maxWidthSizes: 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'
 		@apply block;
 
 		&.required {
-			@apply after:content-['*'] after:text-danger;
+			@apply after:content-['*'] after:text-danger after:font-bold;
 		}
 	}
 

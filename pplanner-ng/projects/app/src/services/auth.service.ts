@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {HttpClient} from '@angular/common/http'
-import {lastValueFrom, tap} from 'rxjs'
+import {Observable, tap} from 'rxjs'
 import {Router} from '@angular/router'
 
 @Injectable({
@@ -25,26 +25,38 @@ export class AuthService {
 			)
 	}
 
-	async logout() {
-		this.token = null
-		this.user = null
-		this.clearAuthToken()
-		await this.router.navigateByUrl('/login')
+	logout() {
+		return new Observable(observer => {
+			this.token = null
+			this.user = null
+			this.clearAuthToken()
+			observer.next()
+		})
 	}
 
-	async getUser() {
-		const token = this.getAuthToken()
+	register(params: any) {
+		return this.http.post('/api/auth', params, {responseType: 'text'})
+			.pipe(
+				tap((token: string) => this.setAuthToken(token)),
+				tap(this.getUser())
+			)
+	}
 
-		if (token != null) {
-			await lastValueFrom(this.http.get('/api/auth/user')
-				.pipe(
-					tap(data => {
+	getUser() {
+		return new Observable(subscriber => {
+			const token = this.getAuthToken()
+
+			if (token != null) {
+				this.http.get('/api/auth/user')
+					.subscribe(data => {
 						this.token = token
 						this.user = data
+						console.log(this.user)
+						subscriber.next()
 					})
-				)
-			)
-		}
+			}
+			subscriber.next()
+		})
 	}
 
 	setAuthToken(token: string) {

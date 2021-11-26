@@ -14,16 +14,16 @@ export class LoginComponent implements OnInit {
 
 	constructor(private router: Router, private authService: AuthService, fb: FormBuilder) {
 		this.form = fb.group({
-			username: ['', Validators.required],
+			username: ['', Validators.compose([Validators.required, Validators.email])],
 			password: ['', Validators.required],
 		})
 	}
 
-	ngOnInit (): void {
-		this.form.setValue({ username: 'kestounet@gmail.com', password: '123' })
+	ngOnInit(): void {
+		this.form.setValue({username: 'kestounet@gmail.com', password: '123'})
 	}
 
-	login () {
+	login() {
 		if (this.form.valid) {
 			this.authService.login(this.form.value.username, this.form.value.password)
 				.subscribe(() => this.router.navigateByUrl('/ui-test'))

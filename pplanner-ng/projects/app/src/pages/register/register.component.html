@@ -1,1 +1,42 @@
-<p>register works!</p>
+<section class="max-w-4xl mx-auto">
+	<div class="text-center mb-10">
+		<h3 class="text-2xl font-bold">Enregistrement de compte</h3>
+		<h4 class="text-lg text-primary">Veuillez renseigner les informations afin de créer votre compte utilisateur</h4>
+	</div>
+
+	<form (ngSubmit)="register()" [formGroup]="form">
+		<div class="form-group">
+			<label class="form-label required" for="email">Email</label>
+			<input class="form-input w-full" formControlName="email" id="email" type="email">
+			<div class="form-error">
+				<span *ngIf="form.hasError('required', 'email')">L'email est requis</span>
+				<span *ngIf="form.hasError('email', 'email')">L'email n'est pas au bon format</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="form-label required" for="password">Mot de passe</label>
+			<input class="form-input w-full" formControlName="password" id="password" type="password">
+			<div class="form-error">
+				<span *ngIf="form.hasError('required', 'password')">Le mot de passe est requis</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="form-label" for="lastname">Nom</label>
+			<input class="form-input w-full" formControlName="lastname" id="lastname" type="text">
+		</div>
+
+		<div class="form-group">
+			<label class="form-label" for="firstname">Prénom</label>
+			<input class="form-input w-full" formControlName="firstname" id="firstname" type="text">
+		</div>
+
+		<div class="form-group">
+			<label class="form-label" for="job">Métier</label>
+			<input class="form-input w-full" formControlName="job" id="job" type="text">
+		</div>
+
+		<button [disabled]="form.invalid" color="primary" twButton type="submit">Créer le compte</button>
+	</form>
+</section>
