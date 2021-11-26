@@ -16,6 +16,8 @@ import {HttpErrorInterceptor} from './interceptors/http-error.interceptor'
 import {AuthGuard} from './guards/auth.guard'
 import {AuthInterceptor} from './interceptors/auth.interceptor'
 import {StartupService} from './services/startup.service'
+import {Error404Component} from './pages/errors/error404/error404.component'
+import {LayoutBlankComponent} from './layouts/layout-blank/layout-blank.component'
 
 @NgModule({
 	declarations: [
@@ -25,6 +27,8 @@ import {StartupService} from './services/startup.service'
 		LoginComponent,
 		RegisterComponent,
 		ContactComponent,
+		Error404Component,
+		LayoutBlankComponent,
 	],
 	imports: [
 		BrowserModule,
