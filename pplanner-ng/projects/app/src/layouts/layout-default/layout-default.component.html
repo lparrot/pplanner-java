@@ -9,7 +9,15 @@
 				<i class="fas fa-bars"></i>
 			</button>
 		</div>
-		<div [ngClass]="{'hidden': !showMenu, 'flex': showMenu}" class="lg:flex lg:flex-grow items-center">
+		<div [ngClass]="{'hidden': !showMenu, 'flex': showMenu}" class="lg:flex lg:flex-grow lg:flex-row flex-col lg:items-center">
+			<ul class="flex flex-col lg:flex-row list-none">
+				<li class="nav-item">
+					<a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75" routerLink="/ui-test">
+						<i class="fab fa-uikit text-lg leading-lg text-white opacity-75"></i>
+						<span class="ml-2">UI</span>
+					</a>
+				</li>
+			</ul>
 			<ul class="flex flex-col lg:flex-row list-none ml-auto">
 				<ng-template [ngIf]="authService.isLoggedIn()">
 					<li class="nav-item">
@@ -17,6 +25,12 @@
 							<i class="fas fa-phone-alt text-lg leading-lg text-white opacity-75"></i>
 							<span class="ml-2">Contacter</span>
 						</a>
+					</li>
+					<li class="nav-item">
+						<button (click)="authService.logout()" class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
+							<i class="fas fa-power-off text-lg leading-lg text-white opacity-75"></i>
+							<span class="ml-2">Deconnexion</span>
+						</button>
 					</li>
 				</ng-template>
 
