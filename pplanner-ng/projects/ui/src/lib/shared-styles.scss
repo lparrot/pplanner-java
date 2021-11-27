@@ -16,30 +16,25 @@ $maxWidthSizes: 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'
 	@apply relative inline-block z-[1001];
 }
 
-/* form */
+/* alert */
 
-.form-group {
-	@apply block mb-4 w-full;
+.alerts {
+	@apply fixed bottom-0 left-1/2 transform -translate-x-1/2 z-50 w-56;
 
-	& .form-label {
-		@apply block ml-1 mb-1;
+	.alert {
+		@apply my-2 overflow-hidden;
 
-		&.required {
-			@apply after:content-['*'] after:text-danger after:font-bold;
+		@each $variant in 'success', 'info', 'warn', 'danger' {
+			& .alert-#{$variant}--icon {
+				@apply flex items-center justify-center w-12 bg-#{$variant}-400;
+			}
+
+			& .alert-#{$variant}--title {
+				@apply font-semibold text-#{$variant}-500;
+			}
 		}
 	}
 
-	& .form-input, & .form-textarea, & .form-select, & .form-multiselect {
-		@apply rounded-xl border-primary focus:border-secondary;
-
-		&.ng-invalid {
-			@apply border-danger;
-		}
-	}
-
-	& .form-error {
-		@apply text-sm text-danger mt-1 ml-1;
-	}
 }
 
 /* button */
@@ -72,6 +67,32 @@ $maxWidthSizes: 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'
 
 	& .card-actions {
 		@apply bg-primary-100 px-5 py-3 rounded-b-xl;
+	}
+}
+
+/* form */
+
+.form-group {
+	@apply block mb-4 w-full;
+
+	& .form-label {
+		@apply block ml-1 mb-1;
+
+		&.required {
+			@apply after:content-['*'] after:text-danger after:font-bold;
+		}
+	}
+
+	& .form-input, & .form-textarea, & .form-select, & .form-multiselect {
+		@apply rounded-xl border-primary focus:border-secondary;
+
+		&.ng-invalid {
+			@apply border-danger;
+		}
+	}
+
+	& .form-error {
+		@apply text-sm text-danger mt-1 ml-1;
 	}
 }
 

@@ -1,0 +1,22 @@
+<div class="alerts">
+	<div *ngFor="let alert of alerts" [ngClass]="className(alert)" class="alert">
+		<ng-container *ngTemplateOutlet="alertTemplate; context:{alert:alert}"></ng-container>
+	</div>
+</div>
+
+<ng-template #alertTemplate let-alert="alert">
+
+	<div class="flex max-w-sm overflow-hidden bg-white rounded-lg shadow-md">
+		<div class="alert-{{alert.type}}--icon">
+			<i [ngClass]="iconClass(alert)"></i>
+		</div>
+
+		<div class="px-4 py-2 -mx-3">
+			<div class="mx-3">
+				<span class="alert-{{alert.type}}--title">{{alert.title}}</span>
+				<p class="text-sm text-gray-600 dark:text-gray-200">{{alert.message}}</p>
+			</div>
+		</div>
+	</div>
+
+</ng-template>

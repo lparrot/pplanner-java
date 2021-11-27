@@ -1,6 +1,6 @@
 <div class="flex gap-2">
 	<button (click)="modal.toggleModal()" [outlined]="true" color="primary" twButton>Show modal</button>
-	<button color="secondary" twButton>Annuler</button>
+	<button (click)="generateAlert()" color="secondary" twButton>Créer alerte</button>
 </div>
 
 <div class="pt-5">
@@ -25,6 +25,8 @@
 		</div>
 	</tw-menu-overlay>
 </div>
+
+<tw-alert></tw-alert>
 
 <tw-modal #modal size="screen-xl">
 	<ng-container ngProjectAs="[title]">
