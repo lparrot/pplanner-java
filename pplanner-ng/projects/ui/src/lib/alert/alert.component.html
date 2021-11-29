@@ -1,5 +1,5 @@
-<div class="alerts">
-	<div *ngFor="let alert of alerts" [ngClass]="className(alert)" class="alert">
+<div [ngClass]="alertsPosition" class="alerts">
+	<div *ngFor="let alert of alerts" [ngClass]="className(alert)" class="alert animate-bounce-in-right">
 		<ng-container *ngTemplateOutlet="alertTemplate; context:{alert:alert}"></ng-container>
 	</div>
 </div>

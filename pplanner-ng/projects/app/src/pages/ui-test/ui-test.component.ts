@@ -15,9 +15,10 @@ export class UiTestComponent implements OnInit {
 	}
 
 	generateAlert() {
-		this.alert.success('Hello there', 'How are you today ?', 5000)
-		this.alert.info('Hello there', 'How are you today ?', 5000)
-		this.alert.warn('Hello there', 'How are you today ?', 5000)
-		this.alert.danger('Hello there', 'How are you today ?', 5000)
+		const variants = ['success', 'info', 'warn', 'danger']
+		const variant = variants[Math.floor(Math.random() * variants.length)]
+
+		// @ts-ignore
+		this.alert[variant]('Hello there', 'How are you today ?', 5000)
 	}
 }

@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core'
+import {Component, Input, OnDestroy, OnInit} from '@angular/core'
 import {Subscription} from 'rxjs'
 import {AlertService} from './alert.service'
-import {Alert, AlertType} from '../ui.models'
+import {Alert, AlertPosition, AlertType} from '../ui.models'
 
 @Component({
 	selector: 'tw-alert',
@@ -9,6 +9,8 @@ import {Alert, AlertType} from '../ui.models'
 	styleUrls: ['./alert.component.scss']
 })
 export class AlertComponent implements OnInit, OnDestroy {
+
+	@Input() position: AlertPosition = 'bottomLeft'
 
 	alerts: Alert[] = []
 	private _subscription: Subscription
@@ -26,6 +28,25 @@ export class AlertComponent implements OnInit, OnDestroy {
 
 	close(alert: Alert) {
 		this.alerts = this.alerts.filter(notif => notif.id !== alert.id)
+	}
+
+	get alertsPosition() {
+		switch (this.position) {
+			case 'bottom':
+				return 'bottom-0 left-1/2 transform -translate-x-1/2'
+			case 'top':
+				return 'top-0 left-1/2 transform -translate-x-1/2'
+			case 'bottomLeft':
+				return 'bottom-0 left-0'
+			case 'bottomRight':
+				return 'bottom-0 right-0'
+			case 'topLeft':
+				return 'top-0 left-0'
+			case 'topRight':
+				return 'top-0 right-0'
+			default:
+				return 'bottom-0 right-0'
+		}
 	}
 
 	className(alert: Alert): string {

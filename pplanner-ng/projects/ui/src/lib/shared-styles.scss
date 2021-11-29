@@ -8,21 +8,21 @@ $maxWidthSizes: 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'
 /* cdk - overlay */
 
 .cdk-overlay-backdrop-app {
-	@apply absolute top-0 left-0 h-full w-full z-[1000];
+	@apply absolute top-0 left-0 h-full w-full;
 	pointer-events: none;
 }
 
 .cdk-overlay-pane {
-	@apply relative inline-block z-[1001];
+	@apply relative inline-block;
 }
 
 /* alert */
 
 .alerts {
-	@apply fixed bottom-0 left-1/2 transform -translate-x-1/2 z-50 w-56;
+	@apply fixed z-50 w-80;
 
 	.alert {
-		@apply my-2 overflow-hidden;
+		@apply m-2 overflow-hidden;
 
 		@each $variant in 'success', 'info', 'warn', 'danger' {
 			& .alert-#{$variant}--icon {
