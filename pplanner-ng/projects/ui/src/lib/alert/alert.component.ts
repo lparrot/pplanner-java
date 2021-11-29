@@ -5,8 +5,28 @@ import {Alert, AlertPosition, AlertType} from '../ui.models'
 
 @Component({
 	selector: 'tw-alert',
-	templateUrl: './alert.component.html',
-	styleUrls: ['./alert.component.scss']
+	template: `
+		<div [ngClass]="alertsPosition" class="alerts">
+			<div *ngFor="let alert of alerts" [ngClass]="className(alert)" class="alert animate-bounce-in-right">
+				<ng-container *ngTemplateOutlet="alertTemplate; context:{alert:alert}"></ng-container>
+			</div>
+		</div>
+
+		<ng-template #alertTemplate let-alert="alert">
+			<div class="flex overflow-hidden bg-white rounded-lg shadow-md">
+				<div class="alert-{{alert.type}}--icon">
+					<i [ngClass]="iconClass(alert)" class="w-12 text-center"></i>
+				</div>
+
+				<div class="px-4 py-2 -mx-3">
+					<div class="mx-3">
+						<span class="alert-{{alert.type}}--title">{{alert.title}}</span>
+						<p class="text-sm text-gray-600 dark:text-gray-200">{{alert.message}}</p>
+					</div>
+				</div>
+			</div>
+		</ng-template>
+	`,
 })
 export class AlertComponent implements OnInit, OnDestroy {
 

@@ -1,26 +1,38 @@
-import { Component, Input, OnInit } from '@angular/core'
+import {Component, Input, OnInit} from '@angular/core'
 
 @Component({
 	selector: 'tw-menu-overlay',
-	templateUrl: './menu-overlay.component.html',
-	styleUrls: [ './menu-overlay.component.scss' ],
+	template: `
+		<div #trigger="cdkOverlayOrigin" cdkOverlayOrigin>
+			<ng-content select="[activator]"></ng-content>
+		</div>
+
+		<ng-template cdkConnectedOverlay (overlayOutsideClick)="isOpen = false" [cdkConnectedOverlayDisableClose]="false" [cdkConnectedOverlayHasBackdrop]="true" [cdkConnectedOverlayOpen]="isOpen" [cdkConnectedOverlayOrigin]="trigger" cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop">
+			<ng-content></ng-content>
+		</ng-template>
+	`
 })
 export class MenuOverlayComponent implements OnInit {
 
 	@Input() persistent: boolean
 
-	show: boolean
+	isOpen: boolean
 
-	constructor () {
+	constructor() {
 	}
 
-	ngOnInit (): void {
+	ngOnInit(): void {
 	}
 
-	toggle (backdrop?: boolean) {
-		console.log(backdrop)
-		if (!backdrop || (backdrop && !this.persistent)) {
-			this.show = !this.show
-		}
+	show() {
+		this.isOpen = true
+	}
+
+	close() {
+		this.isOpen = false
+	}
+
+	toggle() {
+		this.isOpen = !this.isOpen
 	}
 }

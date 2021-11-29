@@ -6,8 +6,7 @@ module.exports = {
 	purge: {
 		enabled: process.env.WEBPACK_DEV_SERVER === 'true' && process.argv.indexOf('build') !== -1,
 		content: [
-			'./projects/app/**/*.{html,ts,scss}',
-			'./projects/**/*.{html,ts}',
+			'./projects/**/*.{html,ts,scss}',
 		],
 		options: {
 			keyframes: true,

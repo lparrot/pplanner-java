@@ -1,0 +1,7 @@
+html, body {
+	@apply bg-primary;
+}
+
+.nav-item {
+	@apply flex items-center px-3 py-2 text-white leading-snug uppercase font-bold text-xs hover:opacity-75;
+}

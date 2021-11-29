@@ -9,10 +9,13 @@ import {MenuOverlayComponent} from './menu-overlay/menu-overlay.component'
 import {OverlayModule} from '@angular/cdk/overlay'
 import {AlertComponent} from './alert/alert.component'
 import {AlertService} from './alert/alert.service'
+import {MenuComponent, MenuItemComponent} from './menu/menu.component'
 
 const components: any[] = [
 	AlertComponent,
 	ButtonDirective,
+	MenuComponent,
+	MenuItemComponent,
 	MenuOverlayComponent,
 	ModalComponent,
 ]

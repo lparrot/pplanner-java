@@ -3,30 +3,20 @@
 	<button (click)="generateAlert()" color="secondary" twButton>Créer alerte</button>
 </div>
 
-<div class="pt-5">
+<div class="mt-5">
 	<tw-menu-overlay #overlay>
 		<button (click)="overlay.toggle()" activator class="flex items-center gap-2" twButton>
 			<span>Show overlay</span>
 			<i class="fas fa-caret-down"></i>
 		</button>
 
-		<div class="mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5">
-			<div aria-labelledby="options-menu" aria-orientation="vertical" class="py-1 " role="menu">
-				<a class="block block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600" role="menuitem" routerLink="/">
-					<span class="flex flex-col">Item 1</span>
-				</a>
-				<a class="block block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600" role="menuitem" routerLink="/">
-					<span class="flex flex-col">Item 2</span>
-				</a>
-				<a class="block block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600" role="menuitem" routerLink="/">
-					<span class="flex flex-col">Item 3</span>
-				</a>
-			</div>
-		</div>
+		<tw-menu>
+			<tw-menu-item routerLink="/">Item 1</tw-menu-item>
+			<tw-menu-item routerLink="/">Item 2</tw-menu-item>
+			<tw-menu-item routerLink="/">Item 3</tw-menu-item>
+		</tw-menu>
 	</tw-menu-overlay>
 </div>
-
-<tw-alert position="bottomRight"></tw-alert>
 
 <tw-modal #modal size="screen-xl">
 	<ng-container ngProjectAs="[title]">
