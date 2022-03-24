@@ -5,9 +5,9 @@
 </template>
 
 <script lang="ts">
-import { Action, Component, Getter, Prop, Provide, Vue, Watch } from "nuxt-property-decorator";
+import {Action, Component, Getter, Prop, Provide, Vue, Watch} from "nuxt-property-decorator";
 import AppProjectMenuItem from "~/components/app/AppProjectMenuItem.vue";
-import { VModel } from "vue-property-decorator";
+import {VModel} from "vue-property-decorator";
 
 @Component({
 	components: {
@@ -17,9 +17,9 @@ import { VModel } from "vue-property-decorator";
 export default class AppProjectMenuItemContainer extends Vue {
 	@Provide('container') container = this
 
-	@Prop({ type: Boolean }) readonly editable !: boolean
-	@Prop({ type: Boolean }) readonly allOpened !: boolean
-	@Prop({ type: Array, default: () => [ 'WORKSPACE', 'FOLDER', 'LIST' ] }) readonly selectableTypes !: string[]
+	@Prop({type: Boolean}) readonly editable !: boolean
+	@Prop({type: Boolean}) readonly allOpened !: boolean
+	@Prop({type: Array, default: () => ['WORKSPACE', 'FOLDER', 'LIST']}) readonly selectableTypes !: string[]
 
 	@VModel() model: Models.ProjectMenuItem
 
@@ -30,25 +30,31 @@ export default class AppProjectMenuItemContainer extends Vue {
 
 	public workspaces: Models.ProjectMenuItem[] = []
 
-	async fetch () {
-		this.$bus.$on('pplanner:items_update', async () => {
+	async fetch() {
+		this.$bus.$emit('pplanner:items_update')
+	}
+
+	async created() {
+		this.$bus.$once('pplanner:items_update', async () => {
 			this.workspaces = await this.$api.projects.findAllWorkspaceByProjectId(this.activeProject)
 			if (this.activeMenu == null && this.workspaces.length > 0) {
 				await this.selectMenu(this.workspaces[0].id)
 				await this.goToTaskIdListPage()
 			}
 		})
-
-		this.$bus.$emit('pplanner:items_update')
 	}
 
-	setModel (item: Models.ProjectMenuItem) {
+	setModel(item: Models.ProjectMenuItem) {
 		this.model = item
 	}
 
 	@Watch('activeProject')
-	public async onChangeActiveProject (val, old) {
-		await this.$bus.$emit('pplanner:items_update')
+	public onChangeActiveProject(val, old) {
+		this.$bus.$emit('pplanner:items_update')
+	}
+
+	beforeDestroyed() {
+		this.$bus.$off('pplanner:items_update')
 	}
 }
 </script>

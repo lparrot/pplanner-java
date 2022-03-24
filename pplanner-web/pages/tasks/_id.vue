@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import { Action, Component, Getter, Ref, Vue } from 'nuxt-property-decorator'
+import {Action, Component, Getter, Ref, Vue} from 'nuxt-property-decorator'
 import TwTabContainer from "~/components/shared/TwTabContainer.vue";
 import TwTabItem from "~/components/shared/TwTabItem.vue";
 import TwInputText from "~/components/shared/TwInputText.vue";
@@ -62,7 +62,7 @@ import AppTaskCreate from "~/components/app/AppTaskCreate.vue";
 
 
 @Component({
-	watchQuery: [ 'view' ],
+	watchQuery: ['view'],
 	components: {
 		AppTaskCreate,
 		AppProjectMenuItemContainer,
@@ -87,7 +87,7 @@ export default class PageTaskIndex extends Vue {
 	public task: Models.TaskEdit = null
 	public views: Models.TaskViewMenu[] = []
 
-	get iconItem () {
+	get iconItem() {
 		switch (this.menuItem.type) {
 			case 'FOLDER':
 				return 'fas fa-folder'
@@ -98,14 +98,14 @@ export default class PageTaskIndex extends Vue {
 		}
 	}
 
-	get viewComponent () {
+	get viewComponent() {
 		const viewComponent = this.views.find(view => view.name === this.$route.query.view)
 		if (viewComponent != null) {
 			return viewComponent.component
 		}
 	}
 
-	async fetch () {
+	async fetch() {
 		if (this.activeProject == null) {
 			return this.$router.push('/tasks');
 		}
@@ -129,14 +129,14 @@ export default class PageTaskIndex extends Vue {
 		}
 
 		this.$bus.$on('on-select-view-tab', (event) => {
-			this.$router.push({ name: 'tasks-id', params: { id: this.$route.params.id }, query: { view: event.name } })
+			this.$router.push({name: 'tasks-id', params: {id: this.$route.params.id}, query: {view: event.name}})
 		})
 
 		this.views = [
-			{ id: 1, name: 'list', label: 'Liste', icon: 'fas fa-th-list', component: 'app-view-list' },
-			{ id: 2, name: 'kanban', label: 'Kanban', icon: 'fab fa-gitter', component: 'app-view-kanban' },
-			{ id: 3, name: 'calendar', label: 'Calendrier', icon: 'fas fa-calendar-alt', component: 'app-view-calendar' },
-			{ id: 4, name: 'gantt', label: 'Gantt', icon: 'fas fa-stream', component: 'app-view-gantt' },
+			{id: 1, name: 'list', label: 'Liste', icon: 'fas fa-th-list', component: 'app-view-list'},
+			{id: 2, name: 'kanban', label: 'Kanban', icon: 'fab fa-gitter', component: 'app-view-kanban'},
+			{id: 3, name: 'calendar', label: 'Calendrier', icon: 'fas fa-calendar-alt', component: 'app-view-calendar'},
+			{id: 4, name: 'gantt', label: 'Gantt', icon: 'fas fa-stream', component: 'app-view-gantt'},
 		]
 
 		this.$bus.$on('app:add-task-modal', async (task) => {
@@ -146,21 +146,27 @@ export default class PageTaskIndex extends Vue {
 				this.$set(this.task, 'item', item)
 			}
 			this.showModalEditTask = true
-			this.validator.reset()
+			if (this.validator != null) {
+				this.validator.reset()
+			}
 		})
 	}
 
-	async handleShowModalCreateTask () {
+	async handleShowModalCreateTask() {
 		this.$bus.$emit('app:add-task-modal')
 	}
 
-	async handleSubmitCreateTask () {
+	async handleSubmitCreateTask() {
 		const valid = await this.validator.validate()
 		if (valid) {
 			await this.$api.tasks.createTask(this.task)
 			this.showModalEditTask = false
 			this.$bus.$emit('pplanner:tasks_update')
 		}
+	}
+
+	beforeDestroy() {
+		this.$bus.$off('app:add-task-modal')
 	}
 }
 </script>

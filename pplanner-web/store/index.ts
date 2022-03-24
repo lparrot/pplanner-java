@@ -50,7 +50,7 @@ export const actions: ActionTree<RootState, RootState> = {
 					await this.$api.items.findById(menuId)
 					commit('SET_MENU', menuId)
 				}
-			} catch (err) {
+			} catch (err: any) {
 				if (err.response.status === 404) {
 					localStorage.removeItem('pplanner.project')
 					localStorage.removeItem(`pplanner.menu-${ projectId }`)
