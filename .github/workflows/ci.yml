@@ -54,7 +54,7 @@ jobs:
           port: ${{ secrets.NAS_PORT }}
           script: |
             cd /volume1/apps/pplanner
-            echo ${{ secrets.NAS_PASSWORD }} | sudo -S sh restart.sh
+            echo ${{ secrets.NAS_PASSWORD }} | sudo -S sh ./restart.sh
 
       - name: Send mail
         uses: dawidd6/action-send-mail@v2
