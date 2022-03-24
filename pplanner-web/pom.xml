@@ -39,13 +39,13 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>yarn install</id>
+						<id>npm install</id>
 						<goals>
 							<goal>npm</goal>
 						</goals>
 						<phase>generate-resources</phase>
 						<configuration>
-							<arguments>install --no-package-lock --loglevel silent</arguments>
+							<arguments>install</arguments>
 						</configuration>
 					</execution>
 					<execution>

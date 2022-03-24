@@ -13,7 +13,6 @@
 	<modules>
 		<module>pplanner-web</module>
 		<module>pplanner-server</module>
-		<module>pplanner-ng</module>
 	</modules>
 
 	<properties>
