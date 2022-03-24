@@ -52,7 +52,7 @@ jobs:
           username: ${{ secrets.NAS_USERNAME }}
           password: ${{ secrets.NAS_PASSWORD }}
           port: ${{ secrets.NAS_PORT }}
-          script: echo ${{ secrets.NAS_PASSWORD }} | sudo -S /usr/local/bin/docker restart pplanner || (cd /volume1/apps/pplanner && sudo -S sh install.sh)
+          script: echo ${{ secrets.NAS_PASSWORD }} | sudo -S sh /volume1/apps/pplanner/restart.sh
 
       - name: Send mail
         uses: dawidd6/action-send-mail@v2
